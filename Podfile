@@ -12,5 +12,6 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Messaging'
   pod 'ActiveLabel'
   pod 'Firebase/Core'
+  pod 'Firebase/Database'
 
 end

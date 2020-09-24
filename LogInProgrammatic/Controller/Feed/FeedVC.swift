@@ -63,7 +63,10 @@ class FeedVC: UICollectionViewController {
                 // attempt sign out
                 try Auth.auth().signOut()
                 
-                // present login controller
+                // dismiss FeedVC
+                self.dismiss(animated: true, completion: nil)
+                
+                // present LoginVC
                 let loginVC = LoginVC()
                 let navController = UINavigationController(rootViewController: loginVC)
                 navController.modalPresentationStyle = .fullScreen

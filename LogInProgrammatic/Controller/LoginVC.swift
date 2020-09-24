@@ -113,6 +113,8 @@ class LoginVC: UIViewController {
             
             // dismiss login view controller
             self.dismiss(animated: true, completion: nil)
+            
+            print("Succesfully logged in user")
         }
     }
     
