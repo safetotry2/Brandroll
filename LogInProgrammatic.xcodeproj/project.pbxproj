@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433327E25378C6C00C26BB6 /* Protocols.swift */; };
+		04333281253B499900C26BB6 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowVC.swift */; };
+		04333283253B4AB900C26BB6 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowCell.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
 		045C64B4250844DC002E8E1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 045C64B2250844DC002E8E1C /* Main.storyboard */; };
@@ -25,10 +28,14 @@
 		045C64DE25150AED002E8E1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DD25150AED002E8E1C /* Constants.swift */; };
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
+		045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E32522BA09002E8E1C /* SearchUserCell.swift */; };
 		9315C3878CE319843EE9272C /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450250B647D15319FC828FD /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0433327E25378C6C00C26BB6 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		04333280253B499900C26BB6 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
+		04333282253B4AB800C26BB6 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* LogInProgrammatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogInProgrammatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045C64AE250844DC002E8E1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +56,7 @@
 		045C64DD25150AED002E8E1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		045C64E32522BA09002E8E1C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
 		3793C9E09ED487F8F845174E /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 		5450250B647D15319FC828FD /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9B9F5DA321E267DCF6B3488 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */,
+				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
+				04333282253B4AB800C26BB6 /* FollowCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -138,6 +148,7 @@
 			children = (
 				045C64C6250857AD002E8E1C /* Extensions.swift */,
 				045C64DD25150AED002E8E1C /* Constants.swift */,
+				0433327E25378C6C00C26BB6 /* Protocols.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -178,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				045C64D6250FCF60002E8E1C /* UserProfileVC.swift */,
+				04333280253B499900C26BB6 /* FollowVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -320,6 +332,7 @@
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
 				045C64D7250FCF60002E8E1C /* UserProfileVC.swift in Sources */,
+				045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */,
 				045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */,
 				045C64E2251C2D99002E8E1C /* User.swift in Sources */,
 				045C64CF250FCED4002E8E1C /* FeedVC.swift in Sources */,
@@ -327,8 +340,11 @@
 				045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */,
 				045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
+				04333281253B499900C26BB6 /* FollowVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
+				04333283253B4AB900C26BB6 /* FollowCell.swift in Sources */,
+				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

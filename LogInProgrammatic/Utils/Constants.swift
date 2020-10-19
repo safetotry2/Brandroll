@@ -17,3 +17,5 @@ let STORAGE_REF = Storage.storage().reference()
 // MARK: - Database References
 
 let USER_REF = DB_REF.child("users")
+let USER_FOLLOWER_REF = DB_REF.child("user-followers")
+let USER_FOLLOWING_REF = DB_REF.child("user-following")
