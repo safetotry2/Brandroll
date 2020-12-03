@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433327E25378C6C00C26BB6 /* Protocols.swift */; };
-		04333281253B499900C26BB6 /* FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowVC.swift */; };
-		04333283253B4AB900C26BB6 /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowCell.swift */; };
+		04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowLikeVC.swift */; };
+		04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowLikeCell.swift */; };
 		043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043332842540FCA700C26BB6 /* SelectImageVC.swift */; };
 		043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043332862540FDC100C26BB6 /* SelectPhotoCell.swift */; };
 		043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */; };
@@ -41,8 +41,8 @@
 
 /* Begin PBXFileReference section */
 		0433327E25378C6C00C26BB6 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
-		04333280253B499900C26BB6 /* FollowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowVC.swift; sourceTree = "<group>"; };
-		04333282253B4AB800C26BB6 /* FollowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCell.swift; sourceTree = "<group>"; };
+		04333280253B499900C26BB6 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
+		04333282253B4AB800C26BB6 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
 		043332842540FCA700C26BB6 /* SelectImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageVC.swift; sourceTree = "<group>"; };
 		043332862540FDC100C26BB6 /* SelectPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCell.swift; sourceTree = "<group>"; };
 		043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoHeader.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 			children = (
 				045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */,
 				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
-				04333282253B4AB800C26BB6 /* FollowCell.swift */,
+				04333282253B4AB800C26BB6 /* FollowLikeCell.swift */,
 				043332862540FDC100C26BB6 /* SelectPhotoCell.swift */,
 				043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */,
 				0433328C2544A9C700C26BB6 /* UserPostCell.swift */,
@@ -210,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				045C64D6250FCF60002E8E1C /* UserProfileVC.swift */,
-				04333280253B499900C26BB6 /* FollowVC.swift */,
+				04333280253B499900C26BB6 /* FollowLikeVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -366,11 +366,11 @@
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
-				04333281253B499900C26BB6 /* FollowVC.swift in Sources */,
+				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
-				04333283253B4AB900C26BB6 /* FollowCell.swift in Sources */,
+				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
 			);

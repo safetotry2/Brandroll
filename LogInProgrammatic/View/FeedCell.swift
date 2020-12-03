@@ -28,8 +28,9 @@ class FeedCell: UICollectionViewCell {
             }
             
             self.postImageView.loadImage(with: imageUrl)
-            likesLabel.text = "\(likes) likes"
             
+            likesLabel.text = "\(likes) likes"
+            configureLikeButton()
         }
     }
     
@@ -59,11 +60,18 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    let postImageView: CustomImageView = {
+    lazy var postImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
+        
+        // add gesture recognizer for double tap to like
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapToLike))
+        likeTap.numberOfTapsRequired = 2
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(likeTap)
+        
         return iv
     }()
     
@@ -97,10 +105,17 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    let likesLabel: UILabel = {
+    lazy var likesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
+        
+        // add gesture recognizer to label
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
+        likeTap.numberOfTouchesRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(likeTap)
+        
         return label
     }()
     
@@ -167,11 +182,23 @@ class FeedCell: UICollectionViewCell {
     }
     
     @objc func handleLikeTapped() {
-        delegate?.handleLikeTapped(for: self)
+        delegate?.handleLikeTapped(for: self, isDoubleTap: false)
     }
     
     @objc func handleCommentTapped() {
         delegate?.handleCommentTapped(for: self)
+    }
+    
+    @objc func handleShowLikes() {
+        delegate?.handleShowLikes(for: self)
+    }
+    
+    @objc func handleDoubleTapToLike() {
+        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+    }
+    
+    func configureLikeButton() {
+        delegate?.handleConfigureLikeButton(for: self)
     }
     
     func configureCaption(user: User) {
