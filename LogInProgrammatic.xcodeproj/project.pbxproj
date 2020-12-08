@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04044691257869920029F738 /* CommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044690257869920029F738 /* CommentVC.swift */; };
+		0404469325786C250029F738 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0404469225786C240029F738 /* CommentCell.swift */; };
+		040446952579872C0029F738 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040446942579872C0029F738 /* Comment.swift */; };
+		04044697257A9A450029F738 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044696257A9A450029F738 /* NotificationCell.swift */; };
+		04044699257DA1B20029F738 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044698257DA1B10029F738 /* Notification.swift */; };
 		0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433327E25378C6C00C26BB6 /* Protocols.swift */; };
 		04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowLikeVC.swift */; };
 		04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowLikeCell.swift */; };
@@ -36,10 +41,15 @@
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
 		045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E32522BA09002E8E1C /* SearchUserCell.swift */; };
-		9315C3878CE319843EE9272C /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5450250B647D15319FC828FD /* Pods_LogInProgrammatic.framework */; };
+		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04044690257869920029F738 /* CommentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentVC.swift; sourceTree = "<group>"; };
+		0404469225786C240029F738 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		040446942579872C0029F738 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		04044696257A9A450029F738 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		04044698257DA1B10029F738 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		0433327E25378C6C00C26BB6 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		04333280253B499900C26BB6 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
 		04333282253B4AB800C26BB6 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
@@ -71,9 +81,9 @@
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		045C64E32522BA09002E8E1C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
-		3793C9E09ED487F8F845174E /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
-		5450250B647D15319FC828FD /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D9B9F5DA321E267DCF6B3488 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
+		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
+		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
+		D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9315C3878CE319843EE9272C /* Pods_LogInProgrammatic.framework in Frameworks */,
+				BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +104,7 @@
 				045C64AB250844DC002E8E1C /* LogInProgrammatic */,
 				045C64AA250844DC002E8E1C /* Products */,
 				9E61F1BE2E3ED4335CD61D1D /* Pods */,
-				EBBFEA47FDAF56F3DEBD0684 /* Frameworks */,
+				ACD6988964874D1DDF11A5AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,6 +139,8 @@
 			children = (
 				045C64E1251C2D99002E8E1C /* User.swift */,
 				0433328A254488E100C26BB6 /* Post.swift */,
+				040446942579872C0029F738 /* Comment.swift */,
+				04044698257DA1B10029F738 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -143,6 +155,8 @@
 				043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */,
 				0433328C2544A9C700C26BB6 /* UserPostCell.swift */,
 				04333290254727DA00C26BB6 /* FeedCell.swift */,
+				0404469225786C240029F738 /* CommentCell.swift */,
+				04044696257A9A450029F738 /* NotificationCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -177,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				045C64CE250FCED4002E8E1C /* FeedVC.swift */,
+				04044690257869920029F738 /* CommentVC.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -218,16 +233,16 @@
 		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3793C9E09ED487F8F845174E /* Pods-LogInProgrammatic.debug.xcconfig */,
-				D9B9F5DA321E267DCF6B3488 /* Pods-LogInProgrammatic.release.xcconfig */,
+				4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */,
+				5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		EBBFEA47FDAF56F3DEBD0684 /* Frameworks */ = {
+		ACD6988964874D1DDF11A5AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5450250B647D15319FC828FD /* Pods_LogInProgrammatic.framework */,
+				D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -239,11 +254,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "LogInProgrammatic" */;
 			buildPhases = (
-				F3A4DDDF296E80BFC82522F3 /* [CP] Check Pods Manifest.lock */,
+				E409CC927DB13F622C381326 /* [CP] Check Pods Manifest.lock */,
 				045C64A5250844DC002E8E1C /* Sources */,
 				045C64A6250844DC002E8E1C /* Frameworks */,
 				045C64A7250844DC002E8E1C /* Resources */,
-				234B826E4032FECBF3605847 /* [CP] Embed Pods Frameworks */,
+				A3A031F827A6027F399F4D7D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -302,7 +317,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		234B826E4032FECBF3605847 /* [CP] Embed Pods Frameworks */ = {
+		A3A031F827A6027F399F4D7D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -319,7 +334,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F3A4DDDF296E80BFC82522F3 /* [CP] Check Pods Manifest.lock */ = {
+		E409CC927DB13F622C381326 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -351,6 +366,7 @@
 				045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */,
 				0433328F2546170D00C26BB6 /* CustomImageView.swift in Sources */,
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
+				040446952579872C0029F738 /* Comment.swift in Sources */,
 				045C64D3250FCF11002E8E1C /* UploadPostVC.swift in Sources */,
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
@@ -360,16 +376,20 @@
 				045C64E2251C2D99002E8E1C /* User.swift in Sources */,
 				045C64CF250FCED4002E8E1C /* FeedVC.swift in Sources */,
 				045C64CD250E9C6F002E8E1C /* MainTabVC.swift in Sources */,
+				04044691257869920029F738 /* CommentVC.swift in Sources */,
 				045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */,
+				0404469325786C250029F738 /* CommentCell.swift in Sources */,
 				045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */,
 				0433328D2544A9C700C26BB6 /* UserPostCell.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
+				04044697257A9A450029F738 /* NotificationCell.swift in Sources */,
 				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
+				04044699257DA1B20029F738 /* Notification.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
@@ -514,7 +534,7 @@
 		};
 		045C64BE250844EF002E8E1C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3793C9E09ED487F8F845174E /* Pods-LogInProgrammatic.debug.xcconfig */;
+			baseConfigurationReference = 4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,7 +552,7 @@
 		};
 		045C64BF250844EF002E8E1C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D9B9F5DA321E267DCF6B3488 /* Pods-LogInProgrammatic.release.xcconfig */;
+			baseConfigurationReference = 5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -28,3 +28,13 @@ protocol FeedCellDelegate {
     func handleConfigureLikeButton(for cell: FeedCell)
     func handleShowLikes(for cell: FeedCell)
 }
+
+protocol NotitificationCellDelegate {
+    
+    func handleFollowTapped(for cell: NotificationCell)
+    func handlePostTapped(for cell: NotificationCell)
+}
+
+protocol Printable {
+    var description: String { get }
+}

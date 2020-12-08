@@ -156,7 +156,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func handleCommentTapped(for cell: FeedCell) {
-        print("handle comment tapped")
+        guard let post = cell.post else { return }
+        let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
+        commentVC.post = post
+        navigationController?.pushViewController(commentVC, animated: true)
     }
     
     //MARK: - Handlers
@@ -274,6 +277,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             }
         }
     }
+    
         
 }
     

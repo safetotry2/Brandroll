@@ -64,7 +64,9 @@ class SearchVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchUserCell
+        
         cell.user = users[indexPath.row]
+        
         return cell
     }
     
@@ -73,7 +75,7 @@ class SearchVC: UITableViewController {
     func configureNavController() {
         navigationItem.title = "Explore"
     }
-
+    
     // MARK: - API
     
     func fetchUsers() {

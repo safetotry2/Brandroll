@@ -11,6 +11,11 @@ import Firebase
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
 
+    // MARK: - Properties
+    
+    let dot = UIView()
+    var notificationIDs = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,10 +25,18 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // configure view controllers
         configureViewControllers()
         
+        // configure notification dot
+        configureNotificationDot()
+        
+        // observe notifications
+        observeNotifications()
+        
         // user validation
         checkIfUserIsLoggedIn()
 
     }
+    
+    // MARK: - Handlers
     
     // function to create view controllers that exist within the tab bar
     func configureViewControllers() {
@@ -50,6 +63,48 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         tabBar.tintColor = .black
     }
     
+    // construct navigation controller
+    func constructNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
+        
+        // construct nav controller
+        let navController = UINavigationController(rootViewController: rootViewController)
+        navController.tabBarItem.image = unselectedImage
+        navController.tabBarItem.selectedImage = selectedImage
+        navController.navigationBar.tintColor = .black
+        
+        // return nav controller
+        return navController
+    }
+    
+    func configureNotificationDot() {
+        
+        if UIDevice().userInterfaceIdiom == .phone {
+            
+            let tabBarHeight = tabBar.frame.height
+            
+            if UIScreen.main.nativeBounds.height == 2436 {
+                // configure dot for iphone x
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
+            } else {
+                // configure dot for other phone models
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16, width: 6, height: 6)
+            }
+            
+            // create dot
+            let frame1 = (view.frame.width / 5) * 3
+            let frame2 = (view.frame.width / 5) / 2
+            let frame1And2 = frame1 + frame2
+            dot.center.x = frame1And2
+            dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+            dot.layer.cornerRadius = dot.frame.width / 2
+            view.addSubview(dot)
+            dot.isHidden = true
+        }
+    }
+    
+    
+    // MARK: - UITabBar
+    
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         let index = viewControllers?.index(of: viewController)
@@ -63,22 +118,14 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             present(navController, animated: true, completion: nil)
             
             return false
+        } else if index == 3 {
+            dot.isHidden = true
+            return true
         }
         return true
     }
     
-    // construct navigation controller
-    func constructNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
-        
-        // construct nav controller
-        let navController = UINavigationController(rootViewController: rootViewController)
-        navController.tabBarItem.image = unselectedImage
-        navController.tabBarItem.selectedImage = selectedImage
-        navController.navigationBar.tintColor = .black
-        
-        // return nav controller
-        return navController
-    }
+    // MARK: - API
     
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser == nil {
@@ -95,5 +142,31 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             return
         }
     }
-
+    
+    func observeNotifications() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        self.notificationIDs.removeAll()
+        
+        NOTIFICATIONS_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allObjects.forEach { (snapshot) in
+                
+                let notificationId = snapshot.key
+                
+                NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let checked = snapshot.value as? Int else { return }
+                    
+                    if checked == 0 {
+                        self.dot.isHidden = false
+                    } else {
+                        self.dot.isHidden = true
+                    }
+                }
+            }
+        }
+    }    
 }
