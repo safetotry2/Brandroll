@@ -41,6 +41,7 @@
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
 		045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E32522BA09002E8E1C /* SearchUserCell.swift */; };
+		04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75622580325E00814F9E /* SearchPostCell.swift */; };
 		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,7 @@
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		045C64E32522BA09002E8E1C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
+		04FA75622580325E00814F9E /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
 		D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +159,7 @@
 				04333290254727DA00C26BB6 /* FeedCell.swift */,
 				0404469225786C240029F738 /* CommentCell.swift */,
 				04044696257A9A450029F738 /* NotificationCell.swift */,
+				04FA75622580325E00814F9E /* SearchPostCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
+				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
 				04044697257A9A450029F738 /* NotificationCell.swift in Sources */,
 				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
