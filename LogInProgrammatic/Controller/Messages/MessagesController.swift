@@ -114,6 +114,11 @@ class MessagesController: UITableViewController {
             let chatParnerId = message.getChatPartnerId()
             self.messagesDictionary[chatParnerId] = message
             self.messages = Array(self.messagesDictionary.values)
+            
+            // sort messages based on creation date of last message
+            self.messages.sort { (message1, message2) -> Bool in
+                return message1.creationDate > message2.creationDate
+            }
 
             self.tableView.reloadData()
         }
