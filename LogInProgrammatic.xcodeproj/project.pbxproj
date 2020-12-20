@@ -42,6 +42,13 @@
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
 		045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E32522BA09002E8E1C /* SearchUserCell.swift */; };
 		04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75622580325E00814F9E /* SearchPostCell.swift */; };
+		04FA756625813C2D00814F9E /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756525813C2D00814F9E /* MessagesController.swift */; };
+		04FA75692581430200814F9E /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75682581430100814F9E /* MessageCell.swift */; };
+		04FA756B2581600200814F9E /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756A2581600200814F9E /* NewMessageController.swift */; };
+		04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756C2581610B00814F9E /* NewMessageCell.swift */; };
+		04FA756F258295D700814F9E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756E258295D700814F9E /* Message.swift */; };
+		04FA75712583BB5100814F9E /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75702583BB5100814F9E /* ChatController.swift */; };
+		04FA75732583BC4500814F9E /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75722583BC4500814F9E /* ChatCell.swift */; };
 		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +90,13 @@
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		045C64E32522BA09002E8E1C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
 		04FA75622580325E00814F9E /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
+		04FA756525813C2D00814F9E /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
+		04FA75682581430100814F9E /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		04FA756A2581600200814F9E /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
+		04FA756C2581610B00814F9E /* NewMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageCell.swift; sourceTree = "<group>"; };
+		04FA756E258295D700814F9E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		04FA75702583BB5100814F9E /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
+		04FA75722583BC4500814F9E /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
 		D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +157,7 @@
 				0433328A254488E100C26BB6 /* Post.swift */,
 				040446942579872C0029F738 /* Comment.swift */,
 				04044698257DA1B10029F738 /* Notification.swift */,
+				04FA756E258295D700814F9E /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -150,16 +165,8 @@
 		045C64C125084CC5002E8E1C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */,
-				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
-				04333282253B4AB800C26BB6 /* FollowLikeCell.swift */,
-				043332862540FDC100C26BB6 /* SelectPhotoCell.swift */,
-				043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */,
-				0433328C2544A9C700C26BB6 /* UserPostCell.swift */,
-				04333290254727DA00C26BB6 /* FeedCell.swift */,
-				0404469225786C240029F738 /* CommentCell.swift */,
-				04044696257A9A450029F738 /* NotificationCell.swift */,
-				04FA75622580325E00814F9E /* SearchPostCell.swift */,
+				04AE656B258BDA6800BDB4EE /* Social */,
+				04FA75672581429800814F9E /* Messages */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 				045C64DA25143123002E8E1C /* UploadPost */,
 				045C64DB25143135002E8E1C /* Notifications */,
 				045C64DC2514313F002E8E1C /* UserProfile */,
+				04FA756425813BA300814F9E /* Messages */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -231,6 +239,43 @@
 				04333280253B499900C26BB6 /* FollowLikeVC.swift */,
 			);
 			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		04AE656B258BDA6800BDB4EE /* Social */ = {
+			isa = PBXGroup;
+			children = (
+				045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */,
+				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
+				04333282253B4AB800C26BB6 /* FollowLikeCell.swift */,
+				043332862540FDC100C26BB6 /* SelectPhotoCell.swift */,
+				043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */,
+				0433328C2544A9C700C26BB6 /* UserPostCell.swift */,
+				04333290254727DA00C26BB6 /* FeedCell.swift */,
+				0404469225786C240029F738 /* CommentCell.swift */,
+				04044696257A9A450029F738 /* NotificationCell.swift */,
+				04FA75622580325E00814F9E /* SearchPostCell.swift */,
+			);
+			path = Social;
+			sourceTree = "<group>";
+		};
+		04FA756425813BA300814F9E /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				04FA756525813C2D00814F9E /* MessagesController.swift */,
+				04FA756A2581600200814F9E /* NewMessageController.swift */,
+				04FA75702583BB5100814F9E /* ChatController.swift */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		04FA75672581429800814F9E /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				04FA75682581430100814F9E /* MessageCell.swift */,
+				04FA756C2581610B00814F9E /* NewMessageCell.swift */,
+				04FA75722583BC4500814F9E /* ChatCell.swift */,
+			);
+			path = Messages;
 			sourceTree = "<group>";
 		};
 		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
@@ -367,12 +412,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */,
+				04FA75712583BB5100814F9E /* ChatController.swift in Sources */,
 				0433328F2546170D00C26BB6 /* CustomImageView.swift in Sources */,
+				04FA75732583BC4500814F9E /* ChatCell.swift in Sources */,
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
 				045C64D3250FCF11002E8E1C /* UploadPostVC.swift in Sources */,
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
+				04FA75692581430200814F9E /* MessageCell.swift in Sources */,
 				045C64D7250FCF60002E8E1C /* UserProfileVC.swift in Sources */,
 				045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */,
 				045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */,
@@ -381,10 +429,12 @@
 				045C64CD250E9C6F002E8E1C /* MainTabVC.swift in Sources */,
 				04044691257869920029F738 /* CommentVC.swift in Sources */,
 				045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */,
+				04FA756625813C2D00814F9E /* MessagesController.swift in Sources */,
 				0404469325786C250029F738 /* CommentCell.swift in Sources */,
 				045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */,
 				0433328D2544A9C700C26BB6 /* UserPostCell.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
+				04FA756F258295D700814F9E /* Message.swift in Sources */,
 				043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
 				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
@@ -394,7 +444,9 @@
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
 				04044699257DA1B20029F738 /* Notification.swift in Sources */,
+				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
+				04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
 			);
