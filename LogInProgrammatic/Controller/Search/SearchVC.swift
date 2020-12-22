@@ -21,6 +21,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     var collectionView: UICollectionView!
     var collectionViewEnabled = true
     var posts = [Post]()
+    var currentKey: String?
+    var userCurrentKey: String?
 
     private let reuseIdentifier = "SearchUserCell"
     
@@ -41,9 +43,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch posts
         fetchPosts()
-        
-        // fetch users
-        fetchUsers()
+
     }
 
     // MARK: - Table view data source
@@ -82,6 +82,15 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // push view controller
         navigationController?.pushViewController(userProfileVC, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if users.count > 3 {
+            if indexPath.item == users.count - 1 {
+                fetchUsers()
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,6 +143,15 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         return CGSize(width: width, height: width)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if posts.count > 20 {
+            if indexPath.item == posts.count - 1 {
+                fetchPosts()
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
@@ -171,6 +189,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
+        
+        // fetch users
+        fetchUsers()
         
         collectionView.isHidden = true
         collectionViewEnabled = false
@@ -212,29 +233,83 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func fetchUsers() {
         
-        USER_REF.observe(.childAdded) { (snapshot) in
+        if userCurrentKey == nil {
             
-            // uid
-            let uid = snapshot.key
-            
-            Database.fetchUser(with: uid) { (user) in
-                self.users.append(user)
+            USER_REF.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+               
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
-                self.tableView.reloadData()
+                allObjects.forEach { (snapshot) in
+                    let uid = snapshot.key
+                    
+                    Database.fetchUser(with: uid) { (user) in
+                        self.users.append(user)
+                        self.tableView.reloadData()
+                    }
+                }
+                self.userCurrentKey = first.key
+            }
+        } else {
+            USER_REF.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let uid = snapshot.key
+                    
+                    if uid != self.userCurrentKey {
+                        Database.fetchUser(with: uid) { (user) in
+                        self.users.append(user)
+                        self.tableView.reloadData()
+                        }
+                    }
+                }
+                self.userCurrentKey = first.key
             }
         }
     }
     
     func fetchPosts() {
         
-        posts.removeAll()
-        
-        POSTS_REF.observe(.childAdded) { (snapshot) in
-            let postId = snapshot.key
+        if currentKey == nil {
             
-            Database.fetchPost(with: postId) { (post) in
-                self.posts.append(post)
-                self.collectionView.reloadData()
+            // initial data pull
+            POSTS_REF.queryLimited(toLast: 21).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let postId = snapshot.key
+                    
+                    Database.fetchPost(with: postId) { (post) in
+                        self.posts.append(post)
+                        self.collectionView.reloadData()
+                    }
+                }
+                self.currentKey = first.key
+            }
+        } else {
+            
+            // paginate here
+            POSTS_REF.queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 10).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let postId = snapshot.key
+                    
+                    if postId != self.currentKey {
+                        Database.fetchPost(with: postId) { (post) in
+                            self.posts.append(post)
+                            self.collectionView.reloadData()
+                        }
+                    }
+                }
+                self.currentKey = first.key
             }
         }
     }

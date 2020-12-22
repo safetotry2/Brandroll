@@ -13,9 +13,6 @@ class SearchPostCell: UICollectionViewCell {
     var post: Post? {
         
         didSet {
-            
-            print("Did set post")
-            
             guard let imageUrl = post?.imageUrl else { return }
             postImageView.loadImage(with: imageUrl)
         }

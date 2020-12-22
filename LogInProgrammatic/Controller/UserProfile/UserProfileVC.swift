@@ -20,6 +20,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     var user: User?
     var posts = [Post]()
+    var currentKey: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +66,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return 1
     }
 
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if posts.count > 9 {
+            if indexPath.item == posts.count - 1 {
+                fetchPosts()
+            }
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return posts.count
@@ -185,19 +195,52 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             uid = Auth.auth().currentUser?.uid
         }
         
-        USER_POSTS_REF.child(uid).observe(.childAdded) { (snapshot) in
+        // initial data pull
+        if currentKey == nil {
             
-            let postId = snapshot.key
-            
-            Database.fetchPost(with: postId) { (post) in
+            USER_POSTS_REF.child(uid).queryLimited(toLast: 10).observeSingleEvent(of: .value) { (snapshot) in
                 
-                self.posts.append(post)
+                self.collectionView.refreshControl?.endRefreshing()
                 
-                self.posts.sort { (post1, post2) -> Bool in
-                    return post1.creationDate > post2.creationDate
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let postId = snapshot.key
+                    self.fetchPost(withPostId: postId)
                 }
-                self.collectionView.reloadData()
+                self.currentKey = first.key
             }
+        } else {
+            
+            USER_POSTS_REF.child(uid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 7).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let postId = snapshot.key
+                    
+                    if postId != self.currentKey {
+                        self.fetchPost(withPostId: postId)
+                    }
+                }
+                self.currentKey = first.key
+            }
+            
+        }
+    }
+    
+    func fetchPost(withPostId postId: String) {
+        
+        Database.fetchPost(with: postId) { (post) in
+            
+            self.posts.append(post)
+            
+            self.posts.sort { (post1, post2) -> Bool in
+                return post1.creationDate > post2.creationDate
+            }
+            self.collectionView.reloadData()
         }
     }
 
