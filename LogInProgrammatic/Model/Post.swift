@@ -98,6 +98,41 @@ class Post {
         
     }
     
+    func deletePost() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        Storage.storage().reference(forURL: self.imageUrl).delete(completion: nil)
+        
+        USER_FOLLOWER_REF.child(currentUid).observeSingleEvent(of: .childAdded) { (snapshot) in
+            let followerUid = snapshot.key
+            USER_FEED_REF.child(followerUid).child(self.postId).removeValue()
+        }
+        
+        USER_FEED_REF.child(currentUid).child(postId).removeValue()
+        
+        USER_POSTS_REF.child(currentUid).child(postId).removeValue()
+        
+        POST_LIKES_REF.child(postId).observe(.childAdded) { (snapshot) in
+            let uid = snapshot.key
+            
+            USER_LIKES_REF.child(uid).child(self.postId).observeSingleEvent(of: .value) { (snapshot) in
+                guard let notificationId = snapshot.value as? String else { return }
+                
+                NOTIFICATIONS_REF.child(self.ownerUid).child(notificationId).removeValue { (err, ref) in
+                    
+                    POST_LIKES_REF.child(self.postId).removeValue()
+                    
+                    USER_LIKES_REF.child(uid).child(self.postId).removeValue()
+                }
+            }
+        }
+        
+        COMMENT_REF.child(postId).removeValue()
+        
+        POSTS_REF.child(postId).removeValue()
+    }
+    
     func sendLikeNotificationToServer() {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }

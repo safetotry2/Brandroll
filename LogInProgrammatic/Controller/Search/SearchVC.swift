@@ -26,6 +26,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
 
     private let reuseIdentifier = "SearchUserCell"
     
+    // MARK: - Init
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,6 +42,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // configure collection view
         configureCollectionView()
+        
+        // configure refresh control
+        configureRefreshControl()
         
         // fetch posts
         fetchPosts()
@@ -185,6 +190,19 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         searchBar.tintColor = .black
     }
     
+    @objc func handleRefresh() {
+        posts.removeAll(keepingCapacity: false)
+        self.currentKey = nil
+        fetchPosts()
+        collectionView.reloadData()
+    }
+    
+    func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        self.tableView.refreshControl = refreshControl
+    }
+    
     // MARK: - UISearchBar
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -277,7 +295,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             
             // initial data pull
             POSTS_REF.queryLimited(toLast: 21).observeSingleEvent(of: .value) { (snapshot) in
-                
+                self.tableView.refreshControl?.endRefreshing()
+
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 

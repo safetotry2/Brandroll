@@ -122,6 +122,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     @objc func handleNext() {
         let uploadPostVC = UploadPostVC()
         uploadPostVC.selectedImage = header?.photoImageView.image
+        uploadPostVC.uploadAction = UploadPostVC.UploadAction(index: 0)
         navigationController?.pushViewController(uploadPostVC, animated: true)
     }
     
@@ -158,9 +159,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             
             // enumerate objects
             allPhotos.enumerateObjects { (asset, count, stop) in
-                
-                print("Count is \(count)")
-                
+                                
                 let imageManager = PHImageManager.default()
                 let targetSize = CGSize(width: 200, height: 200)
                 let options = PHImageRequestOptions()

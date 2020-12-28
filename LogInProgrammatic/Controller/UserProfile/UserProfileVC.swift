@@ -22,12 +22,17 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var posts = [Post]()
     var currentKey: String?
     
+    // MARK: - Init
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Register cell classes
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+        
+        // configure refresh control
+        configureRefreshControl()
         
         // background color
         self.collectionView.backgroundColor = .white
@@ -109,6 +114,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         feedVC.viewSinglePost = true
+        feedVC.userProfileController = self
         
         feedVC.post = posts[indexPath.item]
         
@@ -132,10 +138,18 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func handleEditFollowTapped(for header: UserProfileHeader) {
+        
         guard let user = header.user else { return }
 
         if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
-            print("handle edit profile")
+            
+            let editProfileController = EditProfileController()
+            editProfileController.user = user
+            editProfileController.userProfileController = self
+            let navigationController = UINavigationController(rootViewController: editProfileController)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+            
         } else {
             if header.editProfileFollowButton.titleLabel?.text == "Follow" {
                 header.editProfileFollowButton.setTitle("Following", for: .normal)
@@ -181,6 +195,21 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             header.followingLabel.attributedText = attributedText
         }
         
+    }
+    
+    // MARK: - Handlers
+    
+    @objc func handleRefresh() {
+        posts.removeAll(keepingCapacity: false)
+        self.currentKey = nil
+        fetchPosts()
+        collectionView.reloadData()
+    }
+    
+    func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     // MARK: - API

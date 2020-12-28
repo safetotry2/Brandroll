@@ -212,6 +212,8 @@ class FeedCell: UICollectionViewCell {
         
         captionLabel.attributedText = attributedText
         
+        postTimeLabel.text = post.creationDate.timeAgoToDisplay()
+        
     }
     
     func configureActionButtons() {
