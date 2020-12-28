@@ -23,6 +23,8 @@
 		0433328F2546170D00C26BB6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433328E2546170D00C26BB6 /* CustomImageView.swift */; };
 		04333291254727DB00C26BB6 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333290254727DA00C26BB6 /* FeedCell.swift */; };
 		043D3667259802290094CE4F /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3666259802290094CE4F /* EditProfileController.swift */; };
+		043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D36692599927A0094CE4F /* CommentInputAccessoryView.swift */; };
+		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
 		045C64B4250844DC002E8E1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 045C64B2250844DC002E8E1C /* Main.storyboard */; };
@@ -70,6 +72,8 @@
 		0433328E2546170D00C26BB6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		04333290254727DA00C26BB6 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		043D3666259802290094CE4F /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
+		043D36692599927A0094CE4F /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
+		043D366B259992A90094CE4F /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* LogInProgrammatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogInProgrammatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045C64AE250844DC002E8E1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +120,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		043D3668259991FB0094CE4F /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				04044690257869920029F738 /* CommentVC.swift */,
+				043D36692599927A0094CE4F /* CommentInputAccessoryView.swift */,
+				043D366B259992A90094CE4F /* CommentInputTextView.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
 		045C64A0250844DC002E8E1C = {
 			isa = PBXGroup;
 			children = (
@@ -203,8 +217,8 @@
 		045C64D8251430E9002E8E1C /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				043D3668259991FB0094CE4F /* Comments */,
 				045C64CE250FCED4002E8E1C /* FeedVC.swift */,
-				04044690257869920029F738 /* CommentVC.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -450,6 +464,8 @@
 				04044699257DA1B20029F738 /* Notification.swift in Sources */,
 				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
+				043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */,
+				043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */,
 				04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,

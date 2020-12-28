@@ -64,8 +64,8 @@ class Post {
                 POST_LIKES_REF.child(postId).updateChildValues([currentUid: 1]) { (err, ref) in
                     self.likes = self.likes + 1
                     self.didLike = true
-                    completion(self.likes)
                     POSTS_REF.child(postId).child("likes").setValue(self.likes)
+                    completion(self.likes)
                 }
             }
         } else {

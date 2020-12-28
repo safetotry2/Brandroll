@@ -218,16 +218,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         navigationController?.pushViewController(messagesController, animated: true)
     }
     
-    func updateLikeStructures(with postId: String, addLike: Bool) {
-        
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
-        if addLike {
-            
-        } else {
-            
-        }
-    }
+//    func updateLikeStructures(with postId: String, addLike: Bool) {
+//        
+//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+//        
+//        if addLike {
+//            
+//        } else {
+//            
+//        }
+//    }
     
     func configureNavigationBar() {
         
