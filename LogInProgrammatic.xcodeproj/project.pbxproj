@@ -25,6 +25,8 @@
 		043D3667259802290094CE4F /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3666259802290094CE4F /* EditProfileController.swift */; };
 		043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D36692599927A0094CE4F /* CommentInputAccessoryView.swift */; };
 		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
+		043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */; };
+		043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3670259A3FE20094CE4F /* ChatInputTextView.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
 		045C64B4250844DC002E8E1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 045C64B2250844DC002E8E1C /* Main.storyboard */; };
@@ -74,6 +76,8 @@
 		043D3666259802290094CE4F /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		043D36692599927A0094CE4F /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		043D366B259992A90094CE4F /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
+		043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
+		043D3670259A3FE20094CE4F /* ChatInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputTextView.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* LogInProgrammatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogInProgrammatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045C64AE250844DC002E8E1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +132,16 @@
 				043D366B259992A90094CE4F /* CommentInputTextView.swift */,
 			);
 			path = Comments;
+			sourceTree = "<group>";
+		};
+		043D366D259A3E750094CE4F /* Chats */ = {
+			isa = PBXGroup;
+			children = (
+				04FA75702583BB5100814F9E /* ChatController.swift */,
+				043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */,
+				043D3670259A3FE20094CE4F /* ChatInputTextView.swift */,
+			);
+			path = Chats;
 			sourceTree = "<group>";
 		};
 		045C64A0250844DC002E8E1C = {
@@ -217,8 +231,8 @@
 		045C64D8251430E9002E8E1C /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				043D3668259991FB0094CE4F /* Comments */,
 				045C64CE250FCED4002E8E1C /* FeedVC.swift */,
+				043D3668259991FB0094CE4F /* Comments */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -280,7 +294,7 @@
 			children = (
 				04FA756525813C2D00814F9E /* MessagesController.swift */,
 				04FA756A2581600200814F9E /* NewMessageController.swift */,
-				04FA75702583BB5100814F9E /* ChatController.swift */,
+				043D366D259A3E750094CE4F /* Chats */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -448,8 +462,10 @@
 				04044691257869920029F738 /* CommentVC.swift in Sources */,
 				045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */,
 				04FA756625813C2D00814F9E /* MessagesController.swift in Sources */,
+				043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */,
 				0404469325786C250029F738 /* CommentCell.swift in Sources */,
 				045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */,
+				043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */,
 				0433328D2544A9C700C26BB6 /* UserPostCell.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				04FA756F258295D700814F9E /* Message.swift in Sources */,

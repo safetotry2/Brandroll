@@ -1,16 +1,16 @@
 //
-//  CommentInputTextView.swift
+//  ChatInputTextView.swift
 //  LogInProgrammatic
 //
-//  Created by Mac on 12/27/20.
+//  Created by Mac on 12/28/20.
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
 import UIKit
 
-class CommentInputTextView: UITextView {
+class ChatInputTextView: UITextView {
 
-    // MARK: Properties
+    // MARK: - Properties
     
     let placeholderLabel: UILabel = {
         let label = UILabel()
@@ -19,8 +19,8 @@ class CommentInputTextView: UITextView {
         return label
     }()
     
-    // MARK: Init
-    
+    // MARK: - Init
+
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
@@ -35,10 +35,11 @@ class CommentInputTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Handlers
     
+    // MARK: - Handlers
+
     @objc func handleInputTextChange() {
         placeholderLabel.isHidden = !self.text.isEmpty
     }
-    
+
 }

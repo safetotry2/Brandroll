@@ -42,3 +42,7 @@ protocol Printable {
 protocol CommentInputAccessoryViewDelegate {
     func didSubmit(forComment comment: String)
 }
+
+protocol ChatInputAccessoryViewDelegate {
+    func didSubmit(forChat chat: String)
+}

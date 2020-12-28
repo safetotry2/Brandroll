@@ -118,7 +118,6 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
                 
                 let comment = Comment(user: user, dictionary: dictionary)
                 self.comments.append(comment)
-                print("User that commented is \(comment.user?.username)")
                 self.collectionView.reloadData()
             }
         }
@@ -163,6 +162,4 @@ extension CommentVC: CommentInputAccessoryViewDelegate {
         
         self.containerView.clearCommentTextView()
     }
-     
-    
 }

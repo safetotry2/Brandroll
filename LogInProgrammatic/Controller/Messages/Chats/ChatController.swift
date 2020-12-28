@@ -18,37 +18,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var user: User?
     var messages = [Message]()
         
-    lazy var containerView: UIView = {
-        let containerView = UIView()
-        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 55)
+    lazy var containerView: ChatInputAccessoryView = {
         
-        containerView.addSubview(sendButton)
-        sendButton.anchor(top: nil, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 50, height: 0)
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        
-        containerView.addSubview(messageTextField)
-        messageTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: sendButton.leftAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        
-        let separatorView = UIView()
-        separatorView.backgroundColor = .lightGray
-        containerView.addSubview(separatorView)
-        separatorView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let containerView = ChatInputAccessoryView(frame: frame)
+        containerView.backgroundColor = .white
+        containerView.delegate = self
         return containerView
-    }()
-    
-    let messageTextField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Enter message..."
-        return tf
-    }()
-    
-    let sendButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Send", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        return button
     }()
     
     // MARK: - Init
@@ -113,12 +89,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - Handlers
     
-    @objc func handleSend() {
-        uploadMessageToServer()
-        
-        messageTextField.text = nil
-    }
-    
     @objc func handleInfoTapped() {
         let userProfileController = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         userProfileController.user = user
@@ -171,33 +141,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - API
     
-    func uploadMessageToServer() {
-        
-        guard let messageText = messageTextField.text else { return }
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard let user = self.user else { return }
-        let creationDate = Int(NSDate().timeIntervalSince1970)
-        
-        guard let uid = user.uid else { return }
-        
-        let messageValues = ["creationDate": creationDate,
-                             "fromId": currentUid,
-                             "toId": user.uid,
-                             "messageText": messageText] as [String: Any]
-        
-        let messageRef = MESSAGES_REF.childByAutoId()
-        
-        messageRef.updateChildValues(messageValues)
-        
-        guard let messageKey = messageRef.key else { return }
-        
-        messageRef.updateChildValues(messageValues) { (err, ref) in
-            
-            USER_MESSAGES_REF.child(currentUid).child(user.uid).updateChildValues([messageKey: 1])
-            USER_MESSAGES_REF.child(user.uid).child(currentUid).updateChildValues([messageKey: 1])
-        }
-    }
-    
     func observeMessages() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let chatPartnerId = self.user?.uid else { return }
@@ -219,3 +162,35 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
 }
+
+
+extension ChatController: ChatInputAccessoryViewDelegate {
+    
+    func didSubmit(forChat chat: String) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let user = self.user else { return }
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
+        guard let uid = user.uid else { return }
+        
+        let messageValues = ["creationDate": creationDate,
+                             "fromId": currentUid,
+                             "toId": user.uid,
+                             "messageText": chat] as [String: Any]
+        
+        let messageRef = MESSAGES_REF.childByAutoId()
+        
+        messageRef.updateChildValues(messageValues)
+        
+        guard let messageKey = messageRef.key else { return }
+        
+        messageRef.updateChildValues(messageValues) { (err, ref) in
+            
+            USER_MESSAGES_REF.child(currentUid).child(user.uid).updateChildValues([messageKey: 1])
+            USER_MESSAGES_REF.child(user.uid).child(currentUid).updateChildValues([messageKey: 1])
+        }
+        self.containerView.clearChatTextView()
+    }
+    
+}
+
