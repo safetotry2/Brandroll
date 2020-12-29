@@ -69,33 +69,42 @@ class Post {
                 }
             }
         } else {
-            
-            // observe database for notification id to remove
+            // unlikes another user's post
+            // observes database for notification id to remove
             USER_LIKES_REF.child(currentUid).child(postId).observeSingleEvent(of: .value) { (snapshot) in
-                
                 // notification id to remove from server
-                guard let notificationID = snapshot.value as? String else { return }
-                
-                // remove notification from server
-                NOTIFICATIONS_REF.child(self.ownerUid).child(notificationID).removeValue { (err, ref) in
-                    
-                    // remove like from user-like structure
-                    USER_LIKES_REF.child(currentUid).child(postId).removeValue { (err, ref) in
-                        // remove like from post-like structure
-                        POST_LIKES_REF.child(postId).child(currentUid).removeValue { (err, ref) in
-                            guard self.likes > 0 else { return }
-                            self.likes = self.likes - 1
-                            self.didLike = false
-                            completion(self.likes)
-                            POSTS_REF.child(postId).child("likes").setValue(self.likes)
+                if let notificationID = snapshot.value as? String {
+                    // remove notification from server
+                    NOTIFICATIONS_REF.child(self.ownerUid).child(notificationID).removeValue { (err, ref) in
+                        self.removeLike { (likes) in
+                            completion(likes)
                         }
                     }
-                    
+                } else {
+                    // unlikes the user's own post
+                    self.removeLike { (likes) in
+                        completion(likes)
+                    }
                 }
             }
-            
         }
+    }
+    
+    
+    func removeLike(withCompletion completion: @escaping (Int) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
+        // removes like from user-like structure
+        USER_LIKES_REF.child(currentUid).child(postId).removeValue { (err, ref) in
+            // removes like from post-like structure
+            POST_LIKES_REF.child(self.postId).child(currentUid).removeValue { (err, ref) in
+                guard self.likes > 0 else { return }
+                self.likes = self.likes - 1
+                self.didLike = false
+                POSTS_REF.child(self.postId).child("likes").setValue(self.likes)
+                completion(self.likes)
+            }
+        }
     }
     
     func deletePost() {
@@ -145,7 +154,7 @@ class Post {
                           "creationDate": creationDate,
                           "uid": currentUid,
                           "type": LIKE_INT_VALUE,
-                          "postId": postId]  as [String : Any]
+                          "postId": postId] as [String : Any]
             
             // notification database reference
             let notificationRef = NOTIFICATIONS_REF.child(self.ownerUid).childByAutoId()

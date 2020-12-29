@@ -160,14 +160,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                     cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
                 }
             }
-            
         } else {
             // handle like post
             post.adjustLikes(addLike: true) { (likes) in
                 cell.likesLabel.text = "\(likes) likes"
                 cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
             }
-            
         }
     }
     
@@ -193,6 +191,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             if snapshot.hasChild(postId) {
                 post.didLike = true
                 cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+            } else {
+                post.didLike = false
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected-1"), for: .normal)
             }
         }
     }
