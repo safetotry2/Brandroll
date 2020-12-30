@@ -155,16 +155,20 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         if post.didLike {
             // handle unlike post
             if !isDoubleTap {
+                cell.likeButton.isEnabled = false
                 post.adjustLikes(addLike: false) { (likes) in
                     cell.likesLabel.text = "\(likes) likes"
                     cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                    cell.likeButton.isEnabled = true
                 }
             }
         } else {
             // handle like post
+            cell.likeButton.isEnabled = false
             post.adjustLikes(addLike: true) { (likes) in
                 cell.likesLabel.text = "\(likes) likes"
                 cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                cell.likeButton.isEnabled = true
             }
         }
     }
