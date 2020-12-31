@@ -149,18 +149,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
-    func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
+    func handleLikeTapped(for cell: FeedCell) {
         guard let post = cell.post else { return }
         
         if post.didLike {
             // handle unlike post
-            if !isDoubleTap {
-                cell.likeButton.isEnabled = false
-                post.adjustLikes(addLike: false) { (likes) in
-                    cell.likesLabel.text = "\(likes) likes"
-                    cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
-                    cell.likeButton.isEnabled = true
-                }
+            cell.likeButton.isEnabled = false
+            post.adjustLikes(addLike: false) { (likes) in
+                cell.likesLabel.text = "\(likes) likes"
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                cell.likeButton.isEnabled = true
             }
         } else {
             // handle like post
