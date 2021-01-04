@@ -18,13 +18,16 @@ class MessageCell: UITableViewCell {
         didSet {
             
             guard let messageText = message?.messageText else { return }
+            guard let messageTime = message?.creationDate else { return }
+
             detailTextLabel?.text = messageText
+            timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
             
-            if let seconds = message?.creationDate {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm a"
-                timeStampLabel.text = dateFormatter.string(from: seconds)
-            }
+//            if let seconds = message?.creationDate {
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "hh:mm a"
+//                timeStampLabel.text = dateFormatter.string(from: seconds)
+//            }
             
             configureUserData()
         }

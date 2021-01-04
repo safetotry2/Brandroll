@@ -40,3 +40,12 @@ let USER_MESSAGES_REF = DB_REF.child("user-messages")
 let LIKE_INT_VALUE = 0
 let COMMENT_INT_VALUE = 1
 let FOLLOW_INT_VALUE = 2
+
+// MARK: - Date References
+
+let TWO_DAYS_AGO = Calendar.current.date(byAdding: .day, value: -2, to: Date())
+let THREE_DAYS_AGO = Calendar.current.date(byAdding: .day, value: -3, to: Date())
+let FOUR_DAYS_AGO = Calendar.current.date(byAdding: .day, value: -4, to: Date())
+let FIVE_DAYS_AGO = Calendar.current.date(byAdding: .day, value: -5, to: Date())
+let SIX_DAYS_AGO = Calendar.current.date(byAdding: .day, value: -6, to: Date())
+

@@ -10,7 +10,6 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
   pod 'Firebase/Messaging'
-  pod 'ActiveLabel'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
 

@@ -212,7 +212,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - ActiveLabel (1.1.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -372,7 +371,6 @@ PODS:
   - Protobuf (3.13.0)
 
 DEPENDENCIES:
-  - ActiveLabel
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -383,7 +381,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
-    - ActiveLabel
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
@@ -413,7 +410,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   Firebase: b28e55c60efd98963cd9011fe2fac5a10c2ba124
   FirebaseAnalytics: 7386fc2176e3f93ad8ef34b5b1f2b33a891e4962
@@ -441,6 +437,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
 
-PODFILE CHECKSUM: 37935ecc17ff9315bb96640b061d7226fbb2c78a
+PODFILE CHECKSUM: 1cfc14315008e0887f890c178cd9bb37135ac9cf
 
 COCOAPODS: 1.9.1

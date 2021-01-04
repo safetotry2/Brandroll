@@ -77,6 +77,73 @@ extension Date {
     }
 }
 
+extension Date {
+    
+    func timeOrDateToDisplay(from seconds: Date) -> String {
+        
+//        let numberOfSeconds = Int(Date().timeIntervalSince(seconds))
+//        let day = 86400
+                
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        
+        if calendar.isDateInToday(seconds) {
+            dateFormatter.dateFormat = "hh:mm a"
+            return dateFormatter.string(from: seconds)
+        } else if calendar.isDateInYesterday(seconds) {
+            return "Yesterday"
+        } else if calendar.isDate(seconds, inSameDayAs: TWO_DAYS_AGO!) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: seconds)
+        } else if calendar.isDate(seconds, inSameDayAs: THREE_DAYS_AGO!) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: seconds)
+        } else if calendar.isDate(seconds, inSameDayAs: FOUR_DAYS_AGO!) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: seconds)
+        } else if calendar.isDate(seconds, inSameDayAs: FIVE_DAYS_AGO!) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: seconds)
+        } else if calendar.isDate(seconds, inSameDayAs: SIX_DAYS_AGO!) {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: seconds)
+        } else {
+            dateFormatter.dateFormat = "MM/dd/YY"
+            return dateFormatter.string(from: seconds)
+        }
+        
+//        if calendar.isDateInToday(seconds) {
+//            dateFormatter.dateFormat = "hh:mm a"
+//            return dateFormatter.string(from: seconds)
+//        } else if calendar.isDateInYesterday(seconds) {
+//            return "Yesterday"
+//        } else {
+//            dateFormatter.dateFormat = "MM/dd/YY"
+//            return dateFormatter.string(from: seconds)
+//        }
+        
+        
+//        if calendar.isDateInToday(seconds) {
+//            dateFormatter.dateFormat = "EEEE"
+//            return dateFormatter.string(from: seconds)
+//        } else if calendar.isDateInYesterday(seconds) {
+//            return "Yesterday"
+//        } else {
+//            dateFormatter.dateFormat = "MM/dd/YY"
+//            return dateFormatter.string(from: seconds)
+//        }
+        
+//        if numberOfSeconds < day {
+//            dateFormatter.dateFormat = "hh:mm a"
+//        } else {
+//            dateFormatter.dateFormat = "MM/dd/YY"
+//        }
+//
+//        return dateFormatter.string(from: seconds)
+    }
+}
+
+
 extension UIView {
     
     func anchor(top: NSLayoutYAxisAnchor?, left: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, right: NSLayoutXAxisAnchor?, paddingTop: CGFloat, paddingLeft: CGFloat, paddingBottom: CGFloat, paddingRight: CGFloat, width: CGFloat, height: CGFloat) {
