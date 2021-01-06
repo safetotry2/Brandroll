@@ -23,7 +23,7 @@ class FeedCell: UICollectionViewCell {
             
             Database.fetchUser(with: ownerUid) { (user) in
                 self.profileImageView.loadImage(with: user.profileImageUrl)
-                self.usernameButton.setTitle(user.username, for: .normal)
+                self.fullnameButton.setTitle(user.name, for: .normal)
                 self.configureCaption(user: user)
             }
             
@@ -33,6 +33,16 @@ class FeedCell: UICollectionViewCell {
             configureLikeButton()
         }
     }
+        
+    lazy var postImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.backgroundColor = .lightGray
+        iv.layer.cornerRadius = 20
+        iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        return iv
+    }()
     
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -42,30 +52,13 @@ class FeedCell: UICollectionViewCell {
         return iv
     }()
     
-    lazy var usernameButton: UIButton = {
+    lazy var fullnameButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Username", for: .normal)
+        button.setTitle("Fullname", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
-    }()
-    
-    lazy var optionsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("•••", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(handleOptionsTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var postImageView: CustomImageView = {
-        let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
-        return iv
     }()
     
     lazy var likeButton: UIButton = {
@@ -91,10 +84,12 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    let savePostButton: UIButton = {
+    lazy var optionsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ribbon"), for: .normal)
-        button.tintColor = .black
+        button.setTitle("•••", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleOptionsTapped), for: .touchUpInside)
         return button
     }()
     
@@ -136,26 +131,21 @@ class FeedCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        addSubview(postImageView)
+        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+        
         addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40 / 2
         
-        addSubview(usernameButton)
-        usernameButton.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        usernameButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
-        
-        addSubview(optionsButton)
-        optionsButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        optionsButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
-        
-        addSubview(postImageView)
-        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+        addSubview(fullnameButton)
+        fullnameButton.anchor(top: postImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureActionButtons()
         
         addSubview(likesLabel)
-        likesLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        likesLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(captionLabel)
         captionLabel.anchor(top: likesLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
@@ -207,16 +197,13 @@ class FeedCell: UICollectionViewCell {
     
     func configureActionButtons() {
         
-        let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
+        let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, optionsButton])
         
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
-        
-        addSubview(savePostButton)
-        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
+        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
     }
     
     required init?(coder: NSCoder) {

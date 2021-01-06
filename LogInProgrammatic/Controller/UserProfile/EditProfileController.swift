@@ -15,8 +15,12 @@ class EditProfileController: UIViewController {
     
     var user: User?
     var imageChanged = false
+    var fullnameChanged = false
+    var occupationChanged = false
     var usernameChanged = false
     var userProfileController: UserProfileVC?
+    var updatedFullname: String?
+    var updatedOccupation: String?
     var updatedUsername: String?
     
     let profileImageView: CustomImageView = {
@@ -52,7 +56,13 @@ class EditProfileController: UIViewController {
         let tf = UITextField()
         tf.textAlignment = .left
         tf.borderStyle = .none
-        tf.isUserInteractionEnabled = false
+        return tf
+    }()
+    
+    let occupationTextField: UITextField = {
+        let tf = UITextField()
+        tf.textAlignment = .left
+        tf.borderStyle = .none
         return tf
     }()
     
@@ -70,6 +80,13 @@ class EditProfileController: UIViewController {
         return label
     }()
     
+    let occupationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Occupation"
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    }()
+    
     let fullnameSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
@@ -77,6 +94,12 @@ class EditProfileController: UIViewController {
     }()
     
     let usernameSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        return view
+    }()
+    
+    let occupationSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
         return view
@@ -90,6 +113,10 @@ class EditProfileController: UIViewController {
         configureNavigationBar()
         
         configureViewComponents()
+        
+        fullnameTextField.delegate = self
+        
+        occupationTextField.delegate = self
         
         usernameTextField.delegate = self
         
@@ -114,6 +141,14 @@ class EditProfileController: UIViewController {
     @objc func handleDone() {
         view.endEditing(true)
         
+        if fullnameChanged {
+            updateFullname()
+        }
+        
+        if occupationChanged {
+            updateOccupation()
+        }
+        
         if usernameChanged {
             updateUsername()
         }
@@ -128,6 +163,7 @@ class EditProfileController: UIViewController {
         
         profileImageView.loadImage(with: user.profileImageUrl)
         fullnameTextField.text = user.name
+        occupationTextField.text = user.occupation
         usernameTextField.text = user.username
     }
     
@@ -158,17 +194,26 @@ class EditProfileController: UIViewController {
         view.addSubview(usernameLabel)
         usernameLabel.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        view.addSubview(occupationLabel)
+        occupationLabel.anchor(top: usernameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         view.addSubview(fullnameTextField)
         fullnameTextField.anchor(top: containerView.bottomAnchor, left: fullnameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
         
         view.addSubview(usernameTextField)
         usernameTextField.anchor(top: fullnameTextField.bottomAnchor, left: usernameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
         
+        view.addSubview(occupationTextField)
+        occupationTextField.anchor(top: usernameTextField.bottomAnchor, left: occupationLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        
         view.addSubview(fullnameSeparatorView)
         fullnameSeparatorView.anchor(top: nil, left: fullnameTextField.leftAnchor, bottom: fullnameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
         
         view.addSubview(usernameSeparatorView)
         usernameSeparatorView.anchor(top: nil, left: usernameTextField.leftAnchor, bottom: usernameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
+        
+        view.addSubview(occupationSeparatorView)
+        occupationSeparatorView.anchor(top: nil, left: occupationTextField.leftAnchor, bottom: occupationTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
     }
     
     func configureNavigationBar() {
@@ -185,6 +230,34 @@ class EditProfileController: UIViewController {
     
     
     // MARK: - API
+    
+    func updateFullname() {
+        guard let updatedFullname = self.updatedFullname else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard fullnameChanged == true else { return }
+        
+        USER_REF.child(currentUid).child("name").setValue(updatedFullname) { (err, ref) in
+            
+            guard let userProfileController = self.userProfileController else { return }
+            userProfileController.fetchCurrentUserData()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func updateOccupation() {
+        guard let updatedOccupation = self.updatedOccupation else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard occupationChanged == true else { return }
+        
+        USER_REF.child(currentUid).child("occupation").setValue(updatedOccupation) { (err, ref) in
+            
+            guard let userProfileController = self.userProfileController else { return }
+            userProfileController.fetchCurrentUserData()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
     
     func updateUsername() {
         guard let updatedUsername = self.updatedUsername else { return }
@@ -259,22 +332,46 @@ extension EditProfileController: UITextFieldDelegate {
         
         guard let user = self.user else { return }
         
-        let trimmedString = usernameTextField.text?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+        let fullnameTrimmedString = fullnameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let usernameTrimmedString = usernameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let occupationTrimmedString = occupationTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        guard user.username != trimmedString else {
-            print("ERROR: You did not change your username")
-            usernameChanged = false
-            return
+        if user.name == fullnameTrimmedString {
+            fullnameChanged = false
+        } else {
+            fullnameChanged = true
+            updatedFullname = fullnameTrimmedString
         }
         
-        guard trimmedString != "" else {
-            print("ERROR: Please enter a valid username")
-            usernameChanged = false
-            return
+        if user.occupation == occupationTrimmedString {
+            occupationChanged = false
+        } else {
+            occupationChanged = true
+            updatedOccupation = occupationTrimmedString
         }
         
-        updatedUsername = trimmedString?.lowercased()
-        usernameChanged = true
+        if user.username == usernameTrimmedString {
+            usernameChanged = false
+        } else {
+            usernameChanged = true
+            updatedUsername = usernameTrimmedString?.lowercased()
+        }
+        
+//        guard user.name != fullnameTrimmedString else {
+//            print("ERROR: You did not change your full name")
+//            fullnameChanged = false
+//            return
+//        }
+//        guard user.username != usernameTrimmedString else {
+//            print("ERROR: You did not change your username")
+//            usernameChanged = false
+//            return
+//        }
+//
+//        updatedFullname = fullnameTrimmedString
+//        updatedUsername = usernameTrimmedString?.lowercased()
+//        fullnameChanged = true
+//        usernameChanged = true
     }
 }
 

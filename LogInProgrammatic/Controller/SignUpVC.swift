@@ -50,6 +50,16 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         return tf
     }()
     
+    let occupationTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Occupation"
+        tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
+        tf.borderStyle = .roundedRect
+        tf.font = UIFont.systemFont(ofSize: 14)
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        return tf
+    }()
+    
     let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Username"
@@ -132,6 +142,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
+        guard let occupation = occupationTextField.text else { return }
         guard let username = usernameTextField.text?.lowercased() else { return }
         
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
@@ -166,6 +177,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                             guard let uid = user?.user.uid else { return }
                             // user info
                             let dictionaryValues = ["name": fullName,
+                                                    "occupation": occupation,
                                                     "username": username,
                                                     "profileImageUrl": profileImageUrl]
                             let values = [uid: dictionaryValues]
@@ -186,6 +198,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                     guard let uid = user?.user.uid else { return }
                     let dictionaryValues = [
                         "name": fullName,
+                        "occupation": occupation,
                         "username": username,
                     ]
                     let values = [uid: dictionaryValues]
@@ -206,6 +219,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         emailTextField.hasText,
         passwordTextField.hasText,
         fullNameTextField.hasText,
+        occupationTextField.hasText,
         usernameTextField.hasText else {
             signupButton.isEnabled = false
             signupButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
@@ -216,7 +230,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     }
     
     func configureViewComponents() {
-        let stackView = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, usernameTextField, passwordTextField, signupButton])
+        let stackView = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, occupationTextField, usernameTextField, passwordTextField, signupButton])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
