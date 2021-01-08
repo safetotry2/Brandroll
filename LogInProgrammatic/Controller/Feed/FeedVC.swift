@@ -22,6 +22,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     var currentKey: String?
     var userProfileController: UserProfileVC?
     
+    //var cell: FeedCell?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,6 +45,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             fetchPosts()
         }
         
+        //configureGradientOverlay()
+        
         updateUserFeeds()
     }
 
@@ -51,7 +55,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width
-        var height = width + 8 + 40 + 8
+        var height = width + 8
+
+        // 50 is the height of the stackview (for the action buttons in FeedCell)
+        // 60 is merely an arbitrary number
         height += 50
         height += 60
         
@@ -73,6 +80,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         return 1
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -96,7 +110,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         } else {
             cell.post = posts[indexPath.item]
         }
-                
+        
         return cell
     }
 
@@ -156,7 +170,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // handle unlike post
             cell.likeButton.isEnabled = false
             post.adjustLikes(addLike: false) { (likes) in
-                cell.likesLabel.text = "\(likes) likes"
+                if likes == 1 {
+                    cell.likeLabel.text = "\(likes) like"
+                } else {
+                    cell.likeLabel.text = "\(likes) likes"
+                }
                 cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
@@ -164,7 +182,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // handle like post
             cell.likeButton.isEnabled = false
             post.adjustLikes(addLike: true) { (likes) in
-                cell.likesLabel.text = "\(likes) likes"
+                if likes == 1 {
+                    cell.likeLabel.text = "\(likes) like"
+                } else {
+                    cell.likeLabel.text = "\(likes) likes"
+                }
                 cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
@@ -209,6 +231,27 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     //MARK: - Handlers
     
+//    func configureGradientOverlay() {
+//        guard let postImageView = cell?.postImageView else { return }
+//        
+//        let postImageViewSize: CGRect = postImageView.bounds
+//        let postImageViewWidth = postImageViewSize.width
+//        let postImageViewHeight = postImageViewSize.height
+//        
+//        //let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: postImageViewWidth, height: postImageViewHeight))
+//        let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: 400, height: 400))
+//        maskedView.backgroundColor = .black
+//
+//        let gradientMaskLayer = CAGradientLayer()
+//        gradientMaskLayer.frame = maskedView.bounds
+//        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.white.cgColor]
+//        gradientMaskLayer.locations = [0, 0.4, 0.6, 0.99]
+//
+//        maskedView.layer.mask = gradientMaskLayer
+//        postImageView.addSubview(maskedView)
+//    }
+       
+    
     @objc func handleRefresh() {
         posts.removeAll(keepingCapacity: false)
         self.currentKey = nil
@@ -220,17 +263,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         let messagesController = MessagesController()
         navigationController?.pushViewController(messagesController, animated: true)
     }
-    
-//    func updateLikeStructures(with postId: String, addLike: Bool) {
-//        
-//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//        
-//        if addLike {
-//            
-//        } else {
-//            
-//        }
-//    }
     
     func configureNavigationBar() {
         
@@ -277,6 +309,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     //MARK: - API
     
+    // The function below 1) identifies the individuals that the current user is following, 2) accesses all of their posts, and then 3) updates the current user's user-feed data structure with these posts. This function will become more meaningful when the original fetchPosts function (see below) is deployed which will populate the current user's feed with posts from individuals they follow as well as their own.
     func updateUserFeeds() {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -301,19 +334,18 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
+    // The function below updates the Home Feed of the current user with posts from all users, to create a 'Global Feed.'
     func fetchPosts() {
-        
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
+
         if currentKey == nil {
-            
-            USER_FEED_REF.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
-                
+
+            POSTS_REF.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+
                 self.collectionView.refreshControl?.endRefreshing()
-                
+
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
+
                 allObjects.forEach { (snapshot) in
                     let postId = snapshot.key
                     self.fetchPost(withPostId: postId)
@@ -321,10 +353,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 self.currentKey = first.key
             }
         } else {
-            USER_FEED_REF.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value) { (snapshot) in
+            POSTS_REF.queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value) { (snapshot) in
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
+
                 allObjects.forEach { (snapshot) in
                     let postId = snapshot.key
                     if snapshot.key != self.currentKey {
@@ -333,10 +365,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 }
                 self.currentKey = first.key
             }
-                
+
         }
     }
-    
+
     func fetchPost(withPostId postId: String) {
         
         Database.fetchPost(with: postId) { (post) in
@@ -354,3 +386,39 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
 }
     
 
+// NOTE: The original fetchPosts function as seen below accesses the user-feed data structure to update the Home Feed of the current user with 1) the user's own posts and 2) posts from individuals that the user follows.
+//    func fetchPosts() {
+//
+//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+//
+//        if currentKey == nil {
+//
+//            USER_FEED_REF.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+//
+//                self.collectionView.refreshControl?.endRefreshing()
+//
+//                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+//                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//                allObjects.forEach { (snapshot) in
+//                    let postId = snapshot.key
+//                    self.fetchPost(withPostId: postId)
+//                }
+//                self.currentKey = first.key
+//            }
+//        } else {
+//            USER_FEED_REF.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value) { (snapshot) in
+//                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+//                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//                allObjects.forEach { (snapshot) in
+//                    let postId = snapshot.key
+//                    if snapshot.key != self.currentKey {
+//                        self.fetchPost(withPostId: postId)
+//                    }
+//                }
+//                self.currentKey = first.key
+//            }
+//
+//        }
+//    }

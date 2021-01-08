@@ -11,6 +11,8 @@ import FirebaseDatabase
 
 class FeedCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     var delegate: FeedCellDelegate?
     
     var post: Post? {
@@ -24,12 +26,12 @@ class FeedCell: UICollectionViewCell {
             Database.fetchUser(with: ownerUid) { (user) in
                 self.profileImageView.loadImage(with: user.profileImageUrl)
                 self.fullnameButton.setTitle(user.name, for: .normal)
+                self.occupationLabel.text = user.occupation
                 self.configureCaption(user: user)
             }
             
             self.postImageView.loadImage(with: imageUrl)
-            
-            likesLabel.text = "\(likes) likes"
+            configureLikeLabel()
             configureLikeButton()
         }
     }
@@ -59,6 +61,14 @@ class FeedCell: UICollectionViewCell {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
+    }()
+    
+    let occupationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        label.text = "Occupation"
+        return label
     }()
     
     lazy var likeButton: UIButton = {
@@ -93,9 +103,10 @@ class FeedCell: UICollectionViewCell {
         return button
     }()
     
-    lazy var likesLabel: UILabel = {
+    lazy var likeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = .white
         label.text = "3 likes"
         
         // add gesture recognizer to label
@@ -128,12 +139,16 @@ class FeedCell: UICollectionViewCell {
         return label
     }()
     
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(postImageView)
         postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+        
+        configureGradientOverlay()
         
         addSubview(profileImageView)
         profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
@@ -142,14 +157,17 @@ class FeedCell: UICollectionViewCell {
         addSubview(fullnameButton)
         fullnameButton.anchor(top: postImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        addSubview(occupationLabel)
+        occupationLabel.anchor(top: fullnameButton.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         configureActionButtons()
         
-        addSubview(likesLabel)
-        likesLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(likeLabel)
+        likeLabel.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: -24, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
         addSubview(captionLabel)
-        captionLabel.anchor(top: likesLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        
+        captionLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+
         addSubview(postTimeLabel)
         postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
@@ -180,6 +198,17 @@ class FeedCell: UICollectionViewCell {
         delegate?.handleConfigureLikeButton(for: self)
     }
     
+    func configureLikeLabel() {
+        guard let post = self.post else { return }
+        guard let likes = post.likes else { return }
+        
+        if likes == 1 {
+            likeLabel.text = "\(likes) like"
+        } else {
+            likeLabel.text = "\(likes) likes"
+        }
+    }
+    
     func configureCaption(user: User) {
         
         guard let post = self.post else { return }
@@ -194,6 +223,32 @@ class FeedCell: UICollectionViewCell {
         postTimeLabel.text = post.creationDate.timeAgoToDisplay()
         
     }
+    
+    func configureGradientOverlay() {
+        
+        let postImageViewSize: CGRect = postImageView.bounds
+        let postImageViewWidth = postImageViewSize.width
+        let postImageViewHeight = postImageViewSize.height
+        //let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: postImageViewWidth, height: postImageViewHeight))
+
+        let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: 400, height: 400))
+        maskedView.backgroundColor = .black
+
+        let gradientMaskLayer = CAGradientLayer()
+        gradientMaskLayer.frame = maskedView.bounds
+        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.white.cgColor]
+        gradientMaskLayer.locations = [0, 0.4, 0.6, 0.99]
+
+        maskedView.layer.mask = gradientMaskLayer
+        postImageView.addSubview(maskedView)
+        
+    }
+    
+//    override func layoutSublayers(of layer: CALayer) {
+//        super.layoutSublayers(of: layer)
+//        let gradientMaskLayer = CAGradientLayer()
+//        gradientMaskLayer.frame = self.bounds
+//    }
     
     func configureActionButtons() {
         
