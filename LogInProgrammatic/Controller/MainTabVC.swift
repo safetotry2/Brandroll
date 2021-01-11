@@ -33,10 +33,21 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         // user validation
         checkIfUserIsLoggedIn()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)
 
     }
     
     // MARK: - Handlers
+    
+    @objc func notificationReceived(_ notification: Foundation.Notification) {
+        guard let isHidden = notification.userInfo?["isHidden"] as? Bool else { return }
+        self.setTabBar(hidden: isHidden)
+    }
+    
+    deinit {
+       NotificationCenter.default.removeObserver(self)
+    }
     
     // function to create view controllers that exist within the tab bar
     func configureViewControllers() {

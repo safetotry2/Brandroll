@@ -15,6 +15,8 @@ class FeedCell: UICollectionViewCell {
     
     var delegate: FeedCellDelegate?
     
+    private var maskedView: UIView!
+    
     var post: Post? {
         
         didSet {
@@ -59,7 +61,7 @@ class FeedCell: UICollectionViewCell {
         button.setTitle("Fullname", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
-        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleFullnameTapped), for: .touchUpInside)
         return button
     }()
     
@@ -132,9 +134,8 @@ class FeedCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel =  {
         let label = UILabel()
-        
         label.textColor = .lightGray
-        label.font = UIFont.boldSystemFont(ofSize: 10)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "2 DAYS AGO"
         return label
     }()
@@ -145,17 +146,20 @@ class FeedCell: UICollectionViewCell {
         super.init(frame: frame)
         
         addSubview(postImageView)
-        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 14, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
         configureGradientOverlay()
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40 / 2
         
         addSubview(fullnameButton)
         fullnameButton.anchor(top: postImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(postTimeLabel)
+        postTimeLabel.anchor(top: postImageView.bottomAnchor, left: fullnameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(occupationLabel)
         occupationLabel.anchor(top: fullnameButton.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -166,16 +170,14 @@ class FeedCell: UICollectionViewCell {
         likeLabel.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: -24, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
         addSubview(captionLabel)
-        captionLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+        captionLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
 
-        addSubview(postTimeLabel)
-        postTimeLabel.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     //MARK: - Handlers
     
-    @objc func handleUsernameTapped() {
-        delegate?.handleUsernameTapped(for: self)
+    @objc func handleFullnameTapped() {
+        delegate?.handleFullnameTapped(for: self)
     }
     
     @objc func handleOptionsTapped() {
@@ -225,30 +227,35 @@ class FeedCell: UICollectionViewCell {
     }
     
     func configureGradientOverlay() {
-        
-        let postImageViewSize: CGRect = postImageView.bounds
-        let postImageViewWidth = postImageViewSize.width
-        let postImageViewHeight = postImageViewSize.height
-        //let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: postImageViewWidth, height: postImageViewHeight))
-
-        let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: 400, height: 400))
+      
+        maskedView = UIView()
         maskedView.backgroundColor = .black
-
+      
+        postImageView.addSubview(maskedView)
+          
+        maskedView.translatesAutoresizingMaskIntoConstraints = false
+      
+        NSLayoutConstraint.activate([
+            maskedView.heightAnchor.constraint(equalToConstant: 400),
+            maskedView.leadingAnchor.constraint(equalTo: postImageView.leadingAnchor, constant: 0),
+            maskedView.trailingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 0),
+            maskedView.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 0)
+        ])
+    }
+        
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        
+        let clearColor = UIColor.clear.withAlphaComponent(0.0).cgColor
+        let whiteColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        
         let gradientMaskLayer = CAGradientLayer()
-        gradientMaskLayer.frame = maskedView.bounds
-        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.white.cgColor]
-        gradientMaskLayer.locations = [0, 0.4, 0.6, 0.99]
+            gradientMaskLayer.frame = maskedView.bounds
+            gradientMaskLayer.colors = [clearColor, clearColor, clearColor, whiteColor]
+            gradientMaskLayer.locations = [0, 0.4, 0.6, 0.99]
 
         maskedView.layer.mask = gradientMaskLayer
-        postImageView.addSubview(maskedView)
-        
     }
-    
-//    override func layoutSublayers(of layer: CALayer) {
-//        super.layoutSublayers(of: layer)
-//        let gradientMaskLayer = CAGradientLayer()
-//        gradientMaskLayer.frame = self.bounds
-//    }
     
     func configureActionButtons() {
         
@@ -258,7 +265,7 @@ class FeedCell: UICollectionViewCell {
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
+        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 100, height: 50)
     }
     
     required init?(coder: NSCoder) {

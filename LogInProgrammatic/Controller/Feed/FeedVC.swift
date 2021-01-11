@@ -11,24 +11,38 @@ import Firebase
 import FirebaseDatabase
 
 private let reuseIdentifier = "Cell"
+public let tabBarNotificationKey = NSNotification.Name(rawValue: "tabBarNotificationKey")
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
-
+    
     //MARK: - Properties
     
+    private var prevScrollDirection: CGFloat = 0
+    
     var posts = [Post]()
-    var viewSinglePost = false
     var post: Post?
     var currentKey: String?
     var userProfileController: UserProfileVC?
     
-    //var cell: FeedCell?
+    let headerLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 36)
+        label.textColor = .black
+        label.text = "Feed"
+        return label
+    }()
+    
+    // MARK: - Init
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.backgroundColor = .white
-
+        
         // register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
@@ -36,18 +50,14 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView.refreshControl = refreshControl
-        
-        // configure navigation bar
-        configureNavigationBar()
-        
-        // fetch posts
-        if !viewSinglePost {
-            fetchPosts()
-        }
-        
-        //configureGradientOverlay()
-        
+
+        fetchPosts()
+
         updateUserFeeds()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     //MARK: - UICollectionViewFlowLayout
@@ -60,7 +70,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // 50 is the height of the stackview (for the action buttons in FeedCell)
         // 60 is merely an arbitrary number
         height += 50
-        height += 60
+        height += 50
         
         return CGSize(width: width, height: height)
     }
@@ -89,42 +99,36 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if viewSinglePost {
-            return 1
-        } else {
-            return posts.count
-        }
+        return posts.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
-        
         cell.delegate = self
-        
-        if viewSinglePost {
-            if let post = self.post {
-            cell.post = post
-            }
-        } else {
-            cell.post = posts[indexPath.item]
-        }
-        
+        cell.post = posts[indexPath.item]
         return cell
     }
 
     //MARK: - FeedCellDelegate Protocol
     
-    func handleUsernameTapped(for cell: FeedCell) {
+    func handleFullnameTapped(for cell: FeedCell) {
         
         guard let post = cell.post else { return }
         
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         userProfileVC.user = post.user
+        userProfileVC.fromTabBar = false
         
         navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+
     }
     
     func handleOptionsTapped(for cell: FeedCell) {
@@ -135,15 +139,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "Delete Post", style: .destructive, handler: { (_) in
-                post.deletePost()
                 
-                if !self.viewSinglePost {
-                    self.handleRefresh()
-                } else {
-                    if let userProfileController = self.userProfileController {
-                        _ = self.navigationController?.popViewController(animated: true)
-                        userProfileController.handleRefresh()
-                    }
+                post.deletePost()
+
+                if let userProfileController = self.userProfileController {
+                    _ = self.navigationController?.popViewController(animated: true)
+                    userProfileController.handleRefresh()
                 }
             }))
             
@@ -196,11 +197,15 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func handleShowLikes(for cell: FeedCell) {
         guard let post = cell.post else { return }
         guard let postID = post.postId else { return }
+        guard let likes = post.likes else { return }
         
         let followLikeVC = FollowLikeVC()
         followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
         followLikeVC.postID = postID
-        navigationController?.pushViewController(followLikeVC, animated: true)
+        
+        if likes != 0 {
+            navigationController?.pushViewController(followLikeVC, animated: true)
+        }
     }
     
     func handleConfigureLikeButton(for cell: FeedCell) {
@@ -231,26 +236,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     //MARK: - Handlers
     
-//    func configureGradientOverlay() {
-//        guard let postImageView = cell?.postImageView else { return }
-//        
-//        let postImageViewSize: CGRect = postImageView.bounds
-//        let postImageViewWidth = postImageViewSize.width
-//        let postImageViewHeight = postImageViewSize.height
-//        
-//        //let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: postImageViewWidth, height: postImageViewHeight))
-//        let maskedView = UIView(frame: CGRect(x: 0, y: 0.5, width: 400, height: 400))
-//        maskedView.backgroundColor = .black
-//
-//        let gradientMaskLayer = CAGradientLayer()
-//        gradientMaskLayer.frame = maskedView.bounds
-//        gradientMaskLayer.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.white.cgColor]
-//        gradientMaskLayer.locations = [0, 0.4, 0.6, 0.99]
-//
-//        maskedView.layer.mask = gradientMaskLayer
-//        postImageView.addSubview(maskedView)
-//    }
-       
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc func handleRefresh() {
         posts.removeAll(keepingCapacity: false)
@@ -259,52 +247,24 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         collectionView.reloadData()
     }
     
-    @objc func handleShowMessages() {
-        let messagesController = MessagesController()
-        navigationController?.pushViewController(messagesController, animated: true)
-    }
-    
-    func configureNavigationBar() {
+    // function to dismiss/present the TabBar when scrolling up or down
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if !viewSinglePost {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let scrollViewY = scrollView.contentOffset.y
+        let scrollSizeHeight = scrollView.contentSize.height
+        let scrollFrameHeight = scrollView.frame.height
+        let scrollHeight = scrollSizeHeight - scrollFrameHeight
+        var isHidden = false
+        
+        if prevScrollDirection > scrollViewY && prevScrollDirection < scrollHeight {
+            isHidden = false
+        } else if prevScrollDirection < scrollViewY && scrollViewY > 0 {
+            isHidden = true
         }
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
-        
-        self.navigationItem.title = "Feed"
-    }
-    
-    @objc func handleLogout() {
-        
-        // declare alert controller
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        // add alert logout action
-        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
-            do {
-                // attempt sign out
-                try Auth.auth().signOut()
-                
-                // dismiss FeedVC
-                self.dismiss(animated: true, completion: nil)
-                
-                // present LoginVC
-                let loginVC = LoginVC()
-                let navController = UINavigationController(rootViewController: loginVC)
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true, completion: nil)
-                print("Successfully logged out user")
-            } catch {
-                // handle error
-                print("Failed to sign out")
-            }
-        }))
-        
-        // add cancel action
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alertController, animated: true, completion: nil)
+        let userInfo : [String : Bool] = ["isHidden" : isHidden]
+        NotificationCenter.default.post(name: tabBarNotificationKey, object: nil, userInfo: userInfo)
+        prevScrollDirection = scrollView.contentOffset.y
     }
     
     //MARK: - API

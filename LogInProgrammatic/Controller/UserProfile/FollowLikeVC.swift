@@ -93,8 +93,15 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         userProfileVC.user = user
+        userProfileVC.fromTabBar = false
         
         navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     //MARK: - FollowCellDelegate Protocol
@@ -126,6 +133,10 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
     }
     
     //MARK: - Handlers
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
     
     func configureNavigationTitle() {
         guard let viewingMode = self.viewingMode else  { return }

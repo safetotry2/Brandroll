@@ -173,7 +173,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
         
-        feedVC.viewSinglePost = true
+        //feedVC.viewSinglePost = true
         
         feedVC.post = posts[indexPath.item]
         

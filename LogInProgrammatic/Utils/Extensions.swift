@@ -48,32 +48,33 @@ extension Date {
         let hour = 60 * minute
         let day = 24 * hour
         let week = 7 * day
-        let month = 4 * week
+        let year = 52 * week
         
         let quotient: Int
         let unit: String
         
         if secondsAgo < minute {
             quotient = secondsAgo
-            unit = "SECOND"
+            unit = "s"
         } else if secondsAgo < hour {
             quotient = secondsAgo / minute
-            unit = "MIN"
+            unit = "m"
         } else if secondsAgo < day {
             quotient = secondsAgo / hour
-            unit = "HOUR"
+            unit = "h"
         } else if secondsAgo < week {
             quotient = secondsAgo / day
-            unit = "DAY"
-        } else if secondsAgo < month {
+            unit = "d"
+        } else if secondsAgo < year {
             quotient = secondsAgo / week
-            unit = "WEEK"
+            unit = "w"
         } else {
-            quotient = secondsAgo / month
-            unit = "MONTH"
+            quotient = secondsAgo / year
+            unit = "y"
         }
         
-        return "\(quotient) \(unit)\(quotient == 1 ? "" : "S") AGO"
+        return "• \(quotient)\(unit)"
+
     }
 }
 
@@ -203,6 +204,95 @@ extension Database {
                 
                 completion(post)
             }
+        }
+    }
+}
+
+// Animating the TabBar Dismiss
+extension UITabBarController {
+    func setTabBar( hidden: Bool, animated: Bool = true, along transitionCoordinator: UIViewControllerTransitionCoordinator? = nil) {
+        guard isTabBarHidden != hidden else { return }
+
+        let offsetY = hidden ? tabBar.frame.height : -tabBar.frame.height
+        let endFrame = tabBar.frame.offsetBy(dx: 0, dy: offsetY)
+        let vc: UIViewController? = viewControllers?[selectedIndex]
+        var newInsets: UIEdgeInsets? = vc?.additionalSafeAreaInsets
+        let originalInsets = newInsets
+        newInsets?.bottom -= offsetY
+
+        func set(childViewController cvc: UIViewController?, additionalSafeArea: UIEdgeInsets) {
+            cvc?.additionalSafeAreaInsets = additionalSafeArea
+            cvc?.view.setNeedsLayout()
+        }
+
+        // Update safe area insets for the current view controller before the animation takes place when hiding the bar.
+        if hidden, let insets = newInsets { set(childViewController: vc, additionalSafeArea: insets) }
+
+        guard animated else {
+            tabBar.frame = endFrame
+            return
+        }
+
+        // Perform animation with coordinato if one is given. Update safe area insets _after_ the animation is complete,
+        // if we're showing the tab bar.
+        weak var tabBarRef = self.tabBar
+        if let tc = transitionCoordinator {
+            tc.animateAlongsideTransition(in: self.view, animation: { _ in tabBarRef?.frame = endFrame }) { context in
+                if !hidden, let insets = context.isCancelled ? originalInsets : newInsets {
+                    set(childViewController: vc, additionalSafeArea: insets)
+                }
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, animations: { tabBarRef?.frame = endFrame }) { didFinish in
+                if !hidden, didFinish, let insets = newInsets {
+                    set(childViewController: vc, additionalSafeArea: insets)
+                }
+            }
+        }
+    }
+
+    /// `true` if the tab bar is currently hidden.
+    var isTabBarHidden: Bool {
+        return !tabBar.frame.intersects(view.frame)
+    }
+}
+
+extension UIViewController {
+    func setupClearNavBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.barTintColor = .black
+        //navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+    }
+    
+    func setupStatusBarColor() {
+        
+        if #available(iOS 13.0, *) {
+         let app = UIApplication.shared
+         let statusBarHeight: CGFloat = app.statusBarFrame.size.height
+         
+         let statusbarView = UIView()
+         statusbarView.backgroundColor = UIColor.white
+         view.addSubview(statusbarView)
+         
+         statusbarView.translatesAutoresizingMaskIntoConstraints = false
+         statusbarView.heightAnchor
+         .constraint(equalToConstant: statusBarHeight).isActive = true
+         statusbarView.widthAnchor
+         .constraint(equalTo: view.widthAnchor, multiplier: 1.0).isActive = true
+         statusbarView.topAnchor
+         .constraint(equalTo: view.topAnchor).isActive = true
+         statusbarView.centerXAnchor
+         .constraint(equalTo: view.centerXAnchor).isActive = true
+         
+        } else {
+         let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
+         statusBar?.backgroundColor = UIColor.white
         }
     }
 }

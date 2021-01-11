@@ -27,8 +27,8 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         // clear separator lines
         tableView.separatorColor = .clear
         
-        // nav title
-        navigationItem.title = "Notifications"
+        // configure nav bar
+        configureNavigationBar()
         
         // register cell class
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -91,17 +91,23 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
     }
     
+    // turn this into a UIImage to avoid viewSinglePost issue
     func handlePostTapped(for cell: NotificationCell) {
         
         guard let post = cell.notification?.post else { return }
         
         let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        feedController.viewSinglePost = true
+        //feedController.viewSinglePost = true
         feedController.post = post
         navigationController?.pushViewController(feedController, animated: true)
     }
     
     // MARK: - Handlers
+    
+    @objc func handleShowMessages() {
+        let messagesController = MessagesController()
+        navigationController?.pushViewController(messagesController, animated: true)
+    }
     
     func handleReloadTable() {
         
@@ -116,6 +122,13 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             return notification1.creationDate > notification2.creationDate
         }
         self.tableView.reloadData()
+    }
+    
+    func configureNavigationBar() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
+        
+        navigationItem.title = "Notifications"
     }
     
     // MARK: - API

@@ -26,7 +26,9 @@ class UserProfileHeader: UICollectionViewCell {
             setUserStats(for: user)
             
             let fullName = user?.name
-            nameLabel.text = fullName
+            let occupation = user?.occupation
+            fullnameLabel.text = fullName
+            occupationLabel.text = occupation
             
             guard let profileImageURL = user?.profileImageUrl else { return }
             
@@ -42,10 +44,18 @@ class UserProfileHeader: UICollectionViewCell {
         return iv
     }()
 
-    let nameLabel: UILabel = {
+    let fullnameLabel: UILabel = {
         let label = UILabel()
         label.text = "Clark Kent"
         label.font = UIFont.boldSystemFont(ofSize: 12)
+        return label
+    }()
+    
+    let occupationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        label.text = "Occupation"
         return label
     }()
 
@@ -106,6 +116,13 @@ class UserProfileHeader: UICollectionViewCell {
         button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
         return button
     }()
+    
+    let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        //view.backgroundColor = UIColor.lightGray
+        return view
+    }()
 
     let gridButton: UIButton = {
         let button = UIButton(type: .system)
@@ -153,7 +170,6 @@ class UserProfileHeader: UICollectionViewCell {
     func setUserStats(for user: User?) {
         
         delegate?.setUserStats(for: self)
-
     }
     
     func configureEditProfileFollowButton() {
@@ -212,18 +228,24 @@ class UserProfileHeader: UICollectionViewCell {
         super.init(frame: frame)
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
+        profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80/2
         
-        addSubview(nameLabel)
-        nameLabel.anchor(top: profileImageView.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(fullnameLabel)
+        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(occupationLabel)
+        occupationLabel.anchor(top: fullnameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureUserStats()
         
         addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: postsLabel.bottomAnchor, left: postsLabel.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
+        editProfileFollowButton.anchor(top: postsLabel.bottomAnchor, left: postsLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
         
-        configureBottomToolBar()
+        addSubview(separatorView)
+        separatorView.anchor(top: occupationLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        
+        //configureBottomToolBar()
     }
     
     required init?(coder: NSCoder) {
