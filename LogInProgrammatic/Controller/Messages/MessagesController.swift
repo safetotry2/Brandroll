@@ -61,6 +61,10 @@ class MessagesController: UITableViewController {
     
     // MARK: - Handlers
     
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
@@ -73,6 +77,12 @@ class MessagesController: UITableViewController {
         let chatController = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
         chatController.user = user
         navigationController?.pushViewController(chatController, animated: true)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     func configureNavigationBar() {

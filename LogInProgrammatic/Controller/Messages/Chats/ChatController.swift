@@ -16,6 +16,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // MARK: - Properties
     
     var user: User?
+    var message: Message?
     var messages = [Message]()
         
     lazy var containerView: ChatInputAccessoryView = {
@@ -127,17 +128,50 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func configureNavigationBar() {
         guard let user = self.user else { return }
         
-        navigationItem.title = user.username
+        navigationItem.title = user.name
         
         let infoButton = UIButton(type: .infoLight)
         infoButton.tintColor = .black
         infoButton.addTarget(self, action: #selector(handleInfoTapped), for: .touchUpInside)
         
         let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
-        
         navigationItem.rightBarButtonItem = infoBarButtonItem
     }
     
+//    func uploadMessageNotification() {
+//
+//        guard let fromId = Auth.auth().currentUser?.uid else { return }
+//        guard let toId = user?.uid else { return }
+//        var messageText: String!
+//
+//        messageText = containerView.chatTextView.text
+//
+//        let values = ["fromId": fromId,
+//                      "toId": toId,
+//                      "messageText": messageText] as [String : Any]
+//
+//        USER_MESSAGE_NOTIFICATIONS_REF.child(toId).childByAutoId().updateChildValues(values)
+//    }
+    
+    func uploadMessageNotification() {
+        
+        guard let fromId = Auth.auth().currentUser?.uid else { return }
+        guard let user = self.user else { return }
+        guard let toId = user.uid else { return }
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+            
+        let values = ["checked": 0,
+                      "creationDate": creationDate,
+                      "uid": fromId,
+                      "type": MESSAGE_INT_VALUE] as [String : Any]
+            
+        let notificationRef = NOTIFICATIONS_REF.child(toId).childByAutoId()
+        notificationRef.updateChildValues(values)
+//        guard let notificationKey = notificationRef.key else { return }
+//        notificationRef.updateChildValues(values) { (err, ref) in
+//            USER_MESSAGES_REF.child(fromId).child(toId).updateChildValues([notificationKey: notificationRef])
+//        }
+    }
     
     // MARK: - API
     
@@ -167,30 +201,29 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
 extension ChatController: ChatInputAccessoryViewDelegate {
     
     func didSubmit(forChat chat: String) {
+        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let user = self.user else { return }
         let creationDate = Int(NSDate().timeIntervalSince1970)
-        
+
         guard let uid = user.uid else { return }
-        
+
         let messageValues = ["creationDate": creationDate,
                              "fromId": currentUid,
                              "toId": user.uid,
                              "messageText": chat] as [String: Any]
-        
+
         let messageRef = MESSAGES_REF.childByAutoId()
-        
-        messageRef.updateChildValues(messageValues)
-        
+
         guard let messageKey = messageRef.key else { return }
-        
+
         messageRef.updateChildValues(messageValues) { (err, ref) in
-            
-            USER_MESSAGES_REF.child(currentUid).child(user.uid).updateChildValues([messageKey: 1])
             USER_MESSAGES_REF.child(user.uid).child(currentUid).updateChildValues([messageKey: 1])
+            USER_MESSAGES_REF.child(currentUid).child(user.uid).updateChildValues([messageKey: 1])
         }
+        
+        uploadMessageNotification()
         self.containerView.clearChatTextView()
     }
-    
 }
 

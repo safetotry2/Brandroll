@@ -21,11 +21,11 @@ class NotificationCell: UITableViewCell {
             guard let user = notification?.user else { return }
             guard let profileImageUrl = user.profileImageUrl else { return }
             
-            // configure notification label
-            configureNotificationLabel()
-            
             // configure notification type
             configureNotificationType()
+            
+            // configure notification label
+            configureNotificationLabel()
             
             profileImageView.loadImage(with: profileImageUrl)
                         
@@ -85,11 +85,11 @@ class NotificationCell: UITableViewCell {
         
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
-        guard let username = user.username else { return }
+        guard let userFullname = user.name else { return }
         let notificationMessage = notification.notificationType.description
         guard let notificationDate = getNotificationTimestamp() else { return }
 
-        let attributedText = NSMutableAttributedString(string: username, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
+        let attributedText = NSMutableAttributedString(string: userFullname, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
         attributedText.append(NSAttributedString(string: notificationMessage, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
         attributedText.append(NSAttributedString(string: " \(notificationDate)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         notificationLable.attributedText = attributedText
@@ -100,17 +100,31 @@ class NotificationCell: UITableViewCell {
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
                 
-        if notification.notificationType != .Follow {
-            
-            // notification type is comment or like
+        if notification.notificationType == .Like {
+            // notification type is like
             addSubview(postImageView)
             postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
             postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             followButton.isHidden = true
             postImageView.isHidden = false
             
-        } else {
+            addSubview(notificationLable)
+            notificationLable.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: postImageView.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            notificationLable.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             
+        } else if notification.notificationType == .Comment {
+            // notification type is comment
+            addSubview(postImageView)
+            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
+            postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            followButton.isHidden = true
+            postImageView.isHidden = false
+            
+            addSubview(notificationLable)
+            notificationLable.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            notificationLable.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            
+        } else if notification.notificationType == .Follow {
             // notification type is follow
             addSubview(followButton)
             followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 90, height: 30)
@@ -118,6 +132,10 @@ class NotificationCell: UITableViewCell {
             followButton.layer.cornerRadius = 3
             followButton.isHidden = false
             postImageView.isHidden = true
+            
+            addSubview(notificationLable)
+            notificationLable.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: followButton.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            notificationLable.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             
             user.checkIfUserIsFollowed { (followed) in
                 
@@ -132,15 +150,17 @@ class NotificationCell: UITableViewCell {
                     self.followButton.setTitleColor(.white, for: .normal)
                     self.followButton.layer.borderWidth = 0
                     self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
-                    
                 }
-                
             }
+        } else {
+            // notification type is message
+            followButton.isHidden = true
+            postImageView.isHidden = true
+            
+            addSubview(notificationLable)
+            notificationLable.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            notificationLable.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         }
-        
-        addSubview(notificationLable)
-        notificationLable.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 100, width: 0, height: 0)
-        notificationLable.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
     func getNotificationTimestamp() -> String? {
@@ -166,7 +186,6 @@ class NotificationCell: UITableViewCell {
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = 40 / 2
-
         
     }
     

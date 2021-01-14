@@ -93,7 +93,7 @@ class MessageCell: UITableViewCell {
         
         Database.fetchUser(with: chatPartnerId) { (user) in
             self.profileImageView.loadImage(with: user.profileImageUrl)
-            self.textLabel?.text = user.username
+            self.textLabel?.text = user.name
         }
     }
     

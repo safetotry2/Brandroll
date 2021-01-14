@@ -93,6 +93,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             
             let tabBarHeight = tabBar.frame.height
             
+            // This is the actual height of the iPhone 10 screen
             if UIScreen.main.nativeBounds.height == 2436 {
                 // configure dot for iphone x
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
@@ -179,5 +180,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                 }
             }
         }
-    }    
+    }
+    
 }

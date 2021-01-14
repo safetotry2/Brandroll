@@ -15,12 +15,14 @@ class Notification {
         case Like
         case Comment
         case Follow
+        case Message
         
         var description: String {
             switch self {
             case .Like: return " liked your post"
             case .Comment: return " commented on your post"
             case .Follow: return " started following you"
+            case .Message: return " sent you a message"
             }
         }
         
@@ -29,6 +31,7 @@ class Notification {
             case 0: self = .Like
             case 1: self = .Comment
             case 2: self = .Follow
+            case 3: self = .Message
             default: self = .Like
             }
         }

@@ -145,6 +145,7 @@ class Post {
     func sendLikeNotificationToServer() {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        //guard let postId = postId else { return }
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
         if currentUid != self.ownerUid {

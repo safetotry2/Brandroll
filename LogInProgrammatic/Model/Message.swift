@@ -11,6 +11,8 @@ import Firebase
 
 class Message {
     
+    var user: User?
+
     var messageText: String!
     var fromId: String!
     var toId: String!
