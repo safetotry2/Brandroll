@@ -44,6 +44,7 @@ extension Date {
         
         let secondsAgo = Int(Date().timeIntervalSince(self))
         
+        let zero = 0
         let minute = 60
         let hour = 60 * minute
         let day = 24 * hour
@@ -53,7 +54,10 @@ extension Date {
         let quotient: Int
         let unit: String
         
-        if secondsAgo < minute {
+        if secondsAgo == zero {
+            quotient = 1
+            unit = "s"
+        } else if secondsAgo > zero && secondsAgo < minute {
             quotient = secondsAgo
             unit = "s"
         } else if secondsAgo < hour {
@@ -74,7 +78,49 @@ extension Date {
         }
         
         return "• \(quotient)\(unit)"
+    }
+}
 
+extension Date {
+    
+    func timeStampForComment() -> String {
+        
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+        
+        let zero = 0
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        let year = 52 * week
+        
+        let quotient: Int
+        let unit: String
+        
+        if secondsAgo == zero {
+            quotient = 1
+            unit = "s"
+        } else if secondsAgo > zero && secondsAgo < minute {
+            quotient = secondsAgo
+            unit = "s"
+        } else if secondsAgo < hour {
+            quotient = secondsAgo / minute
+            unit = "m"
+        } else if secondsAgo < day {
+            quotient = secondsAgo / hour
+            unit = "h"
+        } else if secondsAgo < week {
+            quotient = secondsAgo / day
+            unit = "d"
+        } else if secondsAgo < year {
+            quotient = secondsAgo / week
+            unit = "w"
+        } else {
+            quotient = secondsAgo / year
+            unit = "y"
+        }
+        
+        return "\(quotient)\(unit)"
     }
 }
 

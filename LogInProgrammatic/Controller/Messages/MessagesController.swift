@@ -131,6 +131,8 @@ class MessagesController: UITableViewController {
             }
 
             self.tableView.reloadData()
+            let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
     

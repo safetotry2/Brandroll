@@ -104,9 +104,15 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         guard let post = cell.notification?.post else { return }
         
         let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        //feedController.viewSinglePost = true
+        feedController.viewSinglePost = true
         feedController.post = post
         navigationController?.pushViewController(feedController, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     // MARK: - Handlers

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CommentInputAccessoryView: UIView {
+class CommentInputAccessoryView: UIView, UITextFieldDelegate {
 
     // MARK: - Properties
     
@@ -24,8 +24,7 @@ class CommentInputAccessoryView: UIView {
     let postButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Post", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(handleUploadComment), for: .touchUpInside)
         return button
     }()
@@ -41,7 +40,7 @@ class CommentInputAccessoryView: UIView {
         postButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 50, height: 50)
         
         addSubview(commentTextView)
-        commentTextView.anchor(top: topAnchor, left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: postButton.leftAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+        commentTextView.anchor(top: topAnchor, left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: postButton.leftAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
         
         let separatorView = UIView()
         separatorView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
@@ -57,9 +56,7 @@ class CommentInputAccessoryView: UIView {
     override var intrinsicContentSize: CGSize {
         return .zero
     }
-    
-    
-    
+        
     // MARK: - Handlers
     
     @objc func handleUploadComment() {
@@ -70,6 +67,7 @@ class CommentInputAccessoryView: UIView {
     func clearCommentTextView() {
         commentTextView.placeholderLabel.isHidden = false
         commentTextView.text = nil
+        
     }
     
 }

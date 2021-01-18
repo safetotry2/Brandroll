@@ -20,6 +20,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     private var prevScrollDirection: CGFloat = 0
     
     var posts = [Post]()
+    var viewSinglePost = false
     var post: Post?
     var currentKey: String?
     var userProfileController: UserProfileVC?
@@ -35,7 +36,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // MARK: - Init
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        if viewSinglePost {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        } else {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
     }
     
     override func viewDidLoad() {
@@ -99,14 +104,25 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        if viewSinglePost {
+            return 1
+        } else {
+            return posts.count
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
         cell.delegate = self
-        cell.post = posts[indexPath.item]
+        
+        if viewSinglePost {
+            if let post = self.post {
+                cell.post = post
+            }
+        } else {
+            cell.post = posts[indexPath.item]
+        }
+        
         return cell
     }
 
@@ -156,6 +172,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 uploadPostController.uploadAction = UploadPostVC.UploadAction(index: 1)
                 self.present(navigationController, animated: true, completion: nil)
                 
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+            
+        } else {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(title: "Report", style: .default, handler: { (_) in
+                self.dismiss(animated: true, completion: nil)
             }))
             
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

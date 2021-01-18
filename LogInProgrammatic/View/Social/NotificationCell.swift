@@ -103,7 +103,7 @@ class NotificationCell: UITableViewCell {
         if notification.notificationType == .Like {
             // notification type is like
             addSubview(postImageView)
-            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
+            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 40, height: 40)
             postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             followButton.isHidden = true
             postImageView.isHidden = false
@@ -115,7 +115,7 @@ class NotificationCell: UITableViewCell {
         } else if notification.notificationType == .Comment {
             // notification type is comment
             addSubview(postImageView)
-            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 40, height: 40)
+            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 40, height: 40)
             postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             followButton.isHidden = true
             postImageView.isHidden = false

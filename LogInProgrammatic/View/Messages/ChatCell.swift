@@ -24,12 +24,12 @@ class ChatCell: UICollectionViewCell {
             guard let messageText = message?.messageText else { return }
             textView.text = messageText
             
-            guard let chatPartnerId = message?.getChatPartnerId() else { return }
-            
-            Database.fetchUser(with: chatPartnerId) { (user) in
-                guard let profileImageUrl = user.profileImageUrl else { return }
-                self.profileImageView.loadImage(with: profileImageUrl)
-            }
+//            guard let chatPartnerId = message?.getChatPartnerId() else { return }
+//            
+//            Database.fetchUser(with: chatPartnerId) { (user) in
+//                guard let profileImageUrl = user.profileImageUrl else { return }
+//                self.profileImageView.loadImage(with: profileImageUrl)
+//            }
         }
     }
     
@@ -53,30 +53,31 @@ class ChatCell: UICollectionViewCell {
         return tv
     }()
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
-        return iv
-    }()
+//    let profileImageView: CustomImageView = {
+//        let iv = CustomImageView()
+//        iv.contentMode = .scaleAspectFill
+//        iv.clipsToBounds = true
+//        iv.backgroundColor = .lightGray
+//        return iv
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(bubbleView)
         addSubview(textView)
-        addSubview(profileImageView)
-        
-        profileImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: -4, paddingRight: 0, width: 32, height: 32)
-        profileImageView.layer.cornerRadius = 32 / 2
+//        addSubview(profileImageView)
+//
+//        profileImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: -4, paddingRight: 0, width: 32, height: 32)
+//        profileImageView.layer.cornerRadius = 32 / 2
         
         // bubble view right anchor
         bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8)
         bubbleViewRightAnchor?.isActive = true
         
         // bubble view left anchor
-        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8)
+//        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8)
+        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8)
         bubbleViewLeftAnchor?.isActive = false
         
         // bubble view width and top anchor

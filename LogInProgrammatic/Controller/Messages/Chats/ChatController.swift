@@ -20,8 +20,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var messages = [Message]()
         
     lazy var containerView: ChatInputAccessoryView = {
-        
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
         let containerView = ChatInputAccessoryView(frame: frame)
         containerView.backgroundColor = .white
         containerView.delegate = self
@@ -33,11 +32,18 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
+        collectionView?.alwaysBounceVertical = true
         collectionView.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView?.keyboardDismissMode = .interactive
         
         configureNavigationBar()
+        configureKeyboardObservers()
         
         observeMessages()
+        
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,13 +70,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // MARK: - UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+
         var height: CGFloat = 80
-        
+
         let message = messages[indexPath.item]
-        
+
         height = estimateFrameForText(message.messageText).height + 20
-        
+
         return CGSize(width: view.frame.width, height: height)
     }
     
@@ -96,6 +102,21 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.pushViewController(userProfileController, animated: true)
     }
     
+    @objc func handleKeyboardDidShow() {
+        scrollToBottom()
+    }
+    
+    func scrollToBottom() {
+        if messages.count > 0 {
+            let indexPath = IndexPath(item: messages.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        }
+    }
+    
+    func configureKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+    }
+    
     func estimateFrameForText(_ text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
@@ -106,7 +127,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.messageText).width + 32
-        cell.frame.size.height = estimateFrameForText(message.messageText).height + 20
+        cell.frame.size.height = estimateFrameForText(message.messageText).height + 16
         
         if message.fromId == currentUid {
             
@@ -114,13 +135,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.bubbleViewLeftAnchor?.isActive = false
             cell.bubbleView.backgroundColor = UIColor.rgb(red: 0, green: 137, blue: 249)
             cell.textView.textColor = .white
-            cell.profileImageView.isHidden = true
+            //cell.profileImageView.isHidden = true
         } else {
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
             cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
             cell.textView.textColor = .black
-            cell.profileImageView.isHidden = false
+           // cell.profileImageView.isHidden = true
         }
         
     }
@@ -180,9 +201,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         guard let chatPartnerId = self.user?.uid else { return }
         
         USER_MESSAGES_REF.child(currentUid).child(chatPartnerId).observe(.childAdded) { (snapshot) in
-            
             let messageId = snapshot.key
-            
             self.fetchMessage(withMessageId: messageId)
         }
     }
@@ -192,7 +211,23 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let message = Message(dictionary: dictionary)
             self.messages.append(message)
-            self.collectionView.reloadData()
+            
+//            self.collectionView?.reloadData()
+//            let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+//            self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: false)
+            
+//            DispatchQueue.main.async(execute: {
+//                self.collectionView?.reloadData()
+//                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+//                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+//            })
+            
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+                let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: false)
+            }
+            
         }
     }
 }
