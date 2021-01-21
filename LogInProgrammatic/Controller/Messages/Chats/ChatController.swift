@@ -256,7 +256,8 @@ extension ChatController: ChatInputAccessoryViewDelegate {
             USER_MESSAGES_REF.child(user.uid).child(currentUid).updateChildValues([messageKey: 1])
             USER_MESSAGES_REF.child(currentUid).child(user.uid).updateChildValues([messageKey: 1])
         }
-        
+        //let messagesController = MessagesController()
+        //messagesController.user = user
         uploadMessageNotification()
         self.containerView.clearChatTextView()
     }

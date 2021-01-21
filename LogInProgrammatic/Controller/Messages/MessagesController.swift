@@ -17,6 +17,7 @@ class MessagesController: UITableViewController {
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
+    var userUid: String?
     
     // MARK: - Init
     override func viewDidLoad() {
@@ -56,6 +57,25 @@ class MessagesController: UITableViewController {
         let chatPartnerId = message.getChatPartnerId()
         Database.fetchUser(with: chatPartnerId) { (user) in
             self.showChatController(forUser: user)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            guard let userUid = userUid else { return }
+            
+            USER_MESSAGES_REF.child(currentUid).child(userUid).removeValue { (err, ref) in
+                self.messages.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.reloadData()
+            }
         }
     }
     
@@ -122,6 +142,7 @@ class MessagesController: UITableViewController {
 
             let message = Message(dictionary: dictionary)
             let chatParnerId = message.getChatPartnerId()
+            self.userUid = chatParnerId
             self.messagesDictionary[chatParnerId] = message
             self.messages = Array(self.messagesDictionary.values)
             
