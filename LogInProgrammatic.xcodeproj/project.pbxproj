@@ -166,18 +166,14 @@
 		045C64AB250844DC002E8E1C /* LogInProgrammatic */ = {
 			isa = PBXGroup;
 			children = (
-				043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */,
+				459B2F8B25BE005F00402599 /* App */,
 				045C64C525085795002E8E1C /* Utils */,
 				045C64C025084CBB002E8E1C /* Model */,
 				045C64C125084CC5002E8E1C /* View */,
 				045C64C225084CCD002E8E1C /* Controller */,
-				045C64AC250844DC002E8E1C /* AppDelegate.swift */,
-				045C64AE250844DC002E8E1C /* SceneDelegate.swift */,
-				045C64B2250844DC002E8E1C /* Main.storyboard */,
-				045C64B5250844EF002E8E1C /* Assets.xcassets */,
-				045C64CA250ABDFF002E8E1C /* GoogleService-Info.plist */,
-				045C64B7250844EF002E8E1C /* LaunchScreen.storyboard */,
-				045C64BA250844EF002E8E1C /* Info.plist */,
+				459B2F8C25BE006D00402599 /* Storyboards */,
+				459B2F8D25BE007E00402599 /* Plists */,
+				459B2F8E25BE009100402599 /* Resources */,
 			);
 			path = LogInProgrammatic;
 			sourceTree = "<group>";
@@ -309,6 +305,42 @@
 				04FA75722583BC4500814F9E /* ChatCell.swift */,
 			);
 			path = Messages;
+			sourceTree = "<group>";
+		};
+		459B2F8B25BE005F00402599 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */,
+				045C64AC250844DC002E8E1C /* AppDelegate.swift */,
+				045C64AE250844DC002E8E1C /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		459B2F8C25BE006D00402599 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				045C64B2250844DC002E8E1C /* Main.storyboard */,
+				045C64B7250844EF002E8E1C /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		459B2F8D25BE007E00402599 /* Plists */ = {
+			isa = PBXGroup;
+			children = (
+				045C64CA250ABDFF002E8E1C /* GoogleService-Info.plist */,
+				045C64BA250844EF002E8E1C /* Info.plist */,
+			);
+			path = Plists;
+			sourceTree = "<group>";
+		};
+		459B2F8E25BE009100402599 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				045C64B5250844EF002E8E1C /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
@@ -635,12 +667,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UD757S5387;
-				INFOPLIST_FILE = LogInProgrammatic/Info.plist;
+				INFOPLIST_FILE = LogInProgrammatic/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -658,12 +691,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UD757S5387;
-				INFOPLIST_FILE = LogInProgrammatic/Info.plist;
+				INFOPLIST_FILE = LogInProgrammatic/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
