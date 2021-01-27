@@ -367,9 +367,7 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - NVActivityIndicatorView (5.1.1):
-    - NVActivityIndicatorView/Base (= 5.1.1)
-  - NVActivityIndicatorView/Base (5.1.1)
+  - ProgressHUD (13.4)
   - PromisesObjC (1.2.8)
   - Protobuf (3.13.0)
 
@@ -380,11 +378,11 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Messaging
   - Firebase/Storage
-  - NVActivityIndicatorView
+  - ProgressHUD
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - NVActivityIndicatorView
+    - ProgressHUD
   trunk:
     - abseil
     - BoringSSL-GRPC
@@ -440,10 +438,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+  ProgressHUD: 137a7fc677487c5581668f4490563124fb35c232
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
 
-PODFILE CHECKSUM: 353b04b57fd60d45c1e2da7a5053f8099c6355fb
+PODFILE CHECKSUM: 130abaa1705b7937aaabdaf1e4810051aa03b750
 
 COCOAPODS: 1.10.0

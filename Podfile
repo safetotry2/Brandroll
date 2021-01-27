@@ -11,7 +11,6 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
-  pod 'NVActivityIndicatorView'
 end
 
 post_install do |installer|

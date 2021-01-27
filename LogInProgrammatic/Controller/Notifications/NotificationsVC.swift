@@ -19,7 +19,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     var timer: Timer?
     var currentKey: String?
     
-    var notifications = [Notification]()
+    var notifications = [AppNotif]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,13 +167,13 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             if let postId = dictionary["postId"] as? String {
 
                 Database.fetchPost(with: postId) { (post) in
-                    let notification = Notification(user: user, post: post, dictionary: dictionary)
+                    let notification = AppNotif(user: user, post: post, dictionary: dictionary)
                     self.notifications.append(notification)
                     self.handleSortNotifications()
                     self.handleReloadTable()
                 }
             } else {
-                let notification = Notification(user: user, dictionary: dictionary)
+                let notification = AppNotif(user: user, dictionary: dictionary)
                 self.notifications.append(notification)
                 self.handleSortNotifications()
                 self.handleReloadTable()

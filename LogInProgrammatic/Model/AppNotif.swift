@@ -1,5 +1,5 @@
 //
-//  Notification.swift
+//  AppNotif.swift
 //  LogInProgrammatic
 //
 //  Created by Mac on 12/6/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Notification {
+class AppNotif {
     
     enum NotificationType: Int, Printable {
         

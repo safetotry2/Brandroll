@@ -11,7 +11,7 @@
 		0404469325786C250029F738 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0404469225786C240029F738 /* CommentCell.swift */; };
 		040446952579872C0029F738 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040446942579872C0029F738 /* Comment.swift */; };
 		04044697257A9A450029F738 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044696257A9A450029F738 /* NotificationCell.swift */; };
-		04044699257DA1B20029F738 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044698257DA1B10029F738 /* Notification.swift */; };
+		04044699257DA1B20029F738 /* AppNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044698257DA1B10029F738 /* AppNotif.swift */; };
 		0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433327E25378C6C00C26BB6 /* Protocols.swift */; };
 		04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowLikeVC.swift */; };
 		04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowLikeCell.swift */; };
@@ -54,6 +54,7 @@
 		04FA756F258295D700814F9E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756E258295D700814F9E /* Message.swift */; };
 		04FA75712583BB5100814F9E /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75702583BB5100814F9E /* ChatController.swift */; };
 		04FA75732583BC4500814F9E /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75722583BC4500814F9E /* ChatCell.swift */; };
+		45EFDD3425C1BAB100E3EBED /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */; };
 		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +63,7 @@
 		0404469225786C240029F738 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		040446942579872C0029F738 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		04044696257A9A450029F738 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
-		04044698257DA1B10029F738 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		04044698257DA1B10029F738 /* AppNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotif.swift; sourceTree = "<group>"; };
 		0433327E25378C6C00C26BB6 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		04333280253B499900C26BB6 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
 		04333282253B4AB800C26BB6 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
@@ -108,6 +109,7 @@
 		04FA756E258295D700814F9E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		04FA75702583BB5100814F9E /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		04FA75722583BC4500814F9E /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
 		D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,7 +186,7 @@
 				045C64E1251C2D99002E8E1C /* User.swift */,
 				0433328A254488E100C26BB6 /* Post.swift */,
 				040446942579872C0029F738 /* Comment.swift */,
-				04044698257DA1B10029F738 /* Notification.swift */,
+				04044698257DA1B10029F738 /* AppNotif.swift */,
 				04FA756E258295D700814F9E /* Message.swift */,
 			);
 			path = Model;
@@ -222,6 +224,7 @@
 				045C64DD25150AED002E8E1C /* Constants.swift */,
 				0433327E25378C6C00C26BB6 /* Protocols.swift */,
 				0433328E2546170D00C26BB6 /* CustomImageView.swift */,
+				45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -511,9 +514,10 @@
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
-				04044699257DA1B20029F738 /* Notification.swift in Sources */,
+				04044699257DA1B20029F738 /* AppNotif.swift in Sources */,
 				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
+				45EFDD3425C1BAB100E3EBED /* ProgressHUD.swift in Sources */,
 				043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */,
 				043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */,
 				04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */,

@@ -14,7 +14,7 @@ class NotificationCell: UITableViewCell {
     
     var delegate: NotitificationCellDelegate?
     
-    var notification: Notification? {
+    var notification: AppNotif? {
         
         didSet {
             
