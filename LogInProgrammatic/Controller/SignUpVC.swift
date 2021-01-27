@@ -109,7 +109,7 @@ class SignUpVC: UIViewController {
         
         view.addSubview(plusPhotoButton)
         plusPhotoButton.anchor(
-            top: view.topAnchor, left: nil, bottom: nil, right: nil,
+            top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil,
             paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
             width: 140, height: 140
         )
@@ -117,7 +117,7 @@ class SignUpVC: UIViewController {
         configureViewComponents()
         view.addSubview(alreadyhaveaccountButton)
         alreadyhaveaccountButton.anchor(
-            top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor,
+            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
             paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
             width: 0, height: 50
         )
