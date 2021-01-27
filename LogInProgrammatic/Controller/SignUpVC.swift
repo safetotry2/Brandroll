@@ -215,7 +215,7 @@ class SignUpVC: UIViewController {
                     "occupation": occupation,
                     "username": username
                 ]
-                let values = [uid: dictionaryValues]
+                var values = [uid: dictionaryValues]
                 
                 guard error == nil else {
                     print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
@@ -226,7 +226,8 @@ class SignUpVC: UIViewController {
                 storageRef.downloadURL(completion: { (downloadURL, error) in
                     let profileImageUrl = downloadURL?.absoluteString ?? ""
                     dictionaryValues["profileImageUrl"] = profileImageUrl
-
+                    values = [uid: dictionaryValues]
+                    
                     self.updateUserValues(values)
                 })
             }
