@@ -26,6 +26,9 @@ class SignUpVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
+        tf.keyboardType = .emailAddress
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
@@ -33,7 +36,6 @@ class SignUpVC: UIViewController {
     let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
-        //Secure text entry for password
         tf.isSecureTextEntry = true
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
@@ -48,6 +50,8 @@ class SignUpVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.autocapitalizationType = .words
+        tf.autocorrectionType = .no
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
@@ -68,6 +72,8 @@ class SignUpVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
@@ -174,7 +180,7 @@ class SignUpVC: UIViewController {
         ProgressHUD.show("Please wait...", interaction: false)
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-            guard error != nil else {
+            guard error == nil else {
                 ProgressHUD.showError("Error signing up")
                 print("Failed to create user with error", error!.localizedDescription)
                 return
@@ -211,7 +217,7 @@ class SignUpVC: UIViewController {
                 ]
                 let values = [uid: dictionaryValues]
                 
-                guard error != nil else {
+                guard error == nil else {
                     print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
                     self.updateUserValues(values)
                     return

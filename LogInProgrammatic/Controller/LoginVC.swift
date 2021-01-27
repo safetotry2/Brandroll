@@ -37,6 +37,9 @@ class LoginVC: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
+        tf.keyboardType = .emailAddress
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
@@ -44,11 +47,11 @@ class LoginVC: UIViewController {
     let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
+        tf.isSecureTextEntry = true
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
-        tf.isSecureTextEntry = true
         return tf
     }()
     
