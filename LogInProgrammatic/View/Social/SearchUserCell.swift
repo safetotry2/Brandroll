@@ -15,14 +15,22 @@ class SearchUserCell: UITableViewCell {
     var user: User? {
     
         didSet {
-            guard let profileImageUrl = user?.profileImageUrl else { return }
-            guard let userName = user?.username else { return }
-            guard let fullName = user?.name else { return }
+            //guard let profileImageUrl = user?.profileImageUrl else { return }
+            //guard let fullName = user?.name else { return }
+            //guard let occupation = user?.occupation else { return }
             
-            profileImageView.loadImage(with: profileImageUrl)
+            if let profileImageUrl = user?.profileImageUrl {
+                profileImageView.loadImage(with: profileImageUrl)
+            }
             
-            self.textLabel?.text = userName
-            self.detailTextLabel?.text = fullName
+            if let fullName = user?.name {
+                nameLabel.text = fullName
+            }
+            
+            if let occupation = user?.occupation {
+                occupationLabel.text = occupation
+            }
+            
         }
     }
     
@@ -34,30 +42,37 @@ class SearchUserCell: UITableViewCell {
         return iv
     }()
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .black
+        return label
+    }()
+    
+    let occupationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = .lightGray
+        return label
+    }()
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
-        // add profile image view
+        selectionStyle = .none
+        
         addSubview(profileImageView)
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 48, height: 48)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = 48 / 2
         
-        self.textLabel?.text = "Username"
-        self.detailTextLabel?.text = "Full name"
+        addSubview(nameLabel)
+        nameLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: nameLabel.frame.width, height: nameLabel.frame.height)
         
-        self.selectionStyle = .none
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+        addSubview(occupationLabel)
+        occupationLabel.anchor(top: nameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: occupationLabel.frame.width, height: occupationLabel.frame.height)
         
-        textLabel?.frame = CGRect(x: 68, y: textLabel!.frame.origin.y - 2, width: (textLabel?.frame.width)!, height: (textLabel?.frame.height)!)
-        textLabel?.font = UIFont.boldSystemFont(ofSize: 12)
-        detailTextLabel?.frame = CGRect(x: 68, y: detailTextLabel!.frame.origin.y, width: self.frame.width - 108, height: (detailTextLabel?.frame.height)!)
-        detailTextLabel?.textColor = .lightGray
-        detailTextLabel?.font = UIFont.systemFont(ofSize: 12)
     }
     
     required init?(coder: NSCoder) {
