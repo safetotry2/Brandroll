@@ -10,11 +10,12 @@ import UIKit
 import Firebase
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
-
+    
     // MARK: - Properties
     
     let dot = UIView()
     var notificationIDs = [String]()
+    private var notifRefHandle: DatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         checkIfUserIsLoggedIn()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)
-
+        
     }
     
     // MARK: - Handlers
@@ -46,7 +47,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     deinit {
-       NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // function to create view controllers that exist within the tab bar
@@ -118,8 +119,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - UITabBar
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        
-        let index = viewControllers?.index(of: viewController)
+        let index = viewControllers?.firstIndex(of: viewController)
         
         if index == 2 {
             let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
@@ -137,13 +137,25 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         return true
     }
     
+    // MARK: - Public
+    
+    func didLogIn() {
+        observeNotifications()
+    }
+    
+    func didLogout() {
+        if let currentUid = Auth.auth().currentUser?.uid,
+           let notifRefHandle = self.notifRefHandle {
+            NOTIFICATIONS_REF.child(currentUid)
+                .removeObserver(withHandle: notifRefHandle)
+        }
+    }
+    
     // MARK: - API
     
-    func checkIfUserIsLoggedIn() {
+    private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser == nil {
-
             DispatchQueue.main.async {
-                
                 // present login controller
                 let loginVC = LoginVC()
                 let navController = UINavigationController(rootViewController: loginVC)
@@ -155,31 +167,34 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func observeNotifications() {
-        
+    private func observeNotifications() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         self.notificationIDs.removeAll()
         
-        NOTIFICATIONS_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
-            
-            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            allObjects.forEach { (snapshot) in
+        notifRefHandle = NOTIFICATIONS_REF
+            .child(currentUid)
+            .observe(.value) { (snapshot) in
+                print("Notification Snapshot: \(snapshot)")
                 
-                let notificationId = snapshot.key
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
-                NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").observeSingleEvent(of: .value) { (snapshot) in
+                allObjects.forEach { (snapshot) in
+                    let notificationId = snapshot.key
                     
-                    guard let checked = snapshot.value as? Int else { return }
-                    
-                    if checked == 0 {
-                        self.dot.isHidden = false
-                    } else {
-                        self.dot.isHidden = true
-                    }
+                    NOTIFICATIONS_REF.child(currentUid)
+                        .child(notificationId)
+                        .child("checked")
+                        .observeSingleEvent(of: .value) { (snapshot) in
+                            guard let checked = snapshot.value as? Int else { return }
+                            
+                            if checked == 0 {
+                                self.dot.isHidden = false
+                            } else {
+                                self.dot.isHidden = true
+                            }
+                        }
                 }
             }
-        }
     }
     
 }

@@ -19,15 +19,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         ProgressHUD.animationType = .circleStrokeSpin
         
+        // Setup Firebase
+        
+        FirebaseApp.configure()
+        
         // Setup Scene
         
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            FirebaseApp.configure()
-            window.rootViewController = MainTabVC()
-            self.window = window
-            window.makeKeyAndVisible()
+        if window == nil {
+            if let windowScene = scene as? UIWindowScene {
+                let newWindow = UIWindow(windowScene: windowScene)
+                self.window = newWindow
+            }
         }
+        
+        window?.rootViewController = MainTabVC()
+        window?.makeKeyAndVisible()
     }
 }
 

@@ -137,6 +137,7 @@ class LoginVC: UIViewController {
             
             // confingure view controllers in mainTabVC
             mainTabVC.configureViewControllers()
+            mainTabVC.didLogIn()
             
             // dismiss login view controller
             self.dismiss(animated: true, completion: nil)

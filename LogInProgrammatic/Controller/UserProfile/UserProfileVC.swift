@@ -378,13 +378,17 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     @objc func handleLogout() {
-        
         // declare alert controller
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         // add alert logout action
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
             do {
+                // remove observer
+                if let tabBarController = self.tabBarController as? MainTabVC {
+                    tabBarController.didLogout()
+                }
+                
                 // attempt sign out
                 try Auth.auth().signOut()
                 
