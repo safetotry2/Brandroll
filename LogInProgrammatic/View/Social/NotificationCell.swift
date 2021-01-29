@@ -15,11 +15,8 @@ class NotificationCell: UITableViewCell {
     var delegate: NotitificationCellDelegate?
     
     var notification: AppNotif? {
-        
         didSet {
-            
             guard let user = notification?.user else { return }
-            guard let profileImageUrl = user.profileImageUrl else { return }
             
             // configure notification type
             configureNotificationType()
@@ -27,7 +24,9 @@ class NotificationCell: UITableViewCell {
             // configure notification label
             configureNotificationLabel()
             
-            profileImageView.loadImage(with: profileImageUrl)
+            if let profileImageUrl = user.profileImageUrl {
+                profileImageView.loadImage(with: profileImageUrl)
+            }
                         
             if let post = notification?.post {
                 postImageView.loadImage(with: post.imageUrl)
@@ -82,7 +81,6 @@ class NotificationCell: UITableViewCell {
     }
     
     func configureNotificationLabel() {
-        
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
         guard let userFullname = user.name else { return }
