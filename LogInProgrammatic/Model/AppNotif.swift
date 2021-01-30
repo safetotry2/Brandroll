@@ -37,6 +37,7 @@ class AppNotif {
         }
     }
     
+    var key: String!
     var creationDate: Date!
     var uid: String!
     var postId: String?
@@ -46,8 +47,8 @@ class AppNotif {
     var notificationType: NotificationType!
     var didCheck = false
     
-    init(user: User, post: Post? = nil, dictionary: Dictionary<String, AnyObject>) {
-        
+    init(key: String, user: User, post: Post? = nil, dictionary: Dictionary<String, AnyObject>) {
+        self.key = key
         self.user = user
         
         if let post = post {

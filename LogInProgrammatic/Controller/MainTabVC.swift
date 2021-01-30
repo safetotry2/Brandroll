@@ -189,8 +189,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         notifRefHandle = NOTIFICATIONS_REF
             .child(currentUid)
             .observe(.value) { (snapshot) in
-                print("Notification Snapshot: \(snapshot)")
-                
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
                 allObjects.forEach { (snapshot) in

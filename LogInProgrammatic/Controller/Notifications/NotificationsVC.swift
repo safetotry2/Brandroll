@@ -167,52 +167,57 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             if let postId = dictionary["postId"] as? String {
                 
                 Database.fetchPost(with: postId) { (post) in
-                    let notification = AppNotif(user: user, post: post, dictionary: dictionary)
-                    self.notifications.append(notification)
-                    self.handleSortNotifications()
-                    self.handleReloadTable()
+                    let notification = AppNotif(key: snapshot.key, user: user, post: post, dictionary: dictionary)
+                    self.addNewNotification(notification)
                 }
             } else {
-                let notification = AppNotif(user: user, dictionary: dictionary)
-                self.notifications.append(notification)
-                self.handleSortNotifications()
-                self.handleReloadTable()
+                let notification = AppNotif(key: snapshot.key, user: user, dictionary: dictionary)
+                self.addNewNotification(notification)
             }
         }
         NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
     }
     
+    private func addNewNotification(_ notification: AppNotif) {
+        print("Add new notification, with ID: \(String(describing: notification.key))")
+        
+        if !notifications.contains(where: { $0.key == notification.key }) {
+            self.notifications.append(notification)
+            self.handleSortNotifications()
+            self.handleReloadTable()
+        }
+    }
     
     func fetchNotifications() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         if currentKey == nil {
-            NOTIFICATIONS_REF.child(currentUid).queryLimited(toLast: 12).observeSingleEvent(of: .value) { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach { (snapshot) in
-                    let notificationId = snapshot.key
-                    self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
-                }
-                self.currentKey = first.key
+            NOTIFICATIONS_REF.child(currentUid)
+                .queryLimited(toLast: 12)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    self.handleNotificationQuerySnapshot(snapshot)
             }
         } else {
-            NOTIFICATIONS_REF.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 13).observeSingleEvent(of: .value) { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach { (snapshot) in
-                    let notificationId = snapshot.key
-                    
-                    if notificationId != self.currentKey {
-                        self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
-                    }
-                }
-                self.currentKey = first.key
+            NOTIFICATIONS_REF.child(currentUid)
+                .queryOrderedByKey()
+                .queryStarting(atValue: self.currentKey)
+                .queryLimited(toLast: 13)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    self.handleNotificationQuerySnapshot(snapshot)
             }
         }
+    }
+    
+    private func handleNotificationQuerySnapshot(_ snapshot: DataSnapshot) {
+        print("handleNotificationQuerySnapshot: \(snapshot)")
+        
+        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+        
+        allObjects.forEach { (snapshot) in
+            let notificationId = snapshot.key
+            self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
+        }
+        self.currentKey = first.key
     }
 }
