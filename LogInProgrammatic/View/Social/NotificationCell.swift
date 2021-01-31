@@ -110,75 +110,44 @@ class NotificationCell: UITableViewCell {
     }
     
     func configureNotificationType() {
-        //        return
-        //        guard let notification = self.notification else { return }
-        //        guard let user = notification.user else { return }
-        //
-        //        followButton.removeFromSuperview()
-        //        postImageView.removeFromSuperview()
-        //
-        //        if notification.notificationType == .Like {
-        //            // notification type is like
-        //            addSubview(postImageView)
-        //            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 40, height: 40)
-        //            postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //            followButton.isHidden = true
-        //            postImageView.isHidden = false
-        //
-        //            addSubview(notificationTitleLabel)
-        //            notificationTitleLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: postImageView.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        //            notificationTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //
-        //        } else if notification.notificationType == .Comment {
-        //            // notification type is comment
-        //            addSubview(postImageView)
-        //            postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 40, height: 40)
-        //            postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //            followButton.isHidden = true
-        //            postImageView.isHidden = false
-        //
-        //            addSubview(notificationTitleLabel)
-        //            notificationTitleLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        //            notificationTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //
-        //        } else if notification.notificationType == .Follow {
-        //            // notification type is follow
-        //            addSubview(followButton)
-        //            followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 90, height: 30)
-        //            followButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //            followButton.layer.cornerRadius = 3
-        //            followButton.isHidden = false
-        //            postImageView.isHidden = true
-        //
-        //            addSubview(notificationTitleLabel)
-        //            notificationTitleLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: followButton.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        //            notificationTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //
-        //            self.followButton.setTitle("", for: .normal)
-        //            user.checkIfUserIsFollowed { (followed) in
-        //
-        //                if followed {
-        //                    self.followButton.setTitle("Following", for: .normal)
-        //                    self.followButton.setTitleColor(.black, for: .normal)
-        //                    self.followButton.layer.borderWidth = 0.5
-        //                    self.followButton.layer.borderColor = UIColor.lightGray.cgColor
-        //                    self.followButton.backgroundColor = .white
-        //                } else {
-        //                    self.followButton.setTitle("Follow", for: .normal)
-        //                    self.followButton.setTitleColor(.white, for: .normal)
-        //                    self.followButton.layer.borderWidth = 0
-        //                    self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
-        //                }
-        //            }
-        //        } else {
-        //            // notification type is message
-        //            followButton.isHidden = true
-        //            postImageView.isHidden = true
-        //
-        //            addSubview(notificationTitleLabel)
-        //            notificationTitleLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        //            notificationTitleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //        }
+        guard let notification = self.notification,
+              let user = notification.user else { return }
+    
+        if notification.notificationType == .Like {
+            // notification type is like
+            followButton.isHidden = true
+            postImageView.isHidden = false
+            
+        } else if notification.notificationType == .Comment {
+            // notification type is comment
+            followButton.isHidden = true
+            postImageView.isHidden = false
+            
+        } else if notification.notificationType == .Follow {
+            // notification type is follow
+            self.followButton.setTitle("", for: .normal)
+            followButton.isHidden = false
+            postImageView.isHidden = true
+            
+            user.checkIfUserIsFollowed { (followed) in
+                if followed {
+                    self.followButton.setTitle("Following", for: .normal)
+                    self.followButton.setTitleColor(.black, for: .normal)
+                    self.followButton.layer.borderWidth = 0.5
+                    self.followButton.layer.borderColor = UIColor.lightGray.cgColor
+                    self.followButton.backgroundColor = .white
+                } else {
+                    self.followButton.setTitle("Follow", for: .normal)
+                    self.followButton.setTitleColor(.white, for: .normal)
+                    self.followButton.layer.borderWidth = 0
+                    self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+                }
+            }
+        } else {
+            // notification type is message
+            followButton.isHidden = true
+            postImageView.isHidden = true
+        }
     }
     
     func getNotificationTimestamp() -> String? {
@@ -200,8 +169,6 @@ class NotificationCell: UITableViewCell {
         
         selectionStyle = .none
         
-        postImageView.isHidden = false
-        followButton.isHidden = false
         followButton.layer.cornerRadius = 3
         profileImageView.layer.cornerRadius = 40 / 2
         
@@ -210,7 +177,7 @@ class NotificationCell: UITableViewCell {
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 40),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             
             profileImageView.heightAnchor.constraint(equalToConstant: 40),
             profileImageView.widthAnchor.constraint(equalToConstant: 40),
