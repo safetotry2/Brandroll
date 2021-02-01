@@ -367,7 +367,6 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - ProgressHUD (13.4)
   - PromisesObjC (1.2.8)
   - Protobuf (3.13.0)
 
@@ -378,11 +377,8 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Messaging
   - Firebase/Storage
-  - ProgressHUD
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - ProgressHUD
   trunk:
     - abseil
     - BoringSSL-GRPC
@@ -438,10 +434,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  ProgressHUD: 137a7fc677487c5581668f4490563124fb35c232
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
 
-PODFILE CHECKSUM: 130abaa1705b7937aaabdaf1e4810051aa03b750
+PODFILE CHECKSUM: 6e36dbfdac0c1d85fbedfc1c1805e524dbb436de
 
 COCOAPODS: 1.10.0
