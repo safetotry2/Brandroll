@@ -17,6 +17,7 @@ class Message {
     var fromId: String!
     var toId: String!
     var creationDate: Date!
+    var seen: Bool = false
     
     init(dictionary: Dictionary<String, AnyObject>) {
         
@@ -30,6 +31,10 @@ class Message {
         
         if let toId = dictionary["toId"] as? String {
             self.toId = toId
+        }
+        
+        if let seen = dictionary["seen"] as? Bool {
+            self.seen = seen
         }
         
         if let creationDate = dictionary["creationDate"] as? Double {

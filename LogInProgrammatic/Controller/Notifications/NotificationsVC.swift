@@ -21,7 +21,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     var notifications = [AppNotif]()
     
-    private let dot = UIView()
+    private let sendBarButtonDot = UIView()
     private lazy var sendBarButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
@@ -47,9 +47,26 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         fetchNotifications()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        checkSeenMessages()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        setAllNotifToViewed()
+    }
+    
+    private func checkSeenMessages() {
+        let areAllMessagesSeen = MessagesController.messages.filter {
+            !$0.seen
+        }.count == 0
+        sendBarButtonDot.isHidden = areAllMessagesSeen
+    }
+    
+    private func setAllNotifToViewed() {
         notifications.forEach { (notif) in
             notif.locallyViewed = true
         }
@@ -170,17 +187,17 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"
         
-        dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
-        dot.isHidden = false
-        dot.layer.cornerRadius = 3
-        dot.translatesAutoresizingMaskIntoConstraints = false
+        sendBarButtonDot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        sendBarButtonDot.isHidden = false
+        sendBarButtonDot.layer.cornerRadius = 3
+        sendBarButtonDot.translatesAutoresizingMaskIntoConstraints = false
         
-        sendBarButton.addSubview(dot)
+        sendBarButton.addSubview(sendBarButtonDot)
         NSLayoutConstraint.activate([
-            dot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
-            dot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
-            dot.widthAnchor.constraint(equalToConstant: 6),
-            dot.heightAnchor.constraint(equalToConstant: 6)
+            sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
+            sendBarButtonDot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
+            sendBarButtonDot.widthAnchor.constraint(equalToConstant: 6),
+            sendBarButtonDot.heightAnchor.constraint(equalToConstant: 6)
         ])
     }
     
