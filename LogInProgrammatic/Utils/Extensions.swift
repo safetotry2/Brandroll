@@ -13,6 +13,14 @@ extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
+    
+    static func colorWithRGBHex(_ hex: Int, alpha: Float = 1.0) -> UIColor {
+        let r = Float((hex >> 16) & 0xFF)
+        let g = Float((hex >> 8) & 0xFF)
+        let b = Float((hex) & 0xFF)
+        
+        return UIColor(red: CGFloat(r / 255.0), green: CGFloat(g / 255.0), blue:CGFloat(b / 255.0), alpha: CGFloat(alpha))
+    }
 }
 
 extension UIButton {

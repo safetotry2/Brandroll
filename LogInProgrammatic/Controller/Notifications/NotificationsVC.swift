@@ -37,6 +37,16 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         fetchNotifications()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        notifications.forEach { (notif) in
+            notif.locallyViewed = true
+        }
+        
+        tableView.reloadData()
+    }
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

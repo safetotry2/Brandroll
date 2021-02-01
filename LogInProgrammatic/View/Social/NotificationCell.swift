@@ -148,6 +148,8 @@ class NotificationCell: UITableViewCell {
             followButton.isHidden = true
             postImageView.isHidden = true
         }
+        
+        backgroundColor = notification.locallyViewed ? .white : UIColor.colorWithRGBHex(0xdcdde1)
     }
     
     func getNotificationTimestamp() -> String? {
