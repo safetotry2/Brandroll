@@ -161,7 +161,9 @@ class EditProfileController: UIViewController {
     func loadUserData() {
         guard let user = self.user else { return }
         
-        profileImageView.loadImage(with: user.profileImageUrl)
+        if let profileImageUrl = user.profileImageUrl {
+            profileImageView.loadImage(with: profileImageUrl)
+        }
         fullnameTextField.text = user.name
         occupationTextField.text = user.occupation
         usernameTextField.text = user.username
