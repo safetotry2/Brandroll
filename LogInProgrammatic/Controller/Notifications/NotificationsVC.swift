@@ -210,6 +210,12 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         print("Add new notification, with ID: \(String(describing: notification.key))")
         
         if !notifications.contains(where: { $0.key == notification.key }) {
+            // BRD1.2 - prevent notification if current is chat controller.
+            if notification.notificationType == .Message,
+               UIViewController.current() is ChatController {
+                return
+            }
+            
             self.notifications.append(notification)
             self.handleSortNotifications()
             self.handleReloadTable()

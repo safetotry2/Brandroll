@@ -186,6 +186,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         self.notificationIDs.removeAll()
         
+        self.dot.isHidden = true
+        
         notifRefHandle = NOTIFICATIONS_REF
             .child(currentUid)
             .observe(.value) { (snapshot) in
@@ -204,8 +206,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                             
                             if checked == 0 {
                                 self.dot.isHidden = false
-                            } else {
-                                self.dot.isHidden = true
                             }
                         }
                 }
