@@ -83,8 +83,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     // MARK: - NotificationCellDelegate Protocol
     
-    func handleFollowTapped(for cell: NotificationCell) {
-        
+    internal func handleFollowTapped(for cell: NotificationCell) {
         guard let user = cell.notification?.user else { return }
         
         if user.isFollowed {
@@ -99,7 +98,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     // turn this into a UIImage to avoid viewSinglePost issue
-    func handlePostTapped(for cell: NotificationCell) {
+    internal func handlePostTapped(for cell: NotificationCell) {
         
         guard let post = cell.notification?.post else { return }
         
@@ -121,7 +120,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func handleShowMessages() {
+     @objc private func handleShowMessages() {
         let messagesController = MessagesController()
         navigationController?.pushViewController(messagesController, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(
@@ -132,14 +131,14 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         )
     }
     
-    func handleReloadTable() {
+    private func handleReloadTable() {
         
         self.timer?.invalidate()
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortNotifications), userInfo: nil, repeats: false)
     }
     
-    @objc func handleSortNotifications() {
+    @objc private func handleSortNotifications() {
         
         self.notifications.sort { (notification1, notification2) -> Bool in
             return notification1.creationDate > notification2.creationDate
@@ -147,16 +146,36 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         self.tableView.reloadData()
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
         
         navigationItem.title = "Notifications"
     }
     
+    // MARK: - Public
+    
+    /// Receives newly observed data from `MainTabVC`.
+    /// The parameter `snapshots` contains old notifications.
+    func newObservedNotification(_ snapshots: [DataSnapshot]) {
+        let unCheckedSnapshots = snapshots.filter { (snapshot) -> Bool in
+            if let dictionary = snapshot.value as? Dictionary<String, AnyObject>,
+               let checked = dictionary["checked"] as? Int,
+               checked == 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+//        unCheckedSnapshots.forEach { (snapshot) in
+//            fetchNotifications(withNotificationId: snapshot.key, dataSnapshot: snapshot)
+//        }
+    }
+    
     // MARK: - API
     
-    func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
+    private func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
         guard let uid = dictionary["uid"] as? String else { return }
@@ -188,7 +207,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
     }
     
-    func fetchNotifications() {
+    private func fetchNotifications() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         if currentKey == nil {
@@ -200,7 +219,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         } else {
             NOTIFICATIONS_REF.child(currentUid)
                 .queryOrderedByKey()
-                .queryStarting(atValue: self.currentKey)
+                .queryEnding(atValue: self.currentKey)
                 .queryLimited(toLast: 13)
                 .observeSingleEvent(of: .value) { (snapshot) in
                     self.handleNotificationQuerySnapshot(snapshot)

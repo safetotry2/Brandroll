@@ -191,6 +191,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             .observe(.value) { (snapshot) in
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
+                print("observeNotifications \(allObjects)")
+                
                 allObjects.forEach { (snapshot) in
                     let notificationId = snapshot.key
                     
@@ -208,7 +210,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                         }
                 }
                 
-                self.notificationsVC.fetchNotifications()
+                self.notificationsVC.newObservedNotification(allObjects)
             }
     }
 }
