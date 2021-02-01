@@ -26,7 +26,10 @@ class FeedCell: UICollectionViewCell {
             guard let likes = post?.likes else { return }
             
             Database.fetchUser(with: ownerUid) { (user) in
-                self.profileImageView.loadImage(with: user.profileImageUrl)
+                if let profileImageUrl = user.profileImageUrl {
+                    self.profileImageView.loadImage(with: profileImageUrl)
+                }
+                
                 self.fullnameButton.setTitle(user.name, for: .normal)
                 self.occupationLabel.text = user.occupation
                 self.configureCaption(user: user)
