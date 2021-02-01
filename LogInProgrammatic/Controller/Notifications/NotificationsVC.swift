@@ -60,10 +60,21 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     private func checkSeenMessages() {
-        let areAllMessagesSeen = MessagesController.messages.filter {
-            !$0.seen
-        }.count == 0
-        sendBarButtonDot.isHidden = areAllMessagesSeen
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        func continueCheckingSeenMessages() {
+            let areAllMessagesSeen = MessagesController.messages.filter {
+                !$0.seen
+            }.count == 0
+            sendBarButtonDot.isHidden = areAllMessagesSeen
+        }
+        
+        if MessagesController.messages.count == 0 {
+            MessagesUtils.fetchMessages(userId: currentUid, completion: nil)
+            continueCheckingSeenMessages()
+        } else {
+            continueCheckingSeenMessages()
+        }
     }
     
     private func setAllNotifToViewed() {
@@ -249,10 +260,14 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         print("Add new notification, with ID: \(String(describing: notification.key))")
         
         if !notifications.contains(where: { $0.key == notification.key }) {
-            // BRD1.2 - prevent notification if current is chat controller.
-            if notification.notificationType == .Message,
-               UIViewController.current() is ChatController {
-                return
+            // BRD1.3
+            if notification.notificationType == .Message {
+                checkSeenMessages()
+                
+                // BRD1.2 - prevent notification if current is chat controller.
+                if UIViewController.current() is ChatController {
+                    return
+                }
             }
             
             self.notifications.append(notification)
