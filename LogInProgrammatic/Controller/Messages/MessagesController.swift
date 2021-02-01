@@ -165,7 +165,10 @@ extension MessagesController: MessageCellDelegate {
         guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
         
         Database.fetchUser(with: chatPartnerId) { (user) in
-            cell.profileImageView.loadImage(with: user.profileImageUrl)
+            if let profileImageUrl = user.profileImageUrl {
+                cell.profileImageView.loadImage(with: profileImageUrl)
+            }
+            
             cell.nameLabel.text = user.name
         }
     }
