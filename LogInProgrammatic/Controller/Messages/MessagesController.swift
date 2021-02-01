@@ -20,7 +20,23 @@ class MessagesController: UITableViewController {
     var userUid: String?
     var currentKey: String?
     
-    // MARK: - Init
+    private lazy var dot: UIView = {
+        let dot = UIView()
+        dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        dot.layer.cornerRadius = 3
+        dot.translatesAutoresizingMaskIntoConstraints = false
+        return dot
+    }()
+    
+    private lazy var dotContainer: UIView = {
+        let v = UIView()
+        v.backgroundColor = .blue
+        v.addSubview(dot)
+        return v
+    }()
+    
+    // MARK: - Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
