@@ -21,6 +21,16 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     var notifications = [AppNotif]()
     
+    private let dot = UIView()
+    private lazy var sendBarButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
+        button.addTarget(self, action: #selector(handleShowMessages), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -157,9 +167,21 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     private func configureNavigationBar() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"
+        
+        dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        dot.isHidden = false
+        dot.layer.cornerRadius = 3
+        dot.translatesAutoresizingMaskIntoConstraints = false
+        
+        sendBarButton.addSubview(dot)
+        NSLayoutConstraint.activate([
+            dot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
+            dot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
+            dot.widthAnchor.constraint(equalToConstant: 6),
+            dot.heightAnchor.constraint(equalToConstant: 6)
+        ])
     }
     
     // MARK: - Public
