@@ -168,9 +168,9 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             }
         }
         
-//        unCheckedSnapshots.forEach { (snapshot) in
-//            fetchNotifications(withNotificationId: snapshot.key, dataSnapshot: snapshot)
-//        }
+        unCheckedSnapshots.forEach { (snapshot) in
+            fetchNotifications(withNotificationId: snapshot.key, dataSnapshot: snapshot)
+        }
     }
     
     // MARK: - API
