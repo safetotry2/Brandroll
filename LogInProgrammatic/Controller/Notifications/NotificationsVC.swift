@@ -107,8 +107,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
     }
     
-    // turn this into a UIImage to avoid viewSinglePost issue
-    internal func handlePostTapped(for cell: NotificationCell) {
+    func handlePostTapped(for cell: NotificationCell) {
         
         guard let post = cell.notification?.post else { return }
         

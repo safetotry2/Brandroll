@@ -10,10 +10,11 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
-class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchProfileCellDelegate {
     
     // MARK: - Properties
     
+    var user: User?
     var users = [User]()
     var filteredUsers = [User]()
     var searchBar = UISearchBar()
@@ -30,7 +31,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // register cell classes
         tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
         
@@ -46,8 +47,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         // configure refresh control
         configureRefreshControl()
         
-        // fetch posts
-        fetchPosts()
+        // fetch profiles
+        fetchProfiles()
 
     }
 
@@ -84,9 +85,16 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // passes user from searchVC to userProfileVC
         userProfileVC.user = user
+        userProfileVC.fromTabBar = false
         
         // push view controller
         navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -110,7 +118,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         }
         
         cell.user = user
-        
         return cell
     }
     
@@ -124,15 +131,17 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
         
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        collectionView?.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 24, right: 0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white
         
-        tableView.addSubview(collectionView)
-        collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: "SearchPostCell")
-        
+        //tableView.addSubview(collectionView)
+        view.addSubview(collectionView)
         tableView.separatorColor = .clear
+                        
+        collectionView.register(SearchProfileCell.self, forCellWithReuseIdentifier: "SearchProfileCell")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -144,43 +153,61 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2) / 3
+        let width = (view.frame.width - 2) / 2
         return CGSize(width: width, height: width)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        if posts.count > 20 {
-            if indexPath.item == posts.count - 1 {
-                fetchPosts()
+
+        if users.count > 8 {
+            if indexPath.item == users.count - 1 {
+                fetchProfiles()
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return users.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchPostCell", for: indexPath) as! SearchPostCell
-        
-        cell.post = posts[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as! SearchProfileCell
+        cell.delegate = self
+        cell.user = users[indexPath.item]
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        //feedVC.viewSinglePost = true
-        
-        feedVC.post = posts[indexPath.item]
-        
-        navigationController?.pushViewController(feedVC, animated: true)
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        
+//        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+//        
+//        //feedVC.viewSinglePost = true
+//        
+//        feedVC.post = posts[indexPath.item]
+//        
+//        navigationController?.pushViewController(feedVC, animated: true)
+//    }
+    
     
     // MARK: - Handlers
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func handleFollowTapped(for cell: SearchProfileCell) {
+        guard let user = cell.user else { return }
+        
+        if user.isFollowed {
+            // handle unfollow user
+            user.unfollow()
+        } else {
+            // handle follow user
+            user.follow()
+        }
+        cell.configureFollowButton()
+    }
     
     func configureSearchBar() {
         searchBar.sizeToFit()
@@ -193,7 +220,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     @objc func handleRefresh() {
         posts.removeAll(keepingCapacity: false)
         self.currentKey = nil
-        fetchPosts()
+        fetchProfiles()
         collectionView.reloadData()
     }
     
@@ -208,26 +235,28 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
         
-        // fetch users
-        fetchUsers()
+        tableView.isHidden = false
+        tableView.separatorColor = .lightGray
+        tableView.tableFooterView = UIView(frame: .zero)
         
         collectionView.isHidden = true
         collectionViewEnabled = false
         
-        tableView.separatorColor = .lightGray
+        fetchUsers()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        let searchText = searchText.lowercased()
-        
+                
         if searchText.isEmpty || searchText == " " {
             inSearchMode = false
             tableView.reloadData()
         } else {
             inSearchMode = true
+                        
             filteredUsers = users.filter({ (user) -> Bool in
-                return user.username.contains(searchText)
+                                
+                return (user.name?.contains(searchText) ?? true) || (user.occupation?.contains(searchText) ?? true)
+                
             })
             tableView.reloadData()
         }
@@ -241,9 +270,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         collectionViewEnabled = true
         collectionView.isHidden = false
-        
         tableView.separatorColor = .clear
-        
         tableView.reloadData()
     }
     
@@ -253,7 +280,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         if userCurrentKey == nil {
             
-            USER_REF.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+            USER_REF.queryLimited(toLast: 12).observeSingleEvent(of: .value) { (snapshot) in
                
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -269,7 +296,51 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                 self.userCurrentKey = first.key
             }
         } else {
-            USER_REF.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+            USER_REF.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 13).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let uid = snapshot.key
+                    
+                    if uid != self.userCurrentKey {
+                        Database.fetchUser(with: uid) { (user) in
+                        self.users.append(user)
+                        self.tableView.reloadData()
+                        }
+                    }
+                }
+                self.userCurrentKey = first.key
+            }
+        }
+    }
+    
+    func fetchProfiles() {
+        
+        if currentKey == nil {
+            
+            // initial data pull
+            USER_REF.queryLimited(toLast: 8).observeSingleEvent(of: .value) { (snapshot) in
+                self.tableView.refreshControl?.endRefreshing()
+
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach { (snapshot) in
+                    let uid = snapshot.key
+                    
+                    Database.fetchUser(with: uid) { (user) in
+                        self.users.append(user)
+                        self.collectionView.reloadData()
+                    }
+                }
+                self.userCurrentKey = first.key
+            }
+        } else {
+            
+            // paginate here
+            USER_REF.queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 9).observeSingleEvent(of: .value) { (snapshot) in
                 
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }

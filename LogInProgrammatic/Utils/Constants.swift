@@ -32,6 +32,8 @@ let POST_LIKES_REF = DB_REF.child("post-likes")
 
 let COMMENT_REF = DB_REF.child("comments")
 
+let REPORT_REF = DB_REF.child("reports")
+
 let NOTIFICATIONS_REF = DB_REF.child("notifications")
 
 let MESSAGES_REF = DB_REF.child("messages")

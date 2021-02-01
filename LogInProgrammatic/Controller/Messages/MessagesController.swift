@@ -18,6 +18,7 @@ class MessagesController: UITableViewController {
     var messages = [Message]()
     var messagesDictionary = [String: Message]()
     var userUid: String?
+    var currentKey: String?
     
     // MARK: - Init
     override func viewDidLoad() {
@@ -50,6 +51,14 @@ class MessagesController: UITableViewController {
         cell.message = messages[indexPath.row]
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if messages.count > 4 {
+            if indexPath.item == messages.count - 1 {
+                fetchMessages()
+            }
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -120,17 +129,14 @@ class MessagesController: UITableViewController {
         self.messages.removeAll()
         self.messagesDictionary.removeAll()
         self.tableView.reloadData()
-        
+
         USER_MESSAGES_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-            
+
             let uid = snapshot.key
-            
+
             USER_MESSAGES_REF.child(currentUid).child(uid).observe(.childAdded) { (snapshot) in
-                
                 let messageId = snapshot.key
-                
                 self.fetchMessage(withMessageId: messageId)
-                
             }
         }
     }

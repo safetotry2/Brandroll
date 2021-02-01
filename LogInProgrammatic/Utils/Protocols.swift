@@ -35,6 +35,10 @@ protocol NotitificationCellDelegate {
     func handlePostTapped(for cell: NotificationCell)
 }
 
+protocol SearchProfileCellDelegate {
+    func handleFollowTapped(for cell: SearchProfileCell)
+}
+
 protocol Printable {
     var description: String { get }
 }

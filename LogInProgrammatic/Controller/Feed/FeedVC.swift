@@ -58,7 +58,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
 
         fetchPosts()
 
-        updateUserFeeds()
+        //updateUserFeeds()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -181,14 +181,38 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         } else {
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
+            // Report Post
             alertController.addAction(UIAlertAction(title: "Report", style: .default, handler: { (_) in
-                self.dismiss(animated: true, completion: nil)
+                
+                guard let postId = post.postId else { return }
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                let creationDate = Int(NSDate().timeIntervalSince1970)
+                
+                let values = ["creationDate": creationDate,
+                              "uid": uid] as [String : Any]
+                //let dictionaryValues = ["creationDate": creationDate]
+                //let values = [uid: dictionaryValues]
+                
+                REPORT_REF.child(postId).childByAutoId().updateChildValues(values)
+                
+                print("you've pressed report")
+
             }))
             
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             
             present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    func handleReport() {
+        guard let postId = self.post?.postId else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
+        let values = ["creationDate": creationDate,
+                      "uid": uid] as [String : Any]
+        REPORT_REF.child(postId).childByAutoId().updateChildValues(values)
     }
     
     func handleLikeTapped(for cell: FeedCell) {
@@ -303,29 +327,29 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     //MARK: - API
     
     // The function below 1) identifies the individuals that the current user is following, 2) accesses all of their posts, and then 3) updates the current user's user-feed data structure with these posts. This function will become more meaningful when the original fetchPosts function (see below) is deployed which will populate the current user's feed with posts from individuals they follow as well as their own.
-    func updateUserFeeds() {
-        
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
-        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-            
-            let followingUserId = snapshot.key
-            
-            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
-                
-                let postId = snapshot.key
-                
-                USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
-            }
-        }
-        
-        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-            
-            let postId = snapshot.key
-            
-            USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
-        }
-    }
+//    func updateUserFeeds() {
+//
+//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+//
+//        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+//
+//            let followingUserId = snapshot.key
+//
+//            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
+//
+//                let postId = snapshot.key
+//
+//                USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+//            }
+//        }
+//
+//        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+//
+//            let postId = snapshot.key
+//
+//            USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+//        }
+//    }
     
     // The function below updates the Home Feed of the current user with posts from all users, to create a 'Global Feed.'
     func fetchPosts() {

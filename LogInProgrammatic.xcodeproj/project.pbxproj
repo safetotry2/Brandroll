@@ -27,6 +27,7 @@
 		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
 		043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */; };
 		043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3670259A3FE20094CE4F /* ChatInputTextView.swift */; };
+		0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
 		045C64B4250844DC002E8E1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 045C64B2250844DC002E8E1C /* Main.storyboard */; };
@@ -81,6 +82,7 @@
 		043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		043D3670259A3FE20094CE4F /* ChatInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputTextView.swift; sourceTree = "<group>"; };
 		043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogInProgrammatic.entitlements; sourceTree = "<group>"; };
+		0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProfileCell.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* LogInProgrammatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogInProgrammatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045C64AE250844DC002E8E1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -280,7 +282,6 @@
 			isa = PBXGroup;
 			children = (
 				045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */,
-				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
 				04333282253B4AB800C26BB6 /* FollowLikeCell.swift */,
 				043332862540FDC100C26BB6 /* SelectPhotoCell.swift */,
 				043332882540FE2D00C26BB6 /* SelectPhotoHeader.swift */,
@@ -288,7 +289,9 @@
 				04333290254727DA00C26BB6 /* FeedCell.swift */,
 				0404469225786C240029F738 /* CommentCell.swift */,
 				04044696257A9A450029F738 /* NotificationCell.swift */,
+				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
 				04FA75622580325E00814F9E /* SearchPostCell.swift */,
+				0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */,
 			);
 			path = Social;
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				04FA756F258295D700814F9E /* Message.swift in Sources */,
 				043332852540FCA700C26BB6 /* SelectImageVC.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
+				0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */,
 				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
 				04044697257A9A450029F738 /* NotificationCell.swift in Sources */,
 				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
