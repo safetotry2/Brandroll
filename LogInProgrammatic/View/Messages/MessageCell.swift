@@ -16,14 +16,24 @@ class MessageCell: UITableViewCell {
     var delegate: MessageCellDelegate?
     
     var message: Message? {
-        
         didSet {
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
             
-            guard let messageText = message?.messageText else { return }
-            guard let messageTime = message?.creationDate else { return }
-
+            let messageText = message?.messageText ?? ""
             messageTextLabel.text = messageText
-            timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
+            
+            if let messageTime = message?.creationDate {
+                timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
+            }
+            
+            var dotIsHidden = message?.seen == true
+            
+            if message?.fromId == currentUid {
+                dotIsHidden = true
+            }
+            
+            dot.isHidden = dotIsHidden
+            
             delegate?.configureUserData(for: self)
         }
     }
@@ -59,6 +69,15 @@ class MessageCell: UITableViewCell {
         return label
     }()
     
+    private lazy var dot: UIView = {
+        let dot = UIView()
+        dot.isHidden = true
+        dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        dot.layer.cornerRadius = 3
+        dot.translatesAutoresizingMaskIntoConstraints = false
+        return dot
+    }()
+
     // MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -79,6 +98,14 @@ class MessageCell: UITableViewCell {
 
         addSubview(messageTextLabel)
         messageTextLabel.anchor(top: nameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 1, paddingLeft: 6, paddingBottom: 0, paddingRight: 12, width: self.frame.width - 96, height: messageTextLabel.frame.height)
+        
+        addSubview(dot)
+        NSLayoutConstraint.activate([
+            dot.widthAnchor.constraint(equalToConstant: 6),
+            dot.heightAnchor.constraint(equalToConstant: 6),
+            dot.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dot.trailingAnchor.constraint(equalTo: profileImageView.leadingAnchor, constant: -8)
+        ])
     }
     
     required init?(coder: NSCoder) {

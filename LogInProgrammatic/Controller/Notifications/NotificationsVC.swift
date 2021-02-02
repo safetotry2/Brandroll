@@ -21,6 +21,16 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     var notifications = [AppNotif]()
     
+    private let sendBarButtonDot = UIView()
+    private lazy var sendBarButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
+        button.addTarget(self, action: #selector(handleShowMessages), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,13 +47,45 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         fetchNotifications()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        checkSeenMessages()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        setAllNotifToViewed()
+    }
+    
+    private func checkSeenMessages() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        func continueCheckingSeenMessages() {
+            let areAllMessagesSeen = MessagesController.messages.filter {
+                !$0.seen && $0.fromId != currentUid
+            }.count == 0
+            sendBarButtonDot.isHidden = areAllMessagesSeen
+        }
+        
+        if MessagesController.messages.count == 0 {
+            MessagesUtils.fetchMessages(userId: currentUid) { _ in
+                continueCheckingSeenMessages()
+            }
+        } else {
+            continueCheckingSeenMessages()
+        }
+    }
+    
+    private func setAllNotifToViewed() {
         notifications.forEach { (notif) in
             notif.locallyViewed = true
         }
         
+        if let tabBarController = self.tabBarController as? MainTabVC {
+            tabBarController.dot.isHidden = true
+        }
         tableView.reloadData()
     }
     
@@ -157,9 +199,21 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     private func configureNavigationBar() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"
+        
+        sendBarButtonDot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        sendBarButtonDot.isHidden = true
+        sendBarButtonDot.layer.cornerRadius = 3
+        sendBarButtonDot.translatesAutoresizingMaskIntoConstraints = false
+        
+        sendBarButton.addSubview(sendBarButtonDot)
+        NSLayoutConstraint.activate([
+            sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
+            sendBarButtonDot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
+            sendBarButtonDot.widthAnchor.constraint(equalToConstant: 6),
+            sendBarButtonDot.heightAnchor.constraint(equalToConstant: 6)
+        ])
     }
     
     // MARK: - Public
@@ -210,10 +264,14 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         print("Add new notification, with ID: \(String(describing: notification.key))")
         
         if !notifications.contains(where: { $0.key == notification.key }) {
-            // BRD1.2 - prevent notification if current is chat controller.
-            if notification.notificationType == .Message,
-               UIViewController.current() is ChatController {
-                return
+            // BRD1.3
+            if notification.notificationType == .Message {
+                checkSeenMessages()
+                
+                // BRD1.2 - prevent notification if current is chat controller.
+                if UIViewController.current() is ChatController {
+                    return
+                }
             }
             
             self.notifications.append(notification)

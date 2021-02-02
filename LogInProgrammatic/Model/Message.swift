@@ -17,8 +17,11 @@ class Message {
     var fromId: String!
     var toId: String!
     var creationDate: Date!
+    var seen: Bool = false
+    var key: String!
     
-    init(dictionary: Dictionary<String, AnyObject>) {
+    init(key: String, dictionary: Dictionary<String, AnyObject>) {
+        self.key = key
         
         if let messageText = dictionary["messageText"] as? String {
             self.messageText = messageText
@@ -32,13 +35,16 @@ class Message {
             self.toId = toId
         }
         
+        if let seen = dictionary["seen"] as? Bool {
+            self.seen = seen
+        }
+        
         if let creationDate = dictionary["creationDate"] as? Double {
             self.creationDate = Date(timeIntervalSince1970: creationDate)
         }
     }
     
     func getChatPartnerId() -> String {
-        
         guard let currentUid = Auth.auth().currentUser?.uid else { return ""}
         
         if fromId == currentUid {
@@ -48,4 +54,11 @@ class Message {
         }
     }
     
+    func setSeen() {
+        seen = true
+        MESSAGES_REF
+            .child(key)
+            .child("seen")
+            .setValue(1)
+    }
 }
