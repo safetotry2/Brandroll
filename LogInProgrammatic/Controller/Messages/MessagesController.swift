@@ -21,21 +21,6 @@ class MessagesController: UITableViewController {
     var userUid: String?
     var currentKey: String?
     
-    private lazy var dot: UIView = {
-        let dot = UIView()
-        dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
-        dot.layer.cornerRadius = 3
-        dot.translatesAutoresizingMaskIntoConstraints = false
-        return dot
-    }()
-    
-    private lazy var dotContainer: UIView = {
-        let v = UIView()
-        v.backgroundColor = .blue
-        v.addSubview(dot)
-        return v
-    }()
-    
     // MARK: - Functions
     
     override func viewDidLoad() {
@@ -46,10 +31,13 @@ class MessagesController: UITableViewController {
         
         // register cell
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         // fetch messages
         fetchMessages()
-        
     }
     
     // MARK: - UITableView
@@ -96,7 +84,6 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -147,11 +134,17 @@ class MessagesController: UITableViewController {
     func fetchMessages() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
+        ProgressHUD.show()
+        
         MessagesController.messages.removeAll()
         MessagesController.messagesDictionary.removeAll()
         self.tableView.reloadData()
 
         MessagesUtils.fetchMessages(userId: currentUid) { (partnerId) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                ProgressHUD.dismiss()
+            }
+            
             self.userUid = partnerId
             
             self.tableView.reloadData()

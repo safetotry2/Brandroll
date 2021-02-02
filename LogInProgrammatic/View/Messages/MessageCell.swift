@@ -17,6 +17,8 @@ class MessageCell: UITableViewCell {
     
     var message: Message? {
         didSet {
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            
             let messageText = message?.messageText ?? ""
             messageTextLabel.text = messageText
             
@@ -24,7 +26,13 @@ class MessageCell: UITableViewCell {
                 timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
             }
             
-            dot.isHidden = message?.seen == true
+            var dotIsHidden = message?.seen == true
+            
+            if message?.fromId == currentUid {
+                dotIsHidden = true
+            }
+            
+            dot.isHidden = dotIsHidden
             
             delegate?.configureUserData(for: self)
         }
@@ -63,6 +71,7 @@ class MessageCell: UITableViewCell {
     
     private lazy var dot: UIView = {
         let dot = UIView()
+        dot.isHidden = true
         dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
         dot.layer.cornerRadius = 3
         dot.translatesAutoresizingMaskIntoConstraints = false

@@ -70,8 +70,9 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
         
         if MessagesController.messages.count == 0 {
-            MessagesUtils.fetchMessages(userId: currentUid, completion: nil)
-            continueCheckingSeenMessages()
+            MessagesUtils.fetchMessages(userId: currentUid) { _ in
+                continueCheckingSeenMessages()
+            }
         } else {
             continueCheckingSeenMessages()
         }
@@ -82,6 +83,9 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             notif.locallyViewed = true
         }
         
+        if let tabBarController = self.tabBarController as? MainTabVC {
+            tabBarController.dot.isHidden = true
+        }
         tableView.reloadData()
     }
     
@@ -199,7 +203,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         navigationItem.title = "Notifications"
         
         sendBarButtonDot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
-        sendBarButtonDot.isHidden = false
+        sendBarButtonDot.isHidden = true
         sendBarButtonDot.layer.cornerRadius = 3
         sendBarButtonDot.translatesAutoresizingMaskIntoConstraints = false
         
