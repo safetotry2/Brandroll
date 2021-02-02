@@ -64,7 +64,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         
         func continueCheckingSeenMessages() {
             let areAllMessagesSeen = MessagesController.messages.filter {
-                !$0.seen
+                !$0.seen && $0.fromId != currentUid
             }.count == 0
             sendBarButtonDot.isHidden = areAllMessagesSeen
         }

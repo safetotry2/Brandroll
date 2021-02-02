@@ -81,8 +81,13 @@ class MessagesController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = MessagesController.messages[indexPath.row]
         let chatPartnerId = message.getChatPartnerId()
+        
+        ProgressHUD.show()
         Database.fetchUser(with: chatPartnerId) { (user) in
+            ProgressHUD.dismiss()
             self.showChatController(forUser: user)
+            message.setSeen()
+            tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     

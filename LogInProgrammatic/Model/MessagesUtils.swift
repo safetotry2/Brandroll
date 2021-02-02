@@ -31,7 +31,7 @@ struct MessagesUtils {
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             
-            let message = Message(dictionary: dictionary)
+            let message = Message(key: messageId, dictionary: dictionary)
             let chatPartnerId = message.getChatPartnerId()
             
             MessagesController.messagesDictionary[chatPartnerId] = message

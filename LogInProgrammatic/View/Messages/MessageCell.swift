@@ -16,14 +16,16 @@ class MessageCell: UITableViewCell {
     var delegate: MessageCellDelegate?
     
     var message: Message? {
-        
         didSet {
-            
-            guard let messageText = message?.messageText else { return }
-            guard let messageTime = message?.creationDate else { return }
-
+            let messageText = message?.messageText ?? ""
             messageTextLabel.text = messageText
-            timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
+            
+            if let messageTime = message?.creationDate {
+                timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
+            }
+            
+            dot.isHidden = message?.seen == true
+            
             delegate?.configureUserData(for: self)
         }
     }
