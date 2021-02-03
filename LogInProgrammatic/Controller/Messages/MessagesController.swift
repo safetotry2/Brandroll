@@ -15,12 +15,14 @@ class MessagesController: UITableViewController {
     
     // MARK: - Properties
     
-    var messages = [Message]()
-    var messagesDictionary = [String: Message]()
+    static var messages = [Message]()
+    static var messagesDictionary = [String: Message]()
+    
     var userUid: String?
     var currentKey: String?
     
-    // MARK: - Init
+    // MARK: - Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,10 +31,13 @@ class MessagesController: UITableViewController {
         
         // register cell
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         // fetch messages
         fetchMessages()
-        
     }
     
     // MARK: - UITableView
@@ -42,30 +47,35 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        return MessagesController.messages.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
         cell.delegate = self
-        cell.message = messages[indexPath.row]
+        cell.message = MessagesController.messages[indexPath.row]
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if messages.count > 4 {
-            if indexPath.item == messages.count - 1 {
+        if MessagesController.messages.count > 4 {
+            if indexPath.item == MessagesController.messages.count - 1 {
                 fetchMessages()
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let message = messages[indexPath.row]
+        let message = MessagesController.messages[indexPath.row]
         let chatPartnerId = message.getChatPartnerId()
+        
+        ProgressHUD.show()
         Database.fetchUser(with: chatPartnerId) { (user) in
+            ProgressHUD.dismiss()
             self.showChatController(forUser: user)
+            message.setSeen()
+            tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     
@@ -74,14 +84,13 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
         if editingStyle == .delete {
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
             guard let userUid = userUid else { return }
             
             USER_MESSAGES_REF.child(currentUid).child(userUid).removeValue { (err, ref) in
-                self.messages.remove(at: indexPath.row)
+                MessagesController.messages.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 tableView.reloadData()
             }
@@ -123,46 +132,26 @@ class MessagesController: UITableViewController {
     // MARK: - API
     
     func fetchMessages() {
-        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        self.messages.removeAll()
-        self.messagesDictionary.removeAll()
+        ProgressHUD.show()
+        
+        MessagesController.messages.removeAll()
+        MessagesController.messagesDictionary.removeAll()
         self.tableView.reloadData()
 
-        USER_MESSAGES_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-
-            let uid = snapshot.key
-
-            USER_MESSAGES_REF.child(currentUid).child(uid).observe(.childAdded) { (snapshot) in
-                let messageId = snapshot.key
-                self.fetchMessage(withMessageId: messageId)
+        MessagesUtils.fetchMessages(userId: currentUid) { (partnerId) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                ProgressHUD.dismiss()
             }
-        }
-    }
-    
-    func fetchMessage(withMessageId messageId: String) {
-        
-        MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-
-            let message = Message(dictionary: dictionary)
-            let chatParnerId = message.getChatPartnerId()
-            self.userUid = chatParnerId
-            self.messagesDictionary[chatParnerId] = message
-            self.messages = Array(self.messagesDictionary.values)
             
-            // sort messages based on creation date of last message
-            self.messages.sort { (message1, message2) -> Bool in
-                return message1.creationDate > message2.creationDate
-            }
-
+            self.userUid = partnerId
+            
             self.tableView.reloadData()
-            let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+            let indexPath = IndexPath(item: MessagesController.messages.count - 1, section: 0)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
-    
 }
 
 extension MessagesController: MessageCellDelegate {
@@ -171,7 +160,10 @@ extension MessagesController: MessageCellDelegate {
         guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
         
         Database.fetchUser(with: chatPartnerId) { (user) in
-            cell.profileImageView.loadImage(with: user.profileImageUrl)
+            if let profileImageUrl = user.profileImageUrl {
+                cell.profileImageView.loadImage(with: profileImageUrl)
+            }
+            
             cell.nameLabel.text = user.name
         }
     }

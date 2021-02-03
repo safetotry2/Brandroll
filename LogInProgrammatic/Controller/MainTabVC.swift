@@ -10,12 +10,18 @@ import UIKit
 import Firebase
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
-
+    
     // MARK: - Properties
     
     let dot = UIView()
     var notificationIDs = [String]()
+    private var notifRefHandle: DatabaseHandle?
     
+    private (set)var feedVC: FeedVC!
+    private (set)var searchVC: SearchVC!
+    private (set)var notificationsVC: NotificationsVC!
+    private (set)var userProfileVC: UserProfileVC!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +41,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         checkIfUserIsLoggedIn()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)
-
+        
     }
     
     // MARK: - Handlers
@@ -46,29 +52,39 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     deinit {
-       NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // function to create view controllers that exist within the tab bar
     func configureViewControllers() {
         
         // home feed controller
-        let feedVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "home_unselected"), selectedImage: #imageLiteral(resourceName: "home_selected"), rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let feedNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "home_unselected"), selectedImage: #imageLiteral(resourceName: "home_selected"), rootViewController: feedVC)
         
         // search feed controller
-        let searchVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "search_unselected"), selectedImage: #imageLiteral(resourceName: "search_selected"), rootViewController: SearchVC())
+        searchVC = SearchVC()
+        let searchNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "search_unselected"), selectedImage: #imageLiteral(resourceName: "search_selected"), rootViewController: searchVC)
         
         // select image controller
         let selectImageVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"))
         
         // notification controller
-        let notificationsVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "like_unselected"), selectedImage: #imageLiteral(resourceName: "like_selected"), rootViewController: NotificationsVC())
+        notificationsVC = NotificationsVC()
+        let notificationsNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "like_unselected"), selectedImage: #imageLiteral(resourceName: "like_selected"), rootViewController: notificationsVC)
         
         // profile controller
-        let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "profile_unselected"), selectedImage: #imageLiteral(resourceName: "profile_selected"), rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let userProfileNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "profile_unselected"), selectedImage: #imageLiteral(resourceName: "profile_selected"), rootViewController: userProfileVC)
         
         // view controller to be added to tab controller
-        viewControllers = [feedVC, searchVC, selectImageVC, notificationsVC, userProfileVC]
+        viewControllers = [
+            feedNavCon,
+            searchNavCon,
+            selectImageVC,
+            notificationsNavCon,
+            userProfileNavCon
+        ]
         
         //tab bar tint color
         tabBar.tintColor = .black
@@ -118,8 +134,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - UITabBar
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        
-        //let index = viewControllers?.index(of: viewController)
         let index = viewControllers?.firstIndex(of: viewController)
         
         if index == 2 {
@@ -138,13 +152,25 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         return true
     }
     
+    // MARK: - Public
+    
+    func didLogIn() {
+        observeNotifications()
+    }
+    
+    func didLogout() {
+        if let currentUid = Auth.auth().currentUser?.uid,
+           let notifRefHandle = self.notifRefHandle {
+            NOTIFICATIONS_REF.child(currentUid)
+                .removeObserver(withHandle: notifRefHandle)
+        }
+    }
+    
     // MARK: - API
     
-    func checkIfUserIsLoggedIn() {
+    private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser == nil {
-
             DispatchQueue.main.async {
-                
                 // present login controller
                 let loginVC = LoginVC()
                 let navController = UINavigationController(rootViewController: loginVC)
@@ -156,31 +182,35 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func observeNotifications() {
-        
+    private func observeNotifications() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         self.notificationIDs.removeAll()
         
-        NOTIFICATIONS_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
-            
-            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            allObjects.forEach { (snapshot) in
+        self.dot.isHidden = true
+        
+        notifRefHandle = NOTIFICATIONS_REF
+            .child(currentUid)
+            .observe(.value) { (snapshot) in
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
-                let notificationId = snapshot.key
+                print("observeNotifications \(allObjects)")
                 
-                NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").observeSingleEvent(of: .value) { (snapshot) in
+                allObjects.forEach { (snapshot) in
+                    let notificationId = snapshot.key
                     
-                    guard let checked = snapshot.value as? Int else { return }
-                    
-                    if checked == 0 {
-                        self.dot.isHidden = false
-                    } else {
-                        self.dot.isHidden = true
-                    }
+                    NOTIFICATIONS_REF.child(currentUid)
+                        .child(notificationId)
+                        .child("checked")
+                        .observeSingleEvent(of: .value) { (snapshot) in
+                            guard let checked = snapshot.value as? Int else { return }
+                            
+                            if checked == 0 {
+                                self.dot.isHidden = false
+                            }
+                        }
                 }
+                
+                self.notificationsVC.newObservedNotification(allObjects)
             }
-        }
     }
-    
 }

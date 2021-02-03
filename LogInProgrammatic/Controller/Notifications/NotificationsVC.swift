@@ -19,11 +19,21 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     var timer: Timer?
     var currentKey: String?
     
-    var notifications = [Notification]()
-
+    var notifications = [AppNotif]()
+    
+    private let sendBarButtonDot = UIView()
+    private lazy var sendBarButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
+        button.addTarget(self, action: #selector(handleShowMessages), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // clear separator lines
         tableView.separatorColor = .clear
         
@@ -36,13 +46,55 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         // fetch notifications
         fetchNotifications()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        checkSeenMessages()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        setAllNotifToViewed()
+    }
+    
+    private func checkSeenMessages() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        func continueCheckingSeenMessages() {
+            let areAllMessagesSeen = MessagesController.messages.filter {
+                !$0.seen && $0.fromId != currentUid
+            }.count == 0
+            sendBarButtonDot.isHidden = areAllMessagesSeen
+        }
+        
+        if MessagesController.messages.count == 0 {
+            MessagesUtils.fetchMessages(userId: currentUid) { _ in
+                continueCheckingSeenMessages()
+            }
+        } else {
+            continueCheckingSeenMessages()
+        }
+    }
+    
+    private func setAllNotifToViewed() {
+        notifications.forEach { (notif) in
+            notif.locallyViewed = true
+        }
+        
+        if let tabBarController = self.tabBarController as? MainTabVC {
+            tabBarController.dot.isHidden = true
+        }
+        tableView.reloadData()
+    }
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notifications.count
     }
@@ -80,11 +132,10 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             action: #selector(popToPrevious)
         )
     }
-
+    
     // MARK: - NotificationCellDelegate Protocol
     
-    func handleFollowTapped(for cell: NotificationCell) {
-        
+    internal func handleFollowTapped(for cell: NotificationCell) {
         guard let user = cell.notification?.user else { return }
         
         if user.isFollowed {
@@ -120,7 +171,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func handleShowMessages() {
+     @objc private func handleShowMessages() {
         let messagesController = MessagesController()
         navigationController?.pushViewController(messagesController, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(
@@ -131,14 +182,14 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         )
     }
     
-    func handleReloadTable() {
+    private func handleReloadTable() {
         
         self.timer?.invalidate()
         
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortNotifications), userInfo: nil, repeats: false)
     }
     
-    @objc func handleSortNotifications() {
+    @objc private func handleSortNotifications() {
         
         self.notifications.sort { (notification1, notification2) -> Bool in
             return notification1.creationDate > notification2.creationDate
@@ -146,138 +197,119 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         self.tableView.reloadData()
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "send2"), style: .plain, target: self, action: #selector(handleShowMessages))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"
+        
+        sendBarButtonDot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+        sendBarButtonDot.isHidden = true
+        sendBarButtonDot.layer.cornerRadius = 3
+        sendBarButtonDot.translatesAutoresizingMaskIntoConstraints = false
+        
+        sendBarButton.addSubview(sendBarButtonDot)
+        NSLayoutConstraint.activate([
+            sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
+            sendBarButtonDot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
+            sendBarButtonDot.widthAnchor.constraint(equalToConstant: 6),
+            sendBarButtonDot.heightAnchor.constraint(equalToConstant: 6)
+        ])
+    }
+    
+    // MARK: - Public
+    
+    /// Receives newly observed data from `MainTabVC`.
+    /// The parameter `snapshots` contains old notifications.
+    func newObservedNotification(_ snapshots: [DataSnapshot]) {
+        let unCheckedSnapshots = snapshots.filter { (snapshot) -> Bool in
+            if let dictionary = snapshot.value as? Dictionary<String, AnyObject>,
+               let checked = dictionary["checked"] as? Int,
+               checked == 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        unCheckedSnapshots.forEach { (snapshot) in
+            fetchNotifications(withNotificationId: snapshot.key, dataSnapshot: snapshot)
+        }
     }
     
     // MARK: - API
     
-    func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
+    private func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
         guard let uid = dictionary["uid"] as? String else { return }
-
+        
         Database.fetchUser(with: uid) { (user) in
-
+            
             // if notification is for post
             if let postId = dictionary["postId"] as? String {
-
+                
                 Database.fetchPost(with: postId) { (post) in
-                    let notification = Notification(user: user, post: post, dictionary: dictionary)
-                    self.notifications.append(notification)
-                    self.handleSortNotifications()
-                    self.handleReloadTable()
+                    let notification = AppNotif(key: snapshot.key, user: user, post: post, dictionary: dictionary)
+                    self.addNewNotification(notification)
                 }
             } else {
-                let notification = Notification(user: user, dictionary: dictionary)
-                self.notifications.append(notification)
-                self.handleSortNotifications()
-                self.handleReloadTable()
+                let notification = AppNotif(key: snapshot.key, user: user, dictionary: dictionary)
+                self.addNewNotification(notification)
             }
         }
         NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
     }
-
-
-    func fetchNotifications() {
-
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-
-        if currentKey == nil {
-            NOTIFICATIONS_REF.child(currentUid).queryLimited(toLast: 12).observeSingleEvent(of: .value) { (snapshot) in
-
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-
-                allObjects.forEach { (snapshot) in
-                    let notificationId = snapshot.key
-                    self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
+    
+    private func addNewNotification(_ notification: AppNotif) {
+        print("Add new notification, with ID: \(String(describing: notification.key))")
+        
+        if !notifications.contains(where: { $0.key == notification.key }) {
+            // BRD1.3
+            if notification.notificationType == .Message {
+                checkSeenMessages()
+                
+                // BRD1.2 - prevent notification if current is chat controller.
+                if UIViewController.current() is ChatController {
+                    return
                 }
-                self.currentKey = first.key
+            }
+            
+            self.notifications.append(notification)
+            self.handleSortNotifications()
+            self.handleReloadTable()
+        }
+    }
+    
+    private func fetchNotifications() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        if currentKey == nil {
+            NOTIFICATIONS_REF.child(currentUid)
+                .queryLimited(toLast: 12)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    self.handleNotificationQuerySnapshot(snapshot)
             }
         } else {
-
-            NOTIFICATIONS_REF.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 13).observeSingleEvent(of: .value) { (snapshot) in
-
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-
-                allObjects.forEach { (snapshot) in
-                    let notificationId = snapshot.key
-
-                    if notificationId != self.currentKey {
-                        self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
-                    }
-                }
-                self.currentKey = first.key
+            NOTIFICATIONS_REF.child(currentUid)
+                .queryOrderedByKey()
+                .queryEnding(atValue: self.currentKey)
+                .queryLimited(toLast: 13)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    self.handleNotificationQuerySnapshot(snapshot)
             }
         }
     }
     
-//    func fetchNotifications() {
-//
-//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//
-//        NOTIFICATIONS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-//
-//            let notificationId = snapshot.key
-//            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-//            guard let uid = dictionary["uid"] as? String else { return }
-//
-//            Database.fetchUser(with: uid) { (user) in
-//
-//                // if the notification has a 'postId' meaning that the notification is for a like or comment in a post
-//                if let postId = dictionary["postId"] as? String {
-//
-//                    Database.fetchPost(with: postId) { (post) in
-//
-//                        let notification = Notification(user: user, post: post, dictionary: dictionary)
-//                        self.notifications.append(notification)
-//                        self.tableView.reloadData()
-//                    }
-//                } else {
-//
-//                    let notification = Notification(user: user, dictionary: dictionary)
-//                    self.notifications.append(notification)
-//                    self.tableView.reloadData()
-//                }
-//            }
-//            NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
-//        }
-//    }
-    
-//   func fetchNotifications() {
-//       guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//
-//       NOTIFICATIONS_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
-//           guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-//
-//           allObjects.forEach({ (snapshot) in
-//               let notificationId = snapshot.key
-//               guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-//               guard let uid = dictionary["uid"] as? String else { return }
-//
-//               Database.fetchUser(with: uid, completion: { (user) in
-//
-//                   // if notification is for post
-//                   if let postId = dictionary["postId"] as? String {
-//                       Database.fetchPost(with: postId, completion: { (post) in
-//                           let notification = Notification(user: user, post: post, dictionary: dictionary)
-//                           self.notifications.append(notification)
-//                           self.handleReloadTable()
-//                       })
-//                   } else {
-//                       let notification = Notification(user: user, dictionary: dictionary)
-//                       self.notifications.append(notification)
-//                       self.handleReloadTable()
-//                   }
-//               })
-//               NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
-//           })
-//       }
-//   }
-    
+    private func handleNotificationQuerySnapshot(_ snapshot: DataSnapshot) {
+        print("handleNotificationQuerySnapshot: \(snapshot)")
+        
+        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+        
+        allObjects.forEach { (snapshot) in
+            let notificationId = snapshot.key
+            self.fetchNotifications(withNotificationId: notificationId, dataSnapshot: snapshot)
+        }
+        self.currentKey = first.key
+    }
 }
