@@ -20,7 +20,7 @@ class Post {
     var user: User?
     var didLike = false
     
-    init(postId: String!, user: User, dictionary: Dictionary<String, AnyObject>) {
+    init(postId: String!, user: User?, dictionary: Dictionary<String, AnyObject>) {
         
         self.postId = postId
         

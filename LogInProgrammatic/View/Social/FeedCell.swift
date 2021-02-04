@@ -26,12 +26,12 @@ class FeedCell: UICollectionViewCell {
             guard let likes = post?.likes else { return }
             
             Database.fetchUser(with: ownerUid) { (user) in
-                if let profileImageUrl = user.profileImageUrl {
+                if let profileImageUrl = user?.profileImageUrl {
                     self.profileImageView.loadImage(with: profileImageUrl)
                 }
                 
-                self.fullnameButton.setTitle(user.name, for: .normal)
-                self.occupationLabel.text = user.occupation
+                self.fullnameButton.setTitle(user?.name ?? "", for: .normal)
+                self.occupationLabel.text = user?.occupation ?? ""
                 self.configureCaption(user: user)
             }
             
@@ -214,12 +214,12 @@ class FeedCell: UICollectionViewCell {
         }
     }
     
-    func configureCaption(user: User) {
+    func configureCaption(user: User?) {
         
         guard let post = self.post else { return }
         guard let caption = post.caption else { return }
         
-        let attributedText = NSMutableAttributedString(string: user.username, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
+        let attributedText = NSMutableAttributedString(string: user?.username ?? "", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
         
         attributedText.append(NSAttributedString(string: " \(caption)", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)]))
         

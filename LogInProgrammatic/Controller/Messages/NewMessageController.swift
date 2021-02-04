@@ -77,6 +77,7 @@ class NewMessageController: UITableViewController {
             
             if uid != Auth.auth().currentUser?.uid {
                 Database.fetchUser(with: uid) { (user) in
+                    guard let user = user else { return }
                     self.users.append(user)
                     self.tableView.reloadData()
                 }

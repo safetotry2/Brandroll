@@ -42,13 +42,13 @@ class AppNotif {
     var uid: String!
     var postId: String?
     var post: Post?
-    var user: User!
+    var user: User?
     var type: Int?
     var notificationType: NotificationType!
     var didCheck = false
     var locallyViewed = true
     
-    init(key: String, user: User, post: Post? = nil, dictionary: Dictionary<String, AnyObject>) {
+    init(key: String, user: User?, post: Post? = nil, dictionary: Dictionary<String, AnyObject>) {
         self.key = key
         self.user = user
         

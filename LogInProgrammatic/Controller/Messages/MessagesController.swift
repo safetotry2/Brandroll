@@ -76,6 +76,7 @@ class MessagesController: UITableViewController {
         ProgressHUD.show()
         Database.fetchUser(with: chatPartnerId) { (user) in
             ProgressHUD.dismiss()
+            guard let user = user else { return }
             self.showChatController(forUser: user)
             message.setSeen()
             tableView.reloadRows(at: [indexPath], with: .none)
@@ -164,11 +165,11 @@ extension MessagesController: MessageCellDelegate {
         guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
         
         Database.fetchUser(with: chatPartnerId) { (user) in
-            if let profileImageUrl = user.profileImageUrl {
+            if let profileImageUrl = user?.profileImageUrl {
                 cell.profileImageView.loadImage(with: profileImageUrl)
             }
             
-            cell.nameLabel.text = user.name
+            cell.nameLabel.text = user?.name ?? ""
         }
     }
 }
