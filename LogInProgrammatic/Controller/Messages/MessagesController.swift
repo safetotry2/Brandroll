@@ -33,11 +33,20 @@ class MessagesController: UITableViewController {
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        MessagesController.messages.removeAll()
+        MessagesController.messagesDictionary.removeAll()
+        self.tableView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // fetch messages
-        fetchMessages(shouldClearOldData: true)
+        fetchMessages()
     }
     
     // MARK: - UITableView
@@ -135,17 +144,10 @@ class MessagesController: UITableViewController {
     
     // MARK: - API
     
-    func fetchMessages(shouldClearOldData: Bool = false) {
+    func fetchMessages() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         ProgressHUD.show()
-        
-        if shouldClearOldData {
-            MessagesController.messages.removeAll()
-            MessagesController.messagesDictionary.removeAll()
-            self.tableView.reloadData()
-        }
-        
         MessagesUtils.fetchMessages(userId: currentUid) { (partnerId) in
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 ProgressHUD.dismiss()
