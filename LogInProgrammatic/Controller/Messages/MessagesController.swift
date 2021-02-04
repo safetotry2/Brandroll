@@ -33,8 +33,8 @@ class MessagesController: UITableViewController {
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         // fetch messages
         fetchMessages(shouldClearOldData: true)
