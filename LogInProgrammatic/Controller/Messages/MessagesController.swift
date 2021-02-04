@@ -37,7 +37,7 @@ class MessagesController: UITableViewController {
         super.viewWillAppear(animated)
         
         // fetch messages
-        fetchMessages()
+        fetchMessages(shouldClearOldData: true)
     }
     
     // MARK: - UITableView
@@ -60,7 +60,10 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if MessagesController.messages.count > 4 {
-            if indexPath.item == MessagesController.messages.count - 1 {
+            let lastStoredMessage = MessagesController.messages.last
+            let previousFetchedMessage = MessagesUtils.lastFetchedMessage
+            
+            if indexPath.item == MessagesController.messages.count - 1 && lastStoredMessage != previousFetchedMessage {
                 fetchMessages()
             }
         }
@@ -131,15 +134,17 @@ class MessagesController: UITableViewController {
     
     // MARK: - API
     
-    func fetchMessages() {
+    func fetchMessages(shouldClearOldData: Bool = false) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         ProgressHUD.show()
         
-        MessagesController.messages.removeAll()
-        MessagesController.messagesDictionary.removeAll()
-        self.tableView.reloadData()
-
+        if shouldClearOldData {
+            MessagesController.messages.removeAll()
+            MessagesController.messagesDictionary.removeAll()
+            self.tableView.reloadData()
+        }
+        
         MessagesUtils.fetchMessages(userId: currentUid) { (partnerId) in
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 ProgressHUD.dismiss()
@@ -155,7 +160,6 @@ class MessagesController: UITableViewController {
 }
 
 extension MessagesController: MessageCellDelegate {
-    
     func configureUserData(for cell: MessageCell) {
         guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
         

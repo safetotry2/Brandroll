@@ -62,3 +62,11 @@ class Message {
             .setValue(1)
     }
 }
+
+// MARK: - Equatable
+
+extension Message: Equatable {
+    static func == (lhs: Message, rhs: Message) -> Bool {
+        return lhs.key == rhs.key
+    }
+}
