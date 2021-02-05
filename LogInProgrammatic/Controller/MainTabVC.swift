@@ -21,7 +21,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     private (set)var searchVC: SearchVC!
     private (set)var notificationsVC: NotificationsVC!
     private (set)var userProfileVC: UserProfileVC!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -221,6 +221,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
            let partnerId = chatCon.user?.uid {
             
             if fromId == partnerId {
+                self.dot.isHidden = true
                 return
             }
         }

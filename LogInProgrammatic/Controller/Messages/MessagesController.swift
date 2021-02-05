@@ -82,12 +82,13 @@ class MessagesController: UITableViewController {
         let message = MessagesController.messages[indexPath.row]
         let chatPartnerId = message.getChatPartnerId()
         
+        message.setSeen()
+        
         ProgressHUD.show()
         Database.fetchUser(with: chatPartnerId) { (user) in
             ProgressHUD.dismiss()
             guard let user = user else { return }
             self.showChatController(forUser: user)
-            message.setSeen()
             tableView.reloadRows(at: [indexPath], with: .none)
         }
     }

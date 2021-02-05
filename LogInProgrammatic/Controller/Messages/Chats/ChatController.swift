@@ -192,7 +192,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let message = Message(key: messageId, dictionary: dictionary)
-            message.setSeen()
             self.messages.append(message)
 
             DispatchQueue.main.async {
