@@ -18,6 +18,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var user: User?
     var message: Message?
     var messages = [Message]()
+    
+    private var chatsRefHandle: DatabaseHandle?
         
     lazy var containerView: ChatInputAccessoryView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
@@ -54,7 +56,15 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
-
+        
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              let chatPartnerId = self.user?.uid,
+              let chatsRefHandle = self.chatsRefHandle else { return }
+        
+        USER_MESSAGES_REF
+            .child(currentUid)
+            .child(chatPartnerId)
+            .removeObserver(withHandle: chatsRefHandle)
     }
     
     override var inputAccessoryView: UIView? {
@@ -176,14 +186,15 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // MARK: - API
     
     func observeMessages() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard let chatPartnerId = self.user?.uid else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              let chatPartnerId = self.user?.uid else { return }
         
-        USER_MESSAGES_REF
+        chatsRefHandle = USER_MESSAGES_REF
             .child(currentUid)
             .child(chatPartnerId)
             .observe(.childAdded) { (snapshot) in
                 let messageId = snapshot.key
+                print("OBSERVE MESSAGES FROM CHAT CONTROLLER! 🌸🌸🌸")
                 self.fetchMessage(withMessageId: messageId)
             }
     }
@@ -192,6 +203,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let message = Message(key: messageId, dictionary: dictionary)
+            message.setSeen()
             self.messages.append(message)
 
             DispatchQueue.main.async {

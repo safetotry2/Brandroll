@@ -26,7 +26,7 @@ class MessageCell: UITableViewCell {
                 timeStampLabel.text = messageTime.timeOrDateToDisplay(from: messageTime)
             }
             
-            var dotIsHidden = message?.seen == true
+            var dotIsHidden = message?.seen == 1
             
             if message?.fromId == currentUid {
                 dotIsHidden = true

@@ -17,7 +17,7 @@ class Message {
     var fromId: String!
     var toId: String!
     var creationDate: Date!
-    var seen: Bool = false
+    var seen: Int = 0
     var key: String!
     
     init(key: String, dictionary: Dictionary<String, AnyObject>) {
@@ -35,7 +35,7 @@ class Message {
             self.toId = toId
         }
         
-        if let seen = dictionary["seen"] as? Bool {
+        if let seen = dictionary["seen"] as? Int {
             self.seen = seen
         }
         
@@ -55,7 +55,11 @@ class Message {
     }
     
     func setSeen() {
-        seen = true
+        // Only proceed if we are setting seen to the message of the partner.
+        // and not our own message.
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              currentUid != fromId else { return }
+        seen = 1
         MESSAGES_REF
             .child(key)
             .child("seen")
