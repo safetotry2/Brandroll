@@ -255,6 +255,7 @@ class SignUpVC: UIViewController {
             let mainTabVC = UIApplication.shared.windows.filter({$0.isKeyWindow})
                 .first?.rootViewController as? MainTabVC
             mainTabVC?.configureViewControllers()
+            mainTabVC?.didLogIn()
             
             self.dismiss(animated: true, completion: nil)
         }

@@ -149,6 +149,13 @@ class MessagesController: UITableViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         ProgressHUD.show()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            // Just in case for 5 seconds nothing happens,
+            // remove the HUD. This happens because Firebase won't return a callback if we have an empty data.
+            ProgressHUD.dismiss()
+        }
+        
         MessagesUtils.fetchMessages(userId: currentUid) { (partnerId) in
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 ProgressHUD.dismiss()
