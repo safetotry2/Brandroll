@@ -194,7 +194,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             .child(chatPartnerId)
             .observe(.childAdded) { (snapshot) in
                 let messageId = snapshot.key
-                print("OBSERVE MESSAGES FROM CHAT CONTROLLER! 🌸🌸🌸")
                 self.fetchMessage(withMessageId: messageId)
             }
     }
