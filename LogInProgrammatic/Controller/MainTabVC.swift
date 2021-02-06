@@ -21,7 +21,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     private (set)var searchVC: SearchVC!
     private (set)var notificationsVC: NotificationsVC!
     private (set)var userProfileVC: UserProfileVC!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -201,16 +201,33 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                     NOTIFICATIONS_REF.child(currentUid)
                         .child(notificationId)
                         .child("checked")
-                        .observeSingleEvent(of: .value) { (snapshot) in
-                            guard let checked = snapshot.value as? Int else { return }
+                        .observeSingleEvent(of: .value) { (snapshotChecked) in
+                            guard let checked = snapshotChecked.value as? Int,
+                                  let dic = snapshot.value as? [String : Any],
+                                  let fromId = dic["uid"] as? String else { return }
                             
-                            if checked == 0 {
-                                self.dot.isHidden = false
-                            }
+                            self.setDotNotifToHiddenIfPossible(checked: checked, fromId: fromId)
                         }
                 }
                 
                 self.notificationsVC.newObservedNotification(allObjects)
             }
+    }
+    
+    /// Checks if we are ought to proceed to hiding the dot navBar notif.
+    private func setDotNotifToHiddenIfPossible(checked: Int, fromId: String) {
+        if UIViewController.current() is ChatController,
+           let chatCon = UIViewController.current() as? ChatController,
+           let partnerId = chatCon.user?.uid {
+            
+            if fromId == partnerId {
+                self.dot.isHidden = true
+                return
+            }
+        }
+        
+        if checked == 0 {
+            self.dot.isHidden = false
+        }
     }
 }

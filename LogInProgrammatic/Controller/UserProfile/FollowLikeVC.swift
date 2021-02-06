@@ -163,9 +163,8 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
     
     func fetchUsers(withUid uid: String) {
         Database.fetchUser(with: uid) { (user) in
-            
+            guard let user = user else { return }
             self.users.append(user)
-            
             self.tableView.reloadData()
         }
     }

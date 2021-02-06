@@ -11,6 +11,8 @@ import Foundation
 struct MessagesUtils {
     typealias FetchMessageCompletion = ((_ chatPartnerId: String) -> Void)?
     
+    static var lastFetchedMessage: Message?
+    
     static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
         USER_MESSAGES_REF
             .child(userId)
@@ -41,6 +43,8 @@ struct MessagesUtils {
             MessagesController.messages.sort { (message1, message2) -> Bool in
                 return message1.creationDate > message2.creationDate
             }
+            
+            MessagesUtils.lastFetchedMessage = MessagesController.messages.last
             
             // completion
             block?(chatPartnerId)

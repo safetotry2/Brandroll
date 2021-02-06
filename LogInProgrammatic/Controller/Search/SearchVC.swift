@@ -24,14 +24,14 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     var posts = [Post]()
     var currentKey: String?
     var userCurrentKey: String?
-
+    
     private let reuseIdentifier = "SearchUserCell"
     
     // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // register cell classes
         tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
         
@@ -49,19 +49,19 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch profiles
         fetchProfiles()
-
+        
     }
-
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if inSearchMode {
             return filteredUsers.count
@@ -140,7 +140,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.addSubview(collectionView)
         view.addSubview(collectionView)
         tableView.separatorColor = .clear
-                        
+        
         collectionView.register(SearchProfileCell.self, forCellWithReuseIdentifier: "SearchProfileCell")
     }
     
@@ -158,7 +158,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
+        
         if users.count > 8 {
             if indexPath.item == users.count - 1 {
                 fetchProfiles()
@@ -178,16 +178,16 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-//        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-//        
-//        //feedVC.viewSinglePost = true
-//        
-//        feedVC.post = posts[indexPath.item]
-//        
-//        navigationController?.pushViewController(feedVC, animated: true)
-//    }
+    //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    //
+    //        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+    //
+    //        //feedVC.viewSinglePost = true
+    //
+    //        feedVC.post = posts[indexPath.item]
+    //
+    //        navigationController?.pushViewController(feedVC, animated: true)
+    //    }
     
     
     // MARK: - Handlers
@@ -246,15 +246,15 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-                
+        
         if searchText.isEmpty || searchText == " " {
             inSearchMode = false
             tableView.reloadData()
         } else {
             inSearchMode = true
-                        
+            
             filteredUsers = users.filter({ (user) -> Bool in
-                                
+                
                 return (user.name?.contains(searchText) ?? true) || (user.occupation?.contains(searchText) ?? true)
                 
             })
@@ -281,7 +281,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         if userCurrentKey == nil {
             
             USER_REF.queryLimited(toLast: 12).observeSingleEvent(of: .value) { (snapshot) in
-               
+                
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
@@ -289,6 +289,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                     let uid = snapshot.key
                     
                     Database.fetchUser(with: uid) { (user) in
+                        guard let user = user else { return }
                         self.users.append(user)
                         self.tableView.reloadData()
                     }
@@ -306,8 +307,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                     
                     if uid != self.userCurrentKey {
                         Database.fetchUser(with: uid) { (user) in
-                        self.users.append(user)
-                        self.tableView.reloadData()
+                            guard let user = user else { return }
+                            self.users.append(user)
+                            self.tableView.reloadData()
                         }
                     }
                 }
@@ -323,7 +325,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             // initial data pull
             USER_REF.queryLimited(toLast: 8).observeSingleEvent(of: .value) { (snapshot) in
                 self.tableView.refreshControl?.endRefreshing()
-
+                
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
@@ -331,6 +333,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                     let uid = snapshot.key
                     
                     Database.fetchUser(with: uid) { (user) in
+                        guard let user = user else { return }
                         self.users.append(user)
                         self.collectionView.reloadData()
                     }
@@ -350,8 +353,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                     
                     if uid != self.userCurrentKey {
                         Database.fetchUser(with: uid) { (user) in
-                        self.users.append(user)
-                        self.tableView.reloadData()
+                            guard let user = user else { return }
+                            self.users.append(user)
+                            self.tableView.reloadData()
                         }
                     }
                 }
@@ -367,7 +371,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             // initial data pull
             POSTS_REF.queryLimited(toLast: 21).observeSingleEvent(of: .value) { (snapshot) in
                 self.tableView.refreshControl?.endRefreshing()
-
+                
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 

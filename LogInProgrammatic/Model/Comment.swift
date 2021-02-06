@@ -17,7 +17,7 @@ class Comment {
     var creationDate: Date!
     var user: User?
     
-    init(user: User, dictionary: Dictionary<String, AnyObject>) {
+    init(user: User?, dictionary: Dictionary<String, AnyObject>) {
         
         self.user = user
         
