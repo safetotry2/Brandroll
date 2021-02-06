@@ -16,6 +16,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     let dot = UIView()
     var notificationIDs = [String]()
     private var notifRefHandle: DatabaseHandle?
+    private var notifRefHandleChildAdded: DatabaseHandle?
     
     private (set)var feedVC: FeedVC!
     private (set)var searchVC: SearchVC!
@@ -159,10 +160,15 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     func didLogout() {
-        if let currentUid = Auth.auth().currentUser?.uid,
-           let notifRefHandle = self.notifRefHandle {
-            NOTIFICATIONS_REF.child(currentUid)
-                .removeObserver(withHandle: notifRefHandle)
+        if let currentUid = Auth.auth().currentUser?.uid {
+            if let notifRefHandle = self.notifRefHandle {
+                NOTIFICATIONS_REF.child(currentUid)
+                    .removeObserver(withHandle: notifRefHandle)
+            }
+            if let notifRefHandleChildAdded = self.notifRefHandleChildAdded {
+                NOTIFICATIONS_REF.child(currentUid)
+                    .removeObserver(withHandle: notifRefHandleChildAdded)
+            }
         }
     }
     
@@ -193,52 +199,65 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             .observe(.value) { (snapshot) in
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
-                print("observeNotifications \(allObjects)")
-                
                 allObjects.forEach { (snapshot) in
                     let notificationId = snapshot.key
+                                        
+                    guard let dic = snapshot.value as? [String : AnyObject],
+                          let userIdFromNotification = dic["uid"] as? String else { return }
                     
-                    NOTIFICATIONS_REF.child(currentUid)
-                        .child(notificationId)
-                        .child("checked")
-                        .observeSingleEvent(of: .value) { (snapshotChecked) in
-                            guard let checked = snapshotChecked.value as? Int,
-                                  let dic = snapshot.value as? [String : Any],
-                                  let userIdFromNotification = dic["uid"] as? String else { return }
-                            
-                            let type = dic["type"] as? Int ?? 0
-                            let notifType = AppNotif.NotificationType(index: type)
-                            
-                            self.setDotNotifToHiddenIfPossible(checked: checked, userIdFromNotification: userIdFromNotification, notifType: notifType)
-                        }
+                    let appNotif = AppNotif(key: notificationId, user: nil, dictionary: dic)
+                    self.setDotNotifToHiddenIfPossibleForChatController(userIdFromNotification: userIdFromNotification, appNotif: appNotif)
                 }
                 
                 self.notificationsVC.newObservedNotification(allObjects)
             }
+        
+        notifRefHandleChildAdded = NOTIFICATIONS_REF
+            .child(currentUid)
+            .observe(.childAdded) { (snapshot) in
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            
+                let typeSnapshot = allObjects.filter({ $0.key == "type" }).first
+                let valueType = typeSnapshot?.value as? Int ?? 0
+                
+                // Handle the on message notif type.
+                if valueType != 3 {
+                    allObjects.forEach { (snapshot) in
+                        let key = snapshot.key
+                        let val = snapshot.value as? Int
+                        
+                        if key == "checked" {
+                            self.dot.isHidden = val == 1
+                        }
+                    }
+                }
+            }
     }
     
     /// Checks if we are ought to proceed to hiding the dot navBar notif.
-    private func setDotNotifToHiddenIfPossible(checked: Int, userIdFromNotification: String, notifType: AppNotif.NotificationType) {
-        if UIViewController.current() is ChatController,
-           let chatCon = UIViewController.current() as? ChatController,
-           let currentChatmate = chatCon.user?.uid,
-           notifType == .Message {
+    private func setDotNotifToHiddenIfPossibleForChatController(userIdFromNotification: String, appNotif: AppNotif) {
+        if appNotif.locallyViewed == false,
+           appNotif.notificationType == .Message {
             
-            // Notification came from the current chat partner of the current user
-            // Set the dot to hidden. Don't show notif either.
-            if userIdFromNotification == currentChatmate {
-                self.dot.isHidden = true
+            if UIViewController.current() is ChatController,
+               let chatCon = UIViewController.current() as? ChatController,
+               let currentChatmate = chatCon.user?.uid {
+                // Notification came from the current chat partner of the current user
+                // Set the dot to hidden. Don't show notif either.
+                if userIdFromNotification == currentChatmate {
+                    self.dot.isHidden = true
+                } else {
+                    // Notification came from someone else.
+                    // Show the dot, and show the notif.
+                    self.dot.isHidden = false
+                }
             } else {
-                // Notification came from someone else.
-                // Show the dot, and show the notif.
                 self.dot.isHidden = false
             }
             
             return
         }
         
-        if checked == 0 {
-            self.dot.isHidden = false
-        }
+        
     }
 }
