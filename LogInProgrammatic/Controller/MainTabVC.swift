@@ -204,9 +204,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                         .observeSingleEvent(of: .value) { (snapshotChecked) in
                             guard let checked = snapshotChecked.value as? Int,
                                   let dic = snapshot.value as? [String : Any],
-                                  let fromId = dic["uid"] as? String else { return }
+                                  let userIdFromNotification = dic["uid"] as? String else { return }
                             
-                            self.setDotNotifToHiddenIfPossible(checked: checked, fromId: fromId)
+                            let type = dic["type"] as? Int ?? 0
+                            let notifType = AppNotif.NotificationType(index: type)
+                            
+                            self.setDotNotifToHiddenIfPossible(checked: checked, userIdFromNotification: userIdFromNotification, notifType: notifType)
                         }
                 }
                 
@@ -215,15 +218,23 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     /// Checks if we are ought to proceed to hiding the dot navBar notif.
-    private func setDotNotifToHiddenIfPossible(checked: Int, fromId: String) {
+    private func setDotNotifToHiddenIfPossible(checked: Int, userIdFromNotification: String, notifType: AppNotif.NotificationType) {
         if UIViewController.current() is ChatController,
            let chatCon = UIViewController.current() as? ChatController,
-           let partnerId = chatCon.user?.uid {
+           let currentChatmate = chatCon.user?.uid,
+           notifType == .Message {
             
-            if fromId == partnerId {
+            // Notification came from the current chat partner of the current user
+            // Set the dot to hidden. Don't show notif either.
+            if userIdFromNotification == currentChatmate {
                 self.dot.isHidden = true
-                return
+            } else {
+                // Notification came from someone else.
+                // Show the dot, and show the notif.
+                self.dot.isHidden = false
             }
+            
+            return
         }
         
         if checked == 0 {
