@@ -261,16 +261,22 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     private func addNewNotification(_ notification: AppNotif) {
-        print("Add new notification, with ID: \(String(describing: notification.key))")
-        
         if !notifications.contains(where: { $0.key == notification.key }) {
             // BRD1.3
             if notification.notificationType == .Message {
                 checkSeenMessages()
                 
                 // BRD1.2 - prevent notification if current is chat controller.
-                if UIViewController.current() is ChatController {
-                    return
+                // See: `setDotNotifToHiddenIfPossible`.
+                if UIViewController.current() is ChatController,
+                   let chatCon = UIViewController.current() as? ChatController,
+                   let currentChatmate = chatCon.user?.uid {
+                    
+                    // Notification came from the current chat partner of the current user
+                    // Set the dot to hidden. Don't show notif either.
+                    if notification.uid == currentChatmate {
+                        return
+                    }
                 }
             }
             
