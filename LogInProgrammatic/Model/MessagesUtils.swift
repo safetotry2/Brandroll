@@ -16,7 +16,7 @@ struct MessagesUtils {
     static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
         USER_MESSAGES_REF
             .child(userId)
-            .observe(.childAdded) { (snapshot) in
+            .observe(.childAdded, with: { (snapshot) in
                 let uid = snapshot.key
                 
                 USER_MESSAGES_REF
@@ -26,12 +26,17 @@ struct MessagesUtils {
                         let messageId = snapshot.key
                         MessagesUtils.fetchMessage(withMessageId: messageId, complection: block)
                     }
-            }
+            }, withCancel: { (error) in
+              block?("")
+            })
     }
     
     static func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion) {
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else {
+                block?("")
+                return
+            }
             
             let message = Message(key: messageId, dictionary: dictionary)
             let chatPartnerId = message.getChatPartnerId()
@@ -48,6 +53,8 @@ struct MessagesUtils {
             
             // completion
             block?(chatPartnerId)
+        } withCancel: { (error) in
+            block?("")
         }
     }
 }
