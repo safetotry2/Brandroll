@@ -32,7 +32,7 @@ struct MessagesUtils {
     }
     
     static func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion) {
-        MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
+        MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { snapshot in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else {
                 block?("")
                 return
@@ -53,8 +53,8 @@ struct MessagesUtils {
             
             // completion
             block?(chatPartnerId)
-        } withCancel: { (error) in
+        }, withCancel: { error in
             block?("")
-        }
+        })
     }
 }
