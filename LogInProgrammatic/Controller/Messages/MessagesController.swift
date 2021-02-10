@@ -35,8 +35,6 @@ class MessagesController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
         MessagesController.messages.removeAll()
         MessagesController.messagesDictionary.removeAll()
         self.tableView.reloadData()
@@ -139,7 +137,6 @@ class MessagesController: UITableViewController {
     
     func configureNavigationBar() {
         navigationItem.title = "Messages"
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleNewMessage))
     }
     
@@ -165,7 +162,6 @@ class MessagesController: UITableViewController {
             
             self.tableView.reloadData()
             let indexPath = IndexPath(item: MessagesController.messages.count - 1, section: 0)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
 }

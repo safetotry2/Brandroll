@@ -14,7 +14,7 @@ class ChatInputTextView: UITextView {
     
     let placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = "Enter comment..."
+        label.text = "Enter message..."
         label.textColor = .lightGray
         return label
     }()

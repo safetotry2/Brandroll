@@ -112,7 +112,10 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             
             // This is the actual height of the iPhone 10 screen
             if UIScreen.main.nativeBounds.height == 2436 {
-                // configure dot for iphone x
+                // configure dot for iPhone X, iPhone XS, iPhone 11 Pro
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
+            } else if UIScreen.main.nativeBounds.height == 1792 {
+               // configure dot for iPhone XR and iPhone 11
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
             } else {
                 // configure dot for other phone models
@@ -182,7 +185,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                 let navController = UINavigationController(rootViewController: loginVC)
                 navController.modalPresentationStyle = .fullScreen
                 self.present(navController, animated: true, completion: nil)
-                print("User is logged out")
             }
             return
         }

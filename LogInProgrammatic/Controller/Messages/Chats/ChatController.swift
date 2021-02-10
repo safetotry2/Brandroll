@@ -199,6 +199,9 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func fetchMessage(withMessageId messageId: String) {
+        
+        ProgressHUD.show()
+        
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let message = Message(key: messageId, dictionary: dictionary)
@@ -206,6 +209,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             self.messages.append(message)
 
             DispatchQueue.main.async {
+                ProgressHUD.dismiss()
                 self.collectionView?.reloadData()
                 let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
                 self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: false)

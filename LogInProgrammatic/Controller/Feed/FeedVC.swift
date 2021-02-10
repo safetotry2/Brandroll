@@ -41,6 +41,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         } else {
             navigationController?.setNavigationBarHidden(true, animated: animated)
         }
+        
+//        super.viewDidAppear(animated)
+//        let height: CGFloat = 30 //whatever height you want to add to the existing height
+//        let bounds = self.navigationController!.navigationBar.bounds
+//        self.navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height + height)
     }
     
     override func viewDidLoad() {
@@ -60,6 +65,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
 
         //updateUserFeeds()
     }
+    
+//    override func viewDidLayoutSubviews() {
+//       super.viewDidLayoutSubviews()
+//       let height = CGFloat(30)
+//        navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
+//    }
+
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -171,11 +183,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 uploadPostController.postToEdit = post
                 uploadPostController.uploadAction = UploadPostVC.UploadAction(index: 1)
                 self.present(navigationController, animated: true, completion: nil)
-                
             }))
             
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            
             present(alertController, animated: true, completion: nil)
             
         } else {
@@ -190,17 +200,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 let values = ["creationDate": creationDate,
                               "uid": uid] as [String : Any]
-                //let dictionaryValues = ["creationDate": creationDate]
-                //let values = [uid: dictionaryValues]
                 
                 REPORT_REF.child(postId).childByAutoId().updateChildValues(values)
-                
-                print("you've pressed report")
-
             }))
             
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            
             present(alertController, animated: true, completion: nil)
         }
     }
@@ -256,6 +260,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         if likes != 0 {
             navigationController?.pushViewController(followLikeVC, animated: true)
+            navigationItem.backBarButtonItem = UIBarButtonItem(
+                title: "",
+                style: .plain,
+                target: self,
+                action: #selector(popToPrevious)
+            )
         }
     }
     
@@ -401,7 +411,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
         
 }
-    
+
 
 // NOTE: The original fetchPosts function as seen below accesses the user-feed data structure to update the Home Feed of the current user with 1) the user's own posts and 2) posts from individuals that the user follows.
 //    func fetchPosts() {

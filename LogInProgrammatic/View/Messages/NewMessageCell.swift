@@ -16,12 +16,12 @@ class NewMessageCell: UITableViewCell {
         
         didSet {
             guard let profileImageUrl = user?.profileImageUrl else { return }
-            guard let username = user?.username else { return }
             guard let fullname = user?.name else { return }
+            guard let occupation = user?.occupation else { return }
             
             profileImageView.loadImage(with: profileImageUrl)
-            textLabel?.text = username
-            detailTextLabel?.text = fullname
+            textLabel?.text = fullname
+            detailTextLabel?.text = occupation
         }
     }
     
@@ -43,8 +43,8 @@ class NewMessageCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 50 / 2
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        textLabel?.text = "Joker"
-        detailTextLabel?.text = "Heath Ledger"
+        textLabel?.text = "Name"
+        detailTextLabel?.text = "Occupation"
     }
     
     override func layoutSubviews() {
