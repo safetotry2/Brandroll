@@ -31,6 +31,8 @@ class MessagesController: UITableViewController {
         
         // register cell
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
+        
+        tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
