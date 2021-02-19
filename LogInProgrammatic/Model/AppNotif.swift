@@ -45,8 +45,7 @@ class AppNotif {
     var user: User?
     var type: Int?
     var notificationType: NotificationType!
-    var didCheck = false
-    var locallyViewed = true
+    var didCheck = true
     
     init(key: String, user: User?, post: Post? = nil, dictionary: Dictionary<String, AnyObject>) {
         self.key = key
@@ -73,13 +72,9 @@ class AppNotif {
         }
         
         if let checked = dictionary["checked"] as? Int {
-            self.didCheck = false
-            locallyViewed = checked == 0 ? false : true
+            self.didCheck = checked == 0 ? false : true
         } else {
             self.didCheck = true
-            locallyViewed = true
         }
     }
-    
-    
 }

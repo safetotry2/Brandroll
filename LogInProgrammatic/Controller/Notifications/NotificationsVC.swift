@@ -80,7 +80,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     private func setAllNotifToViewed() {
         notifications.forEach { (notif) in
-            notif.locallyViewed = true
+            notif.didCheck = true
         }
         
         if let tabBarController = self.tabBarController as? MainTabVC {
