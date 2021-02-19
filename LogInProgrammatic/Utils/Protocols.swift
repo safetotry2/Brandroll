@@ -47,10 +47,6 @@ protocol CommentInputAccessoryViewDelegate {
     func didSubmit(forComment comment: String)
 }
 
-protocol MessageCellDelegate {
-    func configureUserData(for cell: MessageCell)
-}
-
 protocol ChatInputAccessoryViewDelegate {
     func didSubmit(forChat chat: String)
 }

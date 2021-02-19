@@ -6,15 +6,14 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 class MessageCell: UITableViewCell {
 
     // MARK: - Properties
-    
-    var delegate: MessageCellDelegate?
-    
+        
     var message: Message? {
         didSet {
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -34,7 +33,15 @@ class MessageCell: UITableViewCell {
             
             dot.isHidden = dotIsHidden
             
-            delegate?.configureUserData(for: self)
+            if let profileImageUrl = message?.user?.profileImageUrl,
+               let url = URL(string: profileImageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
+            } else {
+                profileImageView.image = nil
+            }
+            
+            nameLabel.text = message?.user?.name ?? ""
         }
     }
     

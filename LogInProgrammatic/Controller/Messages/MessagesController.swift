@@ -62,9 +62,7 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
-        cell.delegate = self
         cell.message = MessagesController.messages[indexPath.row]
-        
         return cell
     }
     
@@ -164,22 +162,6 @@ class MessagesController: UITableViewController {
             self.userUid = partnerId
             
             self.tableView.reloadData()
-        }
-    }
-}
-
-extension MessagesController: MessageCellDelegate {
-    func configureUserData(for cell: MessageCell) {
-        guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
-        
-        Database.fetchUser(with: chatPartnerId) { (user) in
-            if let profileImageUrl = user?.profileImageUrl,
-               let url = URL(string: profileImageUrl) {
-                let resource = ImageResource(downloadURL: url)
-                cell.profileImageView.kf.setImage(with: resource)
-            }
-            
-            cell.nameLabel.text = user?.name ?? ""
         }
     }
 }

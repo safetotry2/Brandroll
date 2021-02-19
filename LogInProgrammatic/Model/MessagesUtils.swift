@@ -6,15 +6,37 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
+import Firebase
 import Foundation
 
 struct MessagesUtils {
+    
+    // MARK: - Properties
+    
     typealias FetchMessageCompletion = ((_ chatPartnerId: String) -> Void)?
     
     static var lastFetchedMessage: Message?
     
-    static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
+    /// The handle of the Firebase observer from `fetchMessages`.
+    static var handle: DatabaseHandle?
+    /// The current user stored together with the handle from `fetchMessages`.
+    static var currentUserForHandle: String?
+    
+    // MARK: Functions
+    
+    static func removeObserver() {
+        guard let handle = self.handle,
+              let userId = currentUserForHandle else { return }
+        
         USER_MESSAGES_REF
+            .child(userId)
+            .removeObserver(withHandle: handle)
+    }
+    
+    static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
+        currentUserForHandle = userId
+        
+        handle = USER_MESSAGES_REF
             .child(userId)
             .observe(.childAdded, with: { (snapshot) in
                 let uid = snapshot.key
@@ -27,7 +49,7 @@ struct MessagesUtils {
                         MessagesUtils.fetchMessage(withMessageId: messageId, complection: block)
                     }
             }, withCancel: { (error) in
-              block?("")
+                block?("")
             })
     }
     

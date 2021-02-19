@@ -11,6 +11,7 @@ import Firebase
 
 class Message {
     
+    /// Fetched separately.
     var user: User?
 
     var messageText: String!
