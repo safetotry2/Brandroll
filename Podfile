@@ -11,6 +11,7 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Kingfisher'
 end
 
 post_install do |installer|
