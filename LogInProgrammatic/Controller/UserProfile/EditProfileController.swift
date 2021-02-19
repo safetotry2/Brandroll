@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 class EditProfileController: UIViewController {
     
@@ -23,8 +24,8 @@ class EditProfileController: UIViewController {
     var updatedOccupation: String?
     var updatedUsername: String?
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -160,10 +161,14 @@ class EditProfileController: UIViewController {
     
     func loadUserData() {
         guard let user = self.user else { return }
-        
-        if let profileImageUrl = user.profileImageUrl {
-            profileImageView.loadImage(with: profileImageUrl)
+
+        if let imageUrl = user.profileImageUrl,
+           let url = URL(string: imageUrl) {
+            let resource = ImageResource(downloadURL: url)
+            profileImageView.kf.setImage(with: resource)
+            
         }
+        
         fullnameTextField.text = user.name
         occupationTextField.text = user.occupation
         usernameTextField.text = user.username

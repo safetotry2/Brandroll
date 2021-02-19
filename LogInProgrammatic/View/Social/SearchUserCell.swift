@@ -6,6 +6,7 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import Kingfisher
 import UIKit
 
 class SearchUserCell: UITableViewCell {
@@ -13,14 +14,11 @@ class SearchUserCell: UITableViewCell {
     // MARK: - Properties
     
     var user: User? {
-    
         didSet {
-            //guard let profileImageUrl = user?.profileImageUrl else { return }
-            //guard let fullName = user?.name else { return }
-            //guard let occupation = user?.occupation else { return }
-            
-            if let profileImageUrl = user?.profileImageUrl {
-                profileImageView.loadImage(with: profileImageUrl)
+            if let imageUrl = user?.profileImageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)   
             }
             
             if let fullName = user?.name {
@@ -30,12 +28,11 @@ class SearchUserCell: UITableViewCell {
             if let occupation = user?.occupation {
                 occupationLabel.text = occupation
             }
-            
         }
     }
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

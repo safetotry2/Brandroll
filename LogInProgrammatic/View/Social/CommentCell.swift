@@ -37,8 +37,8 @@ class CommentCell: UICollectionViewCell {
         return width
     }()
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

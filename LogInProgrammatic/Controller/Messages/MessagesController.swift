@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 private let reuseIdentifier = "MessagesCell"
 
@@ -163,7 +164,6 @@ class MessagesController: UITableViewController {
             self.userUid = partnerId
             
             self.tableView.reloadData()
-            let indexPath = IndexPath(item: MessagesController.messages.count - 1, section: 0)
         }
     }
 }
@@ -173,8 +173,10 @@ extension MessagesController: MessageCellDelegate {
         guard let chatPartnerId = cell.message?.getChatPartnerId() else { return }
         
         Database.fetchUser(with: chatPartnerId) { (user) in
-            if let profileImageUrl = user?.profileImageUrl {
-                cell.profileImageView.loadImage(with: profileImageUrl)
+            if let profileImageUrl = user?.profileImageUrl,
+               let url = URL(string: profileImageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                cell.profileImageView.kf.setImage(with: resource)
             }
             
             cell.nameLabel.text = user?.name ?? ""

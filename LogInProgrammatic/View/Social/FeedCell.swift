@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import Firebase
+import Kingfisher
 import UIKit
-import FirebaseDatabase
 
 class FeedCell: UICollectionViewCell {
     
@@ -18,16 +19,14 @@ class FeedCell: UICollectionViewCell {
     private var maskedView: UIView!
     
     var post: Post? {
-        
         didSet {
-            
             guard let ownerUid = post?.ownerUid else { return }
-            guard let imageUrl = post?.imageUrl else { return }
-            guard let likes = post?.likes else { return }
             
             Database.fetchUser(with: ownerUid) { (user) in
-                if let profileImageUrl = user?.profileImageUrl {
-                    self.profileImageView.loadImage(with: profileImageUrl)
+                if let imageUrl = user?.profileImageUrl,
+                   let url = URL(string: imageUrl) {
+                    let resource = ImageResource(downloadURL: url)
+                    self.profileImageView.kf.setImage(with: resource)
                 }
                 
                 self.fullnameButton.setTitle(user?.name ?? "", for: .normal)
@@ -35,14 +34,19 @@ class FeedCell: UICollectionViewCell {
                 self.configureCaption(user: user)
             }
             
-            self.postImageView.loadImage(with: imageUrl)
+            if let imageUrl = post?.imageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                self.postImageView.kf.setImage(with: resource)
+            }
+            
             configureLikeLabel()
             configureLikeButton()
         }
     }
         
-    lazy var postImageView: CustomImageView = {
-        let iv = CustomImageView()
+    lazy var postImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -51,8 +55,8 @@ class FeedCell: UICollectionViewCell {
         return iv
     }()
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

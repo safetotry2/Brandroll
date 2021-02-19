@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import UIKit
+import Kingfisher
 
 class UploadPostVC: UIViewController, UITextViewDelegate {
 
@@ -30,8 +31,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     var selectedImage: UIImage?
     var postToEdit: Post?
     
-    let photoImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let photoImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -82,7 +83,14 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
             self.navigationItem.title = "Edit Post"
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationController?.navigationBar.tintColor = .black
-            photoImageView.loadImage(with: post.imageUrl)
+            
+            if let imageUrl = post.imageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                photoImageView.kf.setImage(with: resource)
+                
+            }
+            
             captionTextView.text = post.caption
         } else {
             actionButton.setTitle("Share", for: .normal)

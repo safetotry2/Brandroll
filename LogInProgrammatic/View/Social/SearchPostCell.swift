@@ -6,20 +6,23 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import Kingfisher
 import UIKit
 
 class SearchPostCell: UICollectionViewCell {
     
     var post: Post? {
-        
         didSet {
-            guard let imageUrl = post?.imageUrl else { return }
-            postImageView.loadImage(with: imageUrl)
+            if let imageUrl = post?.imageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                postImageView.kf.setImage(with: resource)   
+            }
         }
     }
     
-    let postImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let postImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

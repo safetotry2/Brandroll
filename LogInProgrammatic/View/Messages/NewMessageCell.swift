@@ -6,6 +6,7 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import Kingfisher
 import UIKit
 
 class NewMessageCell: UITableViewCell {
@@ -15,18 +16,21 @@ class NewMessageCell: UITableViewCell {
     var user: User? {
         
         didSet {
-            guard let profileImageUrl = user?.profileImageUrl else { return }
-            guard let fullname = user?.name else { return }
-            guard let occupation = user?.occupation else { return }
+            guard let profileImageUrl = user?.profileImageUrl,
+                  let url = URL(string: profileImageUrl) else { return }
             
-            profileImageView.loadImage(with: profileImageUrl)
+            let fullname = user?.name ?? ""
+            let occupation = user?.occupation ?? ""
+            
+            let resource = ImageResource(downloadURL: url)
+            profileImageView.kf.setImage(with: resource)
             textLabel?.text = fullname
             detailTextLabel?.text = occupation
         }
     }
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

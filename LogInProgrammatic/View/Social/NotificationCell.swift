@@ -6,6 +6,7 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import Kingfisher
 import UIKit
 
 class NotificationCell: UITableViewCell {
@@ -24,18 +25,22 @@ class NotificationCell: UITableViewCell {
             // configure notification label
             configureNotificationLabel()
             
-            if let profileImageUrl = user.profileImageUrl {
-                profileImageView.loadImage(with: profileImageUrl)
+            if let imageUrl = user.profileImageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
             }
             
-            if let post = notification?.post {
-                postImageView.loadImage(with: post.imageUrl)
+            if let imageUrl = notification?.post?.imageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                postImageView.kf.setImage(with: resource)
             }
         }
     }
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -59,8 +64,8 @@ class NotificationCell: UITableViewCell {
         return button
     }()
     
-    lazy var postImageView: CustomImageView = {
-        let iv = CustomImageView()
+    lazy var postImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

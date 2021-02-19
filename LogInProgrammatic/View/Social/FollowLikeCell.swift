@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 class FollowLikeCell: UITableViewCell {
 
@@ -16,14 +17,16 @@ class FollowLikeCell: UITableViewCell {
     var delegate: FollowCellDelegate?
     
     var user: User? {
-    
         didSet {
-            guard let profileImageUrl = user?.profileImageUrl else { return }
-            guard let userName = user?.username else { return }
-            guard let fullName = user?.name else { return }
+            let userName = user?.username ?? ""
+            let fullName = user?.name ?? ""
             
-            profileImageView.loadImage(with: profileImageUrl)
-            
+            if let imageUrl = user?.profileImageUrl,
+               let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
+            }
+                        
             self.textLabel?.text = userName
             self.detailTextLabel?.text = fullName
             
@@ -47,8 +50,8 @@ class FollowLikeCell: UITableViewCell {
         }
     }
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

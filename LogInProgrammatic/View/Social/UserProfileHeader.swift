@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 class UserProfileHeader: UICollectionViewCell {
     
@@ -16,9 +17,7 @@ class UserProfileHeader: UICollectionViewCell {
     var delegate: UserProfileHeaderDelegate?
     
     var user: User? {
-        
         didSet {
-            
             // configure edit profile button
             configureEditProfileFollowButton()
             
@@ -29,15 +28,18 @@ class UserProfileHeader: UICollectionViewCell {
             let occupation = user?.occupation
             fullnameLabel.text = fullName
             occupationLabel.text = occupation
-            
-            guard let profileImageURL = user?.profileImageUrl else { return }
-            
-            profileImageView.loadImage(with: profileImageURL)
+
+            if let profileImageUrl = user?.profileImageUrl,
+               let url = URL(string: profileImageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
+                
+            }
         }
     }
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

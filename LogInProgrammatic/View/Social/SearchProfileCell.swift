@@ -6,8 +6,9 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import Kingfisher
+import UIKit
 
 class SearchProfileCell: UICollectionViewCell {
     
@@ -16,21 +17,12 @@ class SearchProfileCell: UICollectionViewCell {
     var delegate: SearchProfileCellDelegate?
     
     var user: User? {
-
         didSet {
-            
-            //guard let userUid = user?.uid else { return }
-            //guard let fullName = user?.name else { return }
-            //guard let occupation = user?.occupation else { return }
-            //guard let profileImageURL = user?.profileImageUrl else { return }
-//            guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//            if currentUid == user?.uid {
-//                do { return }
-//            }
-            
-            
-            if let profileImageUrl = user?.profileImageUrl {
-                profileImageView.loadImage(with: profileImageUrl)
+            if let profileImageUrl = user?.profileImageUrl,
+               let url = URL(string: profileImageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
+                
             }
             
             if let fullname = user?.name {
@@ -38,25 +30,14 @@ class SearchProfileCell: UICollectionViewCell {
             } else if user?.name == nil {
                 fullnameLabel.text = "Problem User"
             }
-
+            
             if let occupation = user?.occupation {
                 occupationLabel.text = occupation
             } else if user?.occupation == nil {
                 occupationLabel.text = " "
             }
             
-//            Database.fetchUser(with: userUid) { (user) in
-//                self.profileImageView.loadImage(with: profileImageURL)
-//                self.fullnameLabel.text = fullName
-//                self.occupationLabel.text = occupation
-//            }
-            
-//            fullnameLabel.text = fullName
-//            occupationLabel.text = occupation
-//            profileImageView.loadImage(with: profileImageURL)
-            
             configureFollowButton()
-            
         }
     }
     
@@ -67,8 +48,8 @@ class SearchProfileCell: UICollectionViewCell {
         return view
     }()
     
-    let profileImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
