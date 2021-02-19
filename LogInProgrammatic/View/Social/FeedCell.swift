@@ -19,19 +19,17 @@ class FeedCell: UICollectionViewCell {
     private var maskedView: UIView!
     
     var post: Post? {
-        didSet {
-            guard let ownerUid = post?.ownerUid else { return }
-            
-            Database.fetchUser(with: ownerUid) { (user) in
-                if let imageUrl = user?.profileImageUrl,
+        didSet {            
+            if let owner = post?.user {
+                if let imageUrl = owner.profileImageUrl,
                    let url = URL(string: imageUrl) {
                     let resource = ImageResource(downloadURL: url)
                     self.profileImageView.kf.setImage(with: resource)
                 }
                 
-                self.fullnameButton.setTitle(user?.name ?? "", for: .normal)
-                self.occupationLabel.text = user?.occupation ?? ""
-                self.configureCaption(user: user)
+                self.fullnameButton.setTitle(owner.name ?? "", for: .normal)
+                self.occupationLabel.text = owner.occupation ?? ""
+                self.configureCaption(user: owner)
             }
             
             if let imageUrl = post?.imageUrl,

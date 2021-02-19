@@ -17,6 +17,7 @@ class Post {
     var ownerUid: String!
     var creationDate: Date!
     var postId: String!
+    /// The owner
     var user: User?
     var didLike = false
     
