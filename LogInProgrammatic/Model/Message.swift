@@ -46,7 +46,7 @@ class Message {
     }
     
     func getChatPartnerId() -> String {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return ""}
+        guard let currentUid = Auth.auth().currentUser?.uid else { return "" }
         
         if fromId == currentUid {
             return toId

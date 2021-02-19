@@ -61,20 +61,26 @@ struct MessagesUtils {
             }
             
             let message = Message(key: messageId, dictionary: dictionary)
-            let chatPartnerId = message.getChatPartnerId()
             
-            MessagesController.messagesDictionary[chatPartnerId] = message
-            MessagesController.messages = Array(MessagesController.messagesDictionary.values)
-            
-            // sort messages based on creation date of last message
-            MessagesController.messages.sort { (message1, message2) -> Bool in
-                return message1.creationDate > message2.creationDate
+            Database.fetchUser(with: message.getChatPartnerId()) { (user) in
+                message.user = user
+                
+                let chatPartnerId = message.getChatPartnerId()
+                
+                MessagesController.messagesDictionary[chatPartnerId] = message
+                MessagesController.messages = Array(MessagesController.messagesDictionary.values)
+                
+                // sort messages based on creation date of last message
+                MessagesController.messages.sort { (message1, message2) -> Bool in
+                    return message1.creationDate > message2.creationDate
+                }
+                
+                MessagesUtils.lastFetchedMessage = MessagesController.messages.last
+                
+                // completion
+                block?(chatPartnerId)
             }
-            
-            MessagesUtils.lastFetchedMessage = MessagesController.messages.last
-            
-            // completion
-            block?(chatPartnerId)
+
         }, withCancel: { error in
             block?("")
         })
