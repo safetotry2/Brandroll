@@ -30,6 +30,7 @@ class MessagesUtils: NSObject {
     // MARK: Functions
     
     func removeObserver() {
+        // The sond observr
         if let handle = userMessagesRefHandle,
            let uiForMessages = uiForMessages,
            let uidForUserMessagesRefHandle = uidForUserMessagesRefHandle {
@@ -44,6 +45,7 @@ class MessagesUtils: NSObject {
                 .removeAllObservers()
         }
         
+        // The first observer.
         if let handle = messagesRefHandle,
            let uiForMessages = uiForMessages {
             
@@ -65,13 +67,14 @@ class MessagesUtils: NSObject {
             .observe(.childAdded, with: { (snapshot) in
                 let uid = snapshot.key
                                 
-//                self.userMessagesRefHandle = USER_MESSAGES_REF
-//                    .child(userId)
-//                    .child(uid)
-//                    .observe(.childAdded) { (snapshot) in
-//                        let messageId = snapshot.key
-//                        self.fetchMessage(withMessageId: messageId, complection: block)
-//                    }
+                self.userMessagesRefHandle = USER_MESSAGES_REF
+                    .child(userId)
+                    .child(uid)
+                    .observe(.childAdded) { (snapshot) in
+                        let messageId = snapshot.key
+                        causes memleak
+                        //self.fetchMessage(withMessageId: messageId, complection: block)
+                    }
             }, withCancel: { (error) in
                 block?("")
             })
