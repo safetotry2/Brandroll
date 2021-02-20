@@ -350,23 +350,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // add alert logout action
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
             do {
-                // remove observer
-                if let tabBarController = self.tabBarController as? MainTabVC {
-                    tabBarController.didLogout()
-                }
                 
                 // attempt sign out
                 try Auth.auth().signOut()
-                
-                // dismiss FeedVC
-                self.dismiss(animated: true, completion: nil)
-                
-                // present LoginVC
-                let loginVC = LoginVC()
-                let navController = UINavigationController(rootViewController: loginVC)
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true, completion: nil)
                 print("Successfully logged out user")
+                
+                // handle logout from tabController
+                if let tabBarController = self.tabBarController as? MainTabVC {
+                    tabBarController.logout()
+                }
             } catch {
                 // handle error
                 print("Failed to sign out")

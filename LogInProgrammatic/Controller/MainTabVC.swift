@@ -162,12 +162,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - Public
-    
-    func didLogIn() {
-        observeNotifications()
-    }
-    
-    func didLogout() {
+
+    func logout() {
         if let currentUid = Auth.auth().currentUser?.uid {
             if let notifRefHandle = self.notifRefHandle {
                 NOTIFICATIONS_REF.child(currentUid)

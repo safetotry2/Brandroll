@@ -11,6 +11,8 @@ import Firebase
 
 class LoginVC: UIViewController {
 
+    // MARK: - Properties
+    
     let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
     
     lazy var extraSafeAreaTopView: UIView = {
@@ -77,6 +79,12 @@ class LoginVC: UIViewController {
         return button
     }()
     
+    // MARK: - Functions
+    // MARK: Overrides
+    
+    deinit {
+        print("Login flow deallocated! ✅")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

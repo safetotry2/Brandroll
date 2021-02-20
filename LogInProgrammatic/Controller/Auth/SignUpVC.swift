@@ -104,6 +104,10 @@ class SignUpVC: UIViewController {
     
     // MARK: - Overrides
     // MARK: Functions
+
+    deinit {
+        print("SignUp flow deallocated! ✅")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
