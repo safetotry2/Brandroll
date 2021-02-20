@@ -19,6 +19,8 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var comments = [Comment]()
     var post: Post?
     
+    private var commentsRefHandle: DatabaseHandle?
+    
     lazy var containerView: CommentInputAccessoryView = {
         
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
@@ -75,6 +77,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
 
+        removeObserver()
     }
     
     override var inputAccessoryView: UIView? {
@@ -85,6 +88,15 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    func removeObserver() {
+        guard let postId = post?.postId,
+              let commentsRefHandle = commentsRefHandle else { return }
+        
+        COMMENT_REF
+            .child(postId)
+            .removeObserver(withHandle: commentsRefHandle)
     }
     
     // MARK: - UICollectionView
@@ -159,21 +171,22 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func fetchComments() {
+        guard let postId = post?.postId else { return }
         
-        guard let postId = self.post?.postId else { return }
-
-        COMMENT_REF.child(postId).observe(.childAdded) { (snapshot) in
-            
-            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-            guard let uid = dictionary["uid"] as? String else { return }
-                        
-            Database.fetchUser(with: uid) { (user) in
+        commentsRefHandle = COMMENT_REF
+            .child(postId)
+            .observe(.childAdded) { (snapshot) in
                 
-                let comment = Comment(user: user, dictionary: dictionary)
-                self.comments.append(comment)
-                self.collectionView.reloadData()
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                guard let uid = dictionary["uid"] as? String else { return }
+                
+                Database.fetchUser(with: uid) { (user) in
+                    
+                    let comment = Comment(user: user, dictionary: dictionary)
+                    self.comments.append(comment)
+                    self.collectionView.reloadData()
+                }
             }
-        }
     }
     
     func uploadCommentNotificationToServer() {

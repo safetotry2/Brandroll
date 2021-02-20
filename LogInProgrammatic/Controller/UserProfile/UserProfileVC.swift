@@ -22,8 +22,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var currentKey: String?
     var fromTabBar = true
     
-    private var followingHandle: DatabaseHandle?
-    private var followersHandle: DatabaseHandle?
+    private var followingRefHandle: DatabaseHandle?
+    private var followersRefHandle: DatabaseHandle?
     
     // MARK: - Init
     
@@ -57,8 +57,29 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         fetchPosts()
     }
     
+    /**
+     Remove the observers. Called by tabBarController.
+     We don't need to call this from viewWillDisappear since this controller
+     is ought to retain itself as part of the tab controller.
+     */
     func removeObserver() {
+        guard let uid = user?.uid,
+              let followersRefHandle = followersRefHandle,
+              let followingRefHandle = followingRefHandle else { return }
         
+        USER_FOLLOWER_REF
+            .child(uid)
+            .removeObserver(withHandle: followersRefHandle)
+        
+        USER_FOLLOWING_REF
+            .child(uid)
+            .removeObserver(withHandle: followingRefHandle)
+        
+//        USER_FOLLOWING_REF
+//            .child(uid)
+//            .removeAllObservers()
+//        
+//        USER_FOLLOWING_REF.removeAllObservers()
     }
 
     // MARK: - UICollectionViewFlowLayout
@@ -191,32 +212,36 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         var numberOfFollowing: Int!
         
         // get number of followers
-        followersHandle = USER_FOLLOWER_REF.child(uid).observe(.value) { (snapshot) in
-            if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
-                numberOfFollowers = snapshot.count
-            } else {
-                numberOfFollowers = 0
+        followersRefHandle = USER_FOLLOWER_REF
+            .child(uid)
+            .observe(.value) { (snapshot) in
+                if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
+                    numberOfFollowers = snapshot.count
+                } else {
+                    numberOfFollowers = 0
+                }
+                
+                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowers!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+                attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+                
+                header.followersLabel.attributedText = attributedText
             }
-            
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowers!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
-            
-            header.followersLabel.attributedText = attributedText
-        }
         
         // get number of following
-        followingHandle = USER_FOLLOWING_REF.child(uid).observe(.value) { (snapshot) in
-            if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
-                numberOfFollowing = snapshot.count
-            } else {
-                numberOfFollowing = 0
+        followingRefHandle = USER_FOLLOWING_REF
+            .child(uid)
+            .observe(.value) { (snapshot) in
+                if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
+                    numberOfFollowing = snapshot.count
+                } else {
+                    numberOfFollowing = 0
+                }
+                
+                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
+                attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+                
+                header.followingLabel.attributedText = attributedText
             }
-            
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
-            
-            header.followingLabel.attributedText = attributedText
-        }
         
     }
     

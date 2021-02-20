@@ -126,6 +126,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         // update follower feeds
         USER_FOLLOWER_REF.child(currentUid).observe(.childAdded) { (snapshot) in
             
+            USER_FOLLOWER_REF.child(currentUid).removeAllObservers()
+            
             let followerUid = snapshot.key
             USER_FEED_REF.child(followerUid).updateChildValues(values)
         }

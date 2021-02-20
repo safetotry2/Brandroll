@@ -60,6 +60,7 @@ class User {
         USER_POSTS_REF.child(self.uid).observe(.childAdded) { (snapshot) in
             let postId = snapshot.key
             USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+            USER_POSTS_REF.child(self.uid).removeAllObservers()
         }
     }
     
@@ -80,6 +81,7 @@ class User {
         USER_POSTS_REF.child(self.uid).observe(.childAdded) { (snapshot) in
             let postId = snapshot.key
             USER_FEED_REF.child(currentUid).child(postId).removeValue()
+            USER_POSTS_REF.child(self.uid).removeAllObservers()
         }
     }
     

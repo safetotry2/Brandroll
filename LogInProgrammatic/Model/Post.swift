@@ -109,8 +109,8 @@ class Post {
     }
     
     func deletePost() {
-        
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              let postId = postId else { return }
         
         Storage.storage().reference(forURL: self.imageUrl).delete(completion: nil)
         
@@ -125,6 +125,8 @@ class Post {
         
         POST_LIKES_REF.child(postId).observe(.childAdded) { (snapshot) in
             let uid = snapshot.key
+            
+            POST_LIKES_REF.child(postId).removeAllObservers()
             
             USER_LIKES_REF.child(uid).child(self.postId).observeSingleEvent(of: .value) { (snapshot) in
                 guard let notificationId = snapshot.value as? String else { return }

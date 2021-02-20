@@ -175,6 +175,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     func removeObserver() {
+        // Remove observer from self.
         if let currentUid = Auth.auth().currentUser?.uid {
             if let notifRefHandle = self.notifRefHandle {
                 NOTIFICATIONS_REF.child(currentUid)
@@ -185,6 +186,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                     .removeObserver(withHandle: notifRefHandleChildAdded)
             }
         }
+        
+        // Remove observer from user profile tab
+        userProfileVC.removeObserver()
     }
     
     // MARK: - API

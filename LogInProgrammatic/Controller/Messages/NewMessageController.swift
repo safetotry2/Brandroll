@@ -18,7 +18,10 @@ class NewMessageController: UITableViewController {
     var users = [User]()
     var messagesController: MessagesController?
     
+    private var usersRefHandle: DatabaseHandle?
+    
     // MARK: - Init
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +32,17 @@ class NewMessageController: UITableViewController {
         tableView.register(NewMessageCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         fetchUsers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        removeObserver()
+    }
+    
+    func removeObserver() {
+        USER_FOLLOWER_REF
+            .removeObserver(withHandle: usersRefHandle)
     }
     
     // MARK: - UITableView
@@ -69,21 +83,17 @@ class NewMessageController: UITableViewController {
     // MARK: - API
     
     func fetchUsers() {
-        
-        USER_REF.observe(.childAdded) { (snapshot) in
-            let uid = snapshot.key
-            
-            if uid != Auth.auth().currentUser?.uid {
-                Database.fetchUser(with: uid) { (user) in
-                    guard let user = user else { return }
-                    self.users.append(user)
-                    self.tableView.reloadData()
+        usersRefHandle = USER_REF
+            .observe(.childAdded) { (snapshot) in
+                let uid = snapshot.key
+                
+                if uid != Auth.auth().currentUser?.uid {
+                    Database.fetchUser(with: uid) { (user) in
+                        guard let user = user else { return }
+                        self.users.append(user)
+                        self.tableView.reloadData()
+                    }
                 }
             }
-        }
-        
     }
-    
-    
-    
 }
