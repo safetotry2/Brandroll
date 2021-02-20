@@ -14,7 +14,7 @@ class SearchProfileCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var delegate: SearchProfileCellDelegate?
+    weak var delegate: SearchProfileCellDelegate?
     
     var user: User? {
         didSet {

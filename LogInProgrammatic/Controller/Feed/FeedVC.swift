@@ -62,7 +62,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView.refreshControl = refreshControl
 
-        fetchPosts()
+        //fetchPosts()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

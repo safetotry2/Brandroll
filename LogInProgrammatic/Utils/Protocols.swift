@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol UserProfileHeaderDelegate {
+protocol UserProfileHeaderDelegate: class {
     
     func handleEditFollowTapped(for header: UserProfileHeader)
     func setUserStats(for header: UserProfileHeader)
@@ -16,11 +16,11 @@ protocol UserProfileHeaderDelegate {
     func handleFollowingTapped(for header: UserProfileHeader)
 }
 
-protocol FollowCellDelegate {
+protocol FollowCellDelegate: class {
     func handleFollowTapped(for cell: FollowLikeCell)
 }
 
-protocol FeedCellDelegate {
+protocol FeedCellDelegate: class {
     func handleFullnameTapped(for cell: FeedCell)
     func handleOptionsTapped(for cell: FeedCell)
     func handleLikeTapped(for cell: FeedCell)
@@ -29,12 +29,12 @@ protocol FeedCellDelegate {
     func handleShowLikes(for cell: FeedCell)
 }
 
-protocol NotitificationCellDelegate {
+protocol NotitificationCellDelegate: class {
     func handleFollowTapped(for cell: NotificationCell)
     func handlePostTapped(for cell: NotificationCell)
 }
 
-protocol SearchProfileCellDelegate {
+protocol SearchProfileCellDelegate: class {
     func handleFollowTapped(for cell: SearchProfileCell)
 }
 
@@ -42,10 +42,10 @@ protocol Printable {
     var description: String { get }
 }
 
-protocol CommentInputAccessoryViewDelegate {
+protocol CommentInputAccessoryViewDelegate: class {
     func didSubmit(forComment comment: String)
 }
 
-protocol ChatInputAccessoryViewDelegate {
+protocol ChatInputAccessoryViewDelegate: class {
     func didSubmit(forChat chat: String)
 }

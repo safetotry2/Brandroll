@@ -14,7 +14,7 @@ class FollowLikeCell: UITableViewCell {
 
     //MARK: - Properties
     
-    var delegate: FollowCellDelegate?
+    weak var delegate: FollowCellDelegate?
     
     var user: User? {
         didSet {

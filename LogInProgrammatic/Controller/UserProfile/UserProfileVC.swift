@@ -28,7 +28,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     // MARK: - Init
     
     deinit {
-        print("UserProfileVC deallocated! ✅")
+        print("UserProfileVC deallocated! 🐶")
     }
     
     override func viewDidLoad() {
@@ -54,7 +54,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
         
         // fetch posts
-        fetchPosts()
+//        fetchPosts()
     }
     
     /**
@@ -74,12 +74,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         USER_FOLLOWING_REF
             .child(uid)
             .removeObserver(withHandle: followingRefHandle)
-        
-//        USER_FOLLOWING_REF
-//            .child(uid)
-//            .removeAllObservers()
-//        
-//        USER_FOLLOWING_REF.removeAllObservers()
     }
 
     // MARK: - UICollectionViewFlowLayout
@@ -131,18 +125,18 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
+
         // declare header
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
-        
+
         // set delegate
         header.delegate = self
-        
+
         // set the user in header
         header.user = self.user
         //navigationItem.title = user?.username
         navigationItem.title = nil
-        
+
         // return header
         return header
     }
@@ -463,7 +457,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
 
     func fetchCurrentUserData() {
-    
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         DB_REF.child("users").child(currentUid).observeSingleEvent(of: .value) { (snapshot) in

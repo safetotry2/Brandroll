@@ -17,6 +17,8 @@ class User {
     var uid: String!
     var isFollowed = false
     
+    var usersPostRefHandle: DatabaseHandle?
+    
     init(uid: String, dictionary: Dictionary<String, AnyObject>) {
         
         self.uid = uid
@@ -57,11 +59,18 @@ class User {
         uploadFollowNotificaitonToServer()
         
         // add followed users posts to current user feed
-        USER_POSTS_REF.child(self.uid).observe(.childAdded) { (snapshot) in
-            let postId = snapshot.key
-            USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
-            USER_POSTS_REF.child(self.uid).removeAllObservers()
-        }
+        usersPostRefHandle = USER_POSTS_REF
+            .child(self.uid)
+            .observe(.childAdded) { (snapshot) in
+                let postId = snapshot.key
+                
+                USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+                
+                USER_POSTS_REF
+                    .child(self.uid)
+                    .removeObserver(withHandle: self.usersPostRefHandle!)
+                
+            }
     }
     
     func unfollow() {
@@ -78,11 +87,17 @@ class User {
         USER_FOLLOWER_REF.child(uid).child(currentUid).removeValue()
         
         // remove unfollowed users posts from current user-feed
-        USER_POSTS_REF.child(self.uid).observe(.childAdded) { (snapshot) in
-            let postId = snapshot.key
-            USER_FEED_REF.child(currentUid).child(postId).removeValue()
-            USER_POSTS_REF.child(self.uid).removeAllObservers()
-        }
+        usersPostRefHandle = USER_POSTS_REF
+            .child(self.uid)
+            .observe(.childAdded) { (snapshot) in
+                let postId = snapshot.key
+                
+                USER_FEED_REF.child(currentUid).child(postId).removeValue()
+                
+                USER_POSTS_REF
+                    .child(self.uid)
+                    .removeObserver(withHandle: self.usersPostRefHandle!)
+            }
     }
     
     func checkIfUserIsFollowed(completion: @escaping(Bool) ->()) {

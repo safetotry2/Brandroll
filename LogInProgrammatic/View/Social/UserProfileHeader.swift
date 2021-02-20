@@ -14,12 +14,12 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var delegate: UserProfileHeaderDelegate?
+    weak var delegate: UserProfileHeaderDelegate?
     
     var user: User? {
         didSet {
             // configure edit profile button
-            configureEditProfileFollowButton()
+            //configureEditProfileFollowButton()
             
             // set user stats
             setUserStats(for: user)

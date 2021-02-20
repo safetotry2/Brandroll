@@ -13,7 +13,7 @@ class NotificationCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var delegate: NotitificationCellDelegate?
+    weak var delegate: NotitificationCellDelegate?
     
     var notification: AppNotif? {
         didSet {

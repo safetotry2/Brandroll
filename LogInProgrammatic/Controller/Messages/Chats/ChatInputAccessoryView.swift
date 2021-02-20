@@ -12,7 +12,7 @@ class ChatInputAccessoryView: UIView {
 
     // MARK: - Properties
     
-    var delegate: ChatInputAccessoryViewDelegate?
+    weak var delegate: ChatInputAccessoryViewDelegate?
     
     let chatTextView: ChatInputTextView = {
         let tv = ChatInputTextView()

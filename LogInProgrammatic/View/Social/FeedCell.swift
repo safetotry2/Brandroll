@@ -14,7 +14,7 @@ class FeedCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var delegate: FeedCellDelegate?
+    weak var delegate: FeedCellDelegate?
     
     private var maskedView: UIView!
     

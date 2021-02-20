@@ -21,6 +21,8 @@ class Post {
     var user: User?
     var didLike = false
     
+    private var postRefHandle: DatabaseHandle?
+    
     init(postId: String!, user: User?, dictionary: Dictionary<String, AnyObject>) {
         
         self.postId = postId
@@ -57,7 +59,6 @@ class Post {
             
             // updates user-likes structure
             USER_LIKES_REF.child(currentUid).updateChildValues([postId: 1]) { (err, ref) in
-                
                 // send notification to server
                 self.sendLikeNotificationToServer()
                 
@@ -123,22 +124,25 @@ class Post {
         
         USER_POSTS_REF.child(currentUid).child(postId).removeValue()
         
-        POST_LIKES_REF.child(postId).observe(.childAdded) { (snapshot) in
-            let uid = snapshot.key
-            
-            POST_LIKES_REF.child(postId).removeAllObservers()
-            
-            USER_LIKES_REF.child(uid).child(self.postId).observeSingleEvent(of: .value) { (snapshot) in
-                guard let notificationId = snapshot.value as? String else { return }
+        postRefHandle = POST_LIKES_REF
+            .child(postId)
+            .observe(.childAdded) { (snapshot) in
+                let uid = snapshot.key
                 
-                NOTIFICATIONS_REF.child(self.ownerUid).child(notificationId).removeValue { (err, ref) in
+                POST_LIKES_REF.child(postId)
+                    .removeObserver(withHandle: self.postRefHandle!)
+                
+                USER_LIKES_REF.child(uid).child(self.postId).observeSingleEvent(of: .value) { (snapshot) in
+                    guard let notificationId = snapshot.value as? String else { return }
                     
-                    POST_LIKES_REF.child(self.postId).removeValue()
-                    
-                    USER_LIKES_REF.child(uid).child(self.postId).removeValue()
+                    NOTIFICATIONS_REF.child(self.ownerUid).child(notificationId).removeValue { (err, ref) in
+                        
+                        POST_LIKES_REF.child(self.postId).removeValue()
+                        
+                        USER_LIKES_REF.child(uid).child(self.postId).removeValue()
+                    }
                 }
             }
-        }
         
         COMMENT_REF.child(postId).removeValue()
         

@@ -12,7 +12,7 @@ class CommentInputAccessoryView: UIView, UITextFieldDelegate {
 
     // MARK: - Properties
     
-    var delegate: CommentInputAccessoryViewDelegate?
+    weak var delegate: CommentInputAccessoryViewDelegate?
     
     let commentTextView: CommentInputTextView = {
         let tv = CommentInputTextView()
