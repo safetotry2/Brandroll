@@ -41,6 +41,8 @@ class NewMessageController: UITableViewController {
     }
     
     func removeObserver() {
+        guard let usersRefHandle = usersRefHandle else { return }
+        
         USER_FOLLOWER_REF
             .removeObserver(withHandle: usersRefHandle)
     }
