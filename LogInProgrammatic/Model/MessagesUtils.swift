@@ -9,62 +9,75 @@
 import Firebase
 import Foundation
 
-struct MessagesUtils {
+class MessagesUtils: NSObject {
     
     // MARK: - Properties
     
     typealias FetchMessageCompletion = ((_ chatPartnerId: String) -> Void)?
     
-    static var lastFetchedMessage: Message?
+    private var lastFetchedMessage: Message?
     
     /// The handle of the Firebase observer from `fetchMessages`.
-    static var messagesRefHandle: DatabaseHandle?
+    private var messagesRefHandle: DatabaseHandle?
+    /// The uid passed into `messagesRefHandle`.
+    private var uiForMessages: String?
+    
     /// Second handle.
-    static var userMessagesRefHandle: DatabaseHandle?
+    private var userMessagesRefHandle: DatabaseHandle?
     /// The uid passed into `userMessagesRefHandle`.
-    static var uidUserMessagesRef: String = ""
+    private var uidForUserMessagesRefHandle: String?
     
     // MARK: Functions
     
-    static func removeObserver() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
-        if let handle = messagesRefHandle {
+    func removeObserver() {
+        if let handle = userMessagesRefHandle,
+           let uiForMessages = uiForMessages,
+           let uidForUserMessagesRefHandle = uidForUserMessagesRefHandle {
             USER_MESSAGES_REF
-                .child(currentUid)
+                .child(uiForMessages)
+                .child(uidForUserMessagesRefHandle)
                 .removeObserver(withHandle: handle)
+            
+            USER_MESSAGES_REF
+                .child(uiForMessages)
+                .child(uidForUserMessagesRefHandle)
+                .removeAllObservers()
         }
         
-        if let handle = userMessagesRefHandle {
+        if let handle = messagesRefHandle,
+           let uiForMessages = uiForMessages {
+            
             USER_MESSAGES_REF
-                .child(currentUid)
-                .child(uidUserMessagesRef)
+                .child(uiForMessages)
                 .removeObserver(withHandle: handle)
+            
+            USER_MESSAGES_REF
+                .child(uiForMessages)
+                .removeAllObservers()
         }
-        
-        USER_MESSAGES_REF.removeAllObservers()
     }
     
-    static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
+    func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
+        uiForMessages = userId
+        
         messagesRefHandle = USER_MESSAGES_REF
             .child(userId)
             .observe(.childAdded, with: { (snapshot) in
                 let uid = snapshot.key
-                self.uidUserMessagesRef = uid
-                
-                userMessagesRefHandle = USER_MESSAGES_REF
-                    .child(userId)
-                    .child(uid)
-                    .observe(.childAdded) { (snapshot) in
-                        let messageId = snapshot.key
-                        MessagesUtils.fetchMessage(withMessageId: messageId, complection: block)
-                    }
+                                
+//                self.userMessagesRefHandle = USER_MESSAGES_REF
+//                    .child(userId)
+//                    .child(uid)
+//                    .observe(.childAdded) { (snapshot) in
+//                        let messageId = snapshot.key
+//                        self.fetchMessage(withMessageId: messageId, complection: block)
+//                    }
             }, withCancel: { (error) in
                 block?("")
             })
     }
     
-    static func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion) {
+    func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion) {
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { snapshot in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else {
                 block?("")
@@ -86,7 +99,7 @@ struct MessagesUtils {
                     return message1.creationDate > message2.creationDate
                 }
                 
-                MessagesUtils.lastFetchedMessage = MessagesController.messages.last
+                self.lastFetchedMessage = MessagesController.messages.last
                 
                 // completion
                 block?(chatPartnerId)

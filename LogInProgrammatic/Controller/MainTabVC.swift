@@ -164,7 +164,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Public
 
     func logout() {
-        MessagesUtils.removeObserver()
         removeObserver()
         
         // Inform RootVC.
@@ -187,7 +186,10 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             }
         }
         
-        // Remove observer from user profile tab
+        // Remove observer from the notifs vc.
+        notificationsVC.removeObserver()
+        
+        // Remove observer from the user profile tab
         userProfileVC.removeObserver()
     }
     

@@ -21,6 +21,8 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     var notifications = [AppNotif]()
     
+    private var messagesUtils: MessagesUtils?
+    
     private let sendBarButtonDot = UIView()
     private lazy var sendBarButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -47,6 +49,8 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         // register cell class
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
 
+        messagesUtils = MessagesUtils()
+        
         // fetch notifications
         fetchNotifications()
     }
@@ -74,7 +78,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
         
         if MessagesController.messages.count == 0 {
-            MessagesUtils.fetchMessages(userId: currentUid) { _ in
+            messagesUtils?.fetchMessages(userId: currentUid) { _ in
                 continueCheckingSeenMessages()
             }
         } else {
@@ -93,6 +97,11 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         tableView.reloadData()
     }
     
+    func removeObserver() {
+        messagesUtils?.removeObserver()
+        messagesUtils = nil
+    }
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -103,13 +112,13 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         return notifications.count
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if notifications.count > 4 {
-            if indexPath.item == notifications.count - 1 {
-                fetchNotifications()
-            }
-        }
-    }
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if notifications.count > 4 {
+//            if indexPath.item == notifications.count - 1 {
+//                fetchNotifications()
+//            }
+//        }
+//    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
