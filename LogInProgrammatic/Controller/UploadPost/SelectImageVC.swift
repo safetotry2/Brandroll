@@ -98,9 +98,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SelectPhotoCell
-        
         cell.photoImageView.image = images[indexPath.row]
-        
         return cell
     }
     

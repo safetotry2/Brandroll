@@ -14,16 +14,16 @@ class NewMessageCell: UITableViewCell {
     // MARK: - Properties
     
     var user: User? {
-        
         didSet {
-            guard let profileImageUrl = user?.profileImageUrl,
-                  let url = URL(string: profileImageUrl) else { return }
+            if let profileImageUrl = user?.profileImageUrl,
+               let url = URL(string: profileImageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                profileImageView.kf.setImage(with: resource)
+            }
             
             let fullname = user?.name ?? ""
             let occupation = user?.occupation ?? ""
             
-            let resource = ImageResource(downloadURL: url)
-            profileImageView.kf.setImage(with: resource)
             textLabel?.text = fullname
             detailTextLabel?.text = occupation
         }

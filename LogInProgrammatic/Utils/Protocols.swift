@@ -30,7 +30,6 @@ protocol FeedCellDelegate {
 }
 
 protocol NotitificationCellDelegate {
-    
     func handleFollowTapped(for cell: NotificationCell)
     func handlePostTapped(for cell: NotificationCell)
 }

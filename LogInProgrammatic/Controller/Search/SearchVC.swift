@@ -178,18 +178,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         return cell
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    //
-    //        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-    //
-    //        //feedVC.viewSinglePost = true
-    //
-    //        feedVC.post = posts[indexPath.item]
-    //
-    //        navigationController?.pushViewController(feedVC, animated: true)
-    //    }
-    
-    
     // MARK: - Handlers
     
     @objc private func popToPrevious() {

@@ -96,11 +96,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ChatCell
-        
         cell.message = messages[indexPath.row]
-        
         configureMessge(cell: cell, message: messages[indexPath.item])
-        
         return cell
     }
     
@@ -140,12 +137,10 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.frame.size.height = estimateFrameForText(message.messageText).height + 16
         
         if message.fromId == currentUid {
-            
             cell.bubbleViewRightAnchor?.isActive = true
             cell.bubbleViewLeftAnchor?.isActive = false
             cell.bubbleView.backgroundColor = UIColor.rgb(red: 0, green: 137, blue: 249)
             cell.textView.textColor = .white
-            //cell.profileImageView.isHidden = true
         } else {
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true

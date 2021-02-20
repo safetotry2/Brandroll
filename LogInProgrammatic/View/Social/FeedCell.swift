@@ -217,10 +217,9 @@ class FeedCell: UICollectionViewCell {
     }
     
     func configureCaption(user: User?) {
-        
         guard let post = self.post else { return }
-        guard let caption = post.caption else { return }
         
+        let caption = post.caption ?? ""
         let attributedText = NSMutableAttributedString(string: user?.username ?? "", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)])
         
         attributedText.append(NSAttributedString(string: " \(caption)", attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)]))
@@ -228,7 +227,6 @@ class FeedCell: UICollectionViewCell {
         captionLabel.attributedText = attributedText
         
         postTimeLabel.text = post.creationDate.timeAgoToDisplay()
-        
     }
     
     func configureGradientOverlay() {

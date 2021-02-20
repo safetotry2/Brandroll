@@ -11,16 +11,12 @@ import UIKit
 class CommentCell: UICollectionViewCell {
     
     var comment: Comment? {
-        
         didSet {
-            
             guard let user = comment?.user else { return }
-            //guard let profileImageUrl = user.profileImageUrl else { return }
-            guard let name = user.name else { return }
-            guard let commentText = comment?.commentText else { return }            
-            guard let timestamp = comment?.creationDate.timeStampForComment() else { return }
             
-            //profileImageView.loadImage(with: profileImageUrl)
+            let name = user.name ?? ""
+            let commentText = comment?.commentText ?? ""
+            let timestamp = comment?.creationDate.timeStampForComment() ?? ""
             
             let attributedText = NSMutableAttributedString(string: name, attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
             attributedText.append(NSAttributedString(string: " \(commentText)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))

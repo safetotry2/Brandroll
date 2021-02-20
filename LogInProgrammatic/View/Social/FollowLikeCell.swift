@@ -37,7 +37,6 @@ class FollowLikeCell: UITableViewCell {
             
             user?.checkIfUserIsFollowed(completion: { (followed) in
                 if followed {
-                    
                     // configure follow button for follwed user
                     self.followButton.configure(didFollow: true)
                     

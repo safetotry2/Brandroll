@@ -22,7 +22,6 @@ class SearchProfileCell: UICollectionViewCell {
                let url = URL(string: profileImageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
-                
             }
             
             if let fullname = user?.name {
@@ -129,7 +128,6 @@ class SearchProfileCell: UICollectionViewCell {
     }
     
     func configureFollowButton() {
-        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let user = user else { return }
         

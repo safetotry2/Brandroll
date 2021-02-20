@@ -108,15 +108,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
-//    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//
-//        if posts.count > 9 {
-//            if indexPath.item == posts.count - 1 {
-//                fetchPosts()
-//            }
-//        }
-//    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
@@ -139,38 +130,14 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // return header
         return header
     }
-
-//    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! UserPostCell
-//
-//        cell.post = posts[indexPath.item]
-//
-//        return cell
-//    }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
-        
         cell.delegate = self
-        
         cell.post = posts[indexPath.item]
-        
         return cell
     }
 
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-//
-//        feedVC.viewSinglePost = true
-//        feedVC.userProfileController = self
-//
-//        feedVC.post = posts[indexPath.item]
-//
-//        navigationController?.pushViewController(feedVC, animated: true)
-//    }
-    
     //MARK: - UserProfileHeader Protocol
     
     func handleFollowersTapped(for header: UserProfileHeader) {
@@ -200,7 +167,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func handleEditFollowTapped(for header: UserProfileHeader) {
-        
         guard let user = header.user else { return }
 
         if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
