@@ -54,7 +54,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
         
         // fetch posts
-//        fetchPosts()
+        fetchPosts()
     }
     
     /**
