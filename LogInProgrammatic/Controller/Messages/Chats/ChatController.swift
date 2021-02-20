@@ -57,14 +57,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
         
-        guard let currentUid = Auth.auth().currentUser?.uid,
-              let chatPartnerId = self.user?.uid,
-              let chatsRefHandle = self.chatsRefHandle else { return }
-        
-        USER_MESSAGES_REF
-            .child(currentUid)
-            .child(chatPartnerId)
-            .removeObserver(withHandle: chatsRefHandle)
+        removeObserver()
     }
     
     override var inputAccessoryView: UIView? {
@@ -75,6 +68,17 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    func removeObserver() {
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              let chatPartnerId = self.user?.uid,
+              let chatsRefHandle = self.chatsRefHandle else { return }
+        
+        USER_MESSAGES_REF
+            .child(currentUid)
+            .child(chatPartnerId)
+            .removeObserver(withHandle: chatsRefHandle)
     }
     
     // MARK: - UICollectionView

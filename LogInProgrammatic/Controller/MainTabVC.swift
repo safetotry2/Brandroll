@@ -164,6 +164,17 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Public
 
     func logout() {
+        MessagesUtils.removeObserver()
+        removeObserver()
+        
+        // Inform RootVC.
+        NotificationCenter.default.post(
+            name: RootVC.didLogoutNotification,
+            object: nil
+        )
+    }
+    
+    func removeObserver() {
         if let currentUid = Auth.auth().currentUser?.uid {
             if let notifRefHandle = self.notifRefHandle {
                 NOTIFICATIONS_REF.child(currentUid)
@@ -174,12 +185,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                     .removeObserver(withHandle: notifRefHandleChildAdded)
             }
         }
-        
-        // Inform RootVC.
-        NotificationCenter.default.post(
-            name: RootVC.didLogoutNotification,
-            object: nil
-        )
     }
     
     // MARK: - API

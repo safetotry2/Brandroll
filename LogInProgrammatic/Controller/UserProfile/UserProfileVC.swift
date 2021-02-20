@@ -22,6 +22,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var currentKey: String?
     var fromTabBar = true
     
+    private var followingHandle: DatabaseHandle?
+    private var followersHandle: DatabaseHandle?
+    
     // MARK: - Init
     
     deinit {
@@ -34,7 +37,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView.backgroundColor = .white
         
         // Register cell classes
-        //self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
@@ -54,16 +56,12 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // fetch posts
         fetchPosts()
     }
+    
+    func removeObserver() {
+        
+    }
 
-    //MARK: - UICollectionViewFlowLayout
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 1
-//    }
+    // MARK: - UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
@@ -72,14 +70,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
     }
-    
-    
 
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = (view.frame.width - 2) / 3
-//        return CGSize(width: width, height: width)
-//    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width
@@ -194,13 +185,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func setUserStats(for header: UserProfileHeader) {
-        
         guard let uid = header.user?.uid else { return }
+        
         var numberOfFollowers: Int!
         var numberOfFollowing: Int!
         
         // get number of followers
-        USER_FOLLOWER_REF.child(uid).observe(.value) { (snapshot) in
+        followersHandle = USER_FOLLOWER_REF.child(uid).observe(.value) { (snapshot) in
             if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
                 numberOfFollowers = snapshot.count
             } else {
@@ -214,7 +205,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
         
         // get number of following
-        USER_FOLLOWING_REF.child(uid).observe(.value) { (snapshot) in
+        followingHandle = USER_FOLLOWING_REF.child(uid).observe(.value) { (snapshot) in
             if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
                 numberOfFollowing = snapshot.count
             } else {

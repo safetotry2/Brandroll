@@ -63,8 +63,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         collectionView.refreshControl = refreshControl
 
         fetchPosts()
-
-        //updateUserFeeds()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -328,38 +326,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         prevScrollDirection = scrollView.contentOffset.y
     }
     
-    //MARK: - API
+    // MARK: - API
     
-    // The function below 1) identifies the individuals that the current user is following, 2) accesses all of their posts, and then 3) updates the current user's user-feed data structure with these posts. This function will become more meaningful when the original fetchPosts function (see below) is deployed which will populate the current user's feed with posts from individuals they follow as well as their own.
-//    func updateUserFeeds() {
-//
-//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//
-//        USER_FOLLOWING_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-//
-//            let followingUserId = snapshot.key
-//
-//            USER_POSTS_REF.child(followingUserId).observe(.childAdded) { (snapshot) in
-//
-//                let postId = snapshot.key
-//
-//                USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
-//            }
-//        }
-//
-//        USER_POSTS_REF.child(currentUid).observe(.childAdded) { (snapshot) in
-//
-//            let postId = snapshot.key
-//
-//            USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
-//        }
-//    }
-    
-    // The function below updates the Home Feed of the current user with posts from all users, to create a 'Global Feed.'
+    /// The function below updates the Home Feed of the current user with posts from all users, to create a 'Global Feed.'
     func fetchPosts() {
-
         if currentKey == nil {
-
             POSTS_REF.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
 
                 self.collectionView.refreshControl?.endRefreshing()
@@ -391,9 +362,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     func fetchPost(withPostId postId: String) {
-        
         Database.fetchPost(with: postId) { (post) in
-            
             self.posts.append(post)
             
             self.posts.sort { (post1, post2) -> Bool in
