@@ -24,6 +24,10 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     // MARK: - Init
     
+    deinit {
+        print("UserProfileVC deallocated! ✅")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -350,15 +354,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // add alert logout action
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
             do {
+                // handle logout from tabController
+                if let tabBarController = self.tabBarController as? MainTabVC {
+                    tabBarController.logout()
+                }
                 
                 // attempt sign out
                 try Auth.auth().signOut()
                 print("Successfully logged out user")
                 
-                // handle logout from tabController
-                if let tabBarController = self.tabBarController as? MainTabVC {
-                    tabBarController.logout()
-                }
             } catch {
                 // handle error
                 print("Failed to sign out")

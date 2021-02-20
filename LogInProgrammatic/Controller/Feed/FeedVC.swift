@@ -35,17 +35,18 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     // MARK: - Init
     
+    deinit {
+        print("FeedVC deallocated! ✅")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         if viewSinglePost {
             navigationController?.setNavigationBarHidden(false, animated: animated)
         } else {
             navigationController?.setNavigationBarHidden(true, animated: animated)
         }
-        
-//        super.viewDidAppear(animated)
-//        let height: CGFloat = 30 //whatever height you want to add to the existing height
-//        let bounds = self.navigationController!.navigationBar.bounds
-//        self.navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height + height)
     }
     
     override func viewDidLoad() {
@@ -65,13 +66,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
 
         //updateUserFeeds()
     }
-    
-//    override func viewDidLayoutSubviews() {
-//       super.viewDidLayoutSubviews()
-//       let height = CGFloat(30)
-//        navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
-//    }
-
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: animated)

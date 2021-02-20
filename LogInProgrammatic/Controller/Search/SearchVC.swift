@@ -29,6 +29,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     // MARK: - Init
     
+    deinit {
+        print("SearchVC deallocated! ✅")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

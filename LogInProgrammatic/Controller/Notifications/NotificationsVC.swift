@@ -31,6 +31,10 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     // MARK: - Functions
     
+    deinit {
+        print("NotificationsVC deallocated! ✅")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
