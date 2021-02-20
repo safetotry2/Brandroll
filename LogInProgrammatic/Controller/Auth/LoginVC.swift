@@ -125,21 +125,22 @@ class LoginVC: UIViewController {
             // handle error
             if let error = error {
                 print("Unable to sign user in with error", error.localizedDescription)
-                
+                self.alert(
+                    title: "Error",
+                    message: "Unable to sign user in with error: \(error.localizedDescription)",
+                    okayButtonTitle: "OK",
+                    withBlock: nil
+                )
                 return
             }
             
-            // handle success
-            guard let mainTabVC = UIApplication.shared.windows.filter({$0.isKeyWindow}).first?.rootViewController as? MainTabVC else { return }
-            
-            // confingure view controllers in mainTabVC
-            mainTabVC.configureViewControllers()
-            mainTabVC.didLogIn()
-            
-            // dismiss login view controller
-            self.dismiss(animated: true, completion: nil)
-            
             print("Succesfully logged in user")
+            
+            // Inform RootVC.
+            NotificationCenter.default.post(
+                name: RootVC.didLoginNotification,
+                object: nil
+            )
         }
     }
     

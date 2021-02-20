@@ -178,6 +178,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                     .removeObserver(withHandle: notifRefHandleChildAdded)
             }
         }
+        
+        // Inform RootVC.
+        NotificationCenter.default.post(
+            name: RootVC.didLogoutNotification,
+            object: nil
+        )
     }
     
     // MARK: - API
