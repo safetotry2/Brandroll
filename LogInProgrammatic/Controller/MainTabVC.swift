@@ -23,6 +23,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     private (set)var notificationsVC: NotificationsVC!
     private (set)var userProfileVC: UserProfileVC!
     
+    // MARK: - Functions
+    // MARK: Overrides
+    
+    deinit {
+        print("Main flow deallocated! ✅")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,11 +45,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // observe notifications
         observeNotifications()
         
-        // user validation
-        checkIfUserIsLoggedIn()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)
-        
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Handlers
@@ -50,10 +59,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     @objc func notificationReceived(_ notification: Foundation.Notification) {
         guard let isHidden = notification.userInfo?["isHidden"] as? Bool else { return }
         self.setTabBar(hidden: isHidden)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // function to create view controllers that exist within the tab bar
@@ -176,19 +181,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - API
-    
-    private func checkIfUserIsLoggedIn() {
-        if Auth.auth().currentUser == nil {
-            DispatchQueue.main.async {
-                // present login controller
-                let loginVC = LoginVC()
-                let navController = UINavigationController(rootViewController: loginVC)
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true, completion: nil)
-            }
-            return
-        }
-    }
     
     private func observeNotifications() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }

@@ -58,6 +58,7 @@
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
+		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
 		45EFDD3425C1BAB100E3EBED /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */; };
 		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
@@ -117,6 +118,7 @@
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
+		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				045C64DD25150AED002E8E1C /* Constants.swift */,
 				0433327E25378C6C00C26BB6 /* Protocols.swift */,
 				45EFDD3325C1BAB100E3EBED /* ProgressHUD.swift */,
+				45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */,
 				456BB6A025C4835E0053F034 /* UIViewController+Current.swift */,
 			);
 			path = Utils;
@@ -528,6 +531,7 @@
 				045C64D7250FCF60002E8E1C /* UserProfileVC.swift in Sources */,
 				045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */,
 				45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */,
+				45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */,
 				456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */,
 				045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */,
 				045C64E2251C2D99002E8E1C /* User.swift in Sources */,

@@ -28,11 +28,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if window == nil {
             if let windowScene = scene as? UIWindowScene {
                 let newWindow = UIWindow(windowScene: windowScene)
-                self.window = newWindow
+                window = newWindow
             }
         }
         
-        window?.rootViewController = MainTabVC()
+        window?.rootViewController = RootVC()
         window?.makeKeyAndVisible()
     }
 }

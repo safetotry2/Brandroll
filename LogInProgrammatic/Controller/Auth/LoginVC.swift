@@ -117,18 +117,15 @@ class LoginVC: UIViewController {
     }
     
     @objc func handlelogin() {
-        
-        // properties
-        guard
-            let email = emailTextField.text,
+        guard let email = emailTextField.text,
             let password = passwordTextField.text else { return }
         
         // sign user in with email and password
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            
             // handle error
             if let error = error {
                 print("Unable to sign user in with error", error.localizedDescription)
+                
                 return
             }
             
