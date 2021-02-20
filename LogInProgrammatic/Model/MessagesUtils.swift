@@ -18,30 +18,41 @@ struct MessagesUtils {
     static var lastFetchedMessage: Message?
     
     /// The handle of the Firebase observer from `fetchMessages`.
-    static var handle: DatabaseHandle?
-    /// The current user stored together with the handle from `fetchMessages`.
-    static var currentUserForHandle: String?
+    static var messagesRefHandle: DatabaseHandle?
+    /// Second handle.
+    static var userMessagesRefHandle: DatabaseHandle?
+    /// The uid passed into `userMessagesRefHandle`.
+    static var uidUserMessagesRef: String = ""
     
     // MARK: Functions
     
     static func removeObserver() {
-        guard let handle = self.handle,
-              let userId = currentUserForHandle else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        USER_MESSAGES_REF
-            .child(userId)
-            .removeObserver(withHandle: handle)
+        if let handle = messagesRefHandle {
+            USER_MESSAGES_REF
+                .child(currentUid)
+                .removeObserver(withHandle: handle)
+        }
+        
+        if let handle = userMessagesRefHandle {
+            USER_MESSAGES_REF
+                .child(currentUid)
+                .child(uidUserMessagesRef)
+                .removeObserver(withHandle: handle)
+        }
+        
+        USER_MESSAGES_REF.removeAllObservers()
     }
     
     static func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
-        currentUserForHandle = userId
-        
-        handle = USER_MESSAGES_REF
+        messagesRefHandle = USER_MESSAGES_REF
             .child(userId)
             .observe(.childAdded, with: { (snapshot) in
                 let uid = snapshot.key
+                self.uidUserMessagesRef = uid
                 
-                USER_MESSAGES_REF
+                userMessagesRefHandle = USER_MESSAGES_REF
                     .child(userId)
                     .child(uid)
                     .observe(.childAdded) { (snapshot) in
@@ -80,7 +91,7 @@ struct MessagesUtils {
                 // completion
                 block?(chatPartnerId)
             }
-
+            
         }, withCancel: { error in
             block?("")
         })

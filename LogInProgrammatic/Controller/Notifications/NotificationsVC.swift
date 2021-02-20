@@ -32,7 +32,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     // MARK: - Functions
     
     deinit {
-        print("NotificationsVC deallocated! ✅")
+        print("NotificationsVC deallocated! 🐱")
     }
     
     override func viewDidLoad() {
@@ -40,13 +40,13 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         
         // clear separator lines
         tableView.separatorColor = .clear
-        
+
         // configure nav bar
         configureNavigationBar()
-        
+
         // register cell class
         tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
+
         // fetch notifications
         fetchNotifications()
     }
