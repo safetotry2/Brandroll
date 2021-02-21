@@ -15,7 +15,7 @@ class MessagesUtils: NSObject {
     
     typealias FetchMessageCompletion = ((_ chatPartnerId: String) -> Void)?
     
-    private var lastFetchedMessage: Message?
+    var lastFetchedMessage: Message?
     
     /// The handle of the Firebase observer from `fetchMessages`.
     private var messagesRefHandle: DatabaseHandle?
@@ -37,25 +37,16 @@ class MessagesUtils: NSObject {
             USER_MESSAGES_REF
                 .child(uidUser)
                 .removeObserver(withHandle: handle)
-            
-            USER_MESSAGES_REF
-                .child(uidUser)
-                .removeAllObservers()
         }
         
         // The second observer
         if let handle = userMessagesRefHandle,
-           let uiForMessages = uidUser,
-           let uidForUserMessagesRefHandle = uidMessage {
+           let uidUser = uidUser,
+           let uidMessage = uidMessage {
             USER_MESSAGES_REF
-                .child(uiForMessages)
-                .child(uidForUserMessagesRefHandle)
+                .child(uidUser)
+                .child(uidMessage)
                 .removeObserver(withHandle: handle)
-            
-            USER_MESSAGES_REF
-                .child(uiForMessages)
-                .child(uidForUserMessagesRefHandle)
-                .removeAllObservers()
         }
     }
     
@@ -67,10 +58,11 @@ class MessagesUtils: NSObject {
             .observe(.childAdded, with: { [weak self] (snapshot) in
                 let uid = snapshot.key
                 self?.uidMessage = uid
+                
                 self?.continueFetchingMessage(
                     userId: userId,
                     messageId: uid,
-                    completion: nil
+                    completion: block
                 )
             }, withCancel: { (error) in
                 if let block = block { block?("") }
@@ -88,7 +80,7 @@ class MessagesUtils: NSObject {
     }
     
     func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion?) {
-        MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { snapshot in
+        MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else {
                 if let block = block { block?("") }
                 return
@@ -96,20 +88,21 @@ class MessagesUtils: NSObject {
 
             let message = Message(key: messageId, dictionary: dictionary)
 
-            Database.fetchUser(with: message.getChatPartnerId()) { (user) in
+            Database.fetchUser(with: message.getChatPartnerId()) { [weak self] (user) in
                 message.user = user
 
                 let chatPartnerId = message.getChatPartnerId()
 
+                let array = Array(MessagesController.messagesDictionary.values)
                 MessagesController.messagesDictionary[chatPartnerId] = message
-                MessagesController.messages = Array(MessagesController.messagesDictionary.values)
+                MessagesController.messages = array
 
                 // sort messages based on creation date of last message
                 MessagesController.messages.sort { (message1, message2) -> Bool in
                     return message1.creationDate > message2.creationDate
                 }
 
-                self.lastFetchedMessage = MessagesController.messages.last
+                self?.lastFetchedMessage = MessagesController.messages.last
 
                 // completion
                 if let block = block { block?(chatPartnerId) }

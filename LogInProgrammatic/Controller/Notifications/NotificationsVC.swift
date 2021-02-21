@@ -112,13 +112,13 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         return notifications.count
     }
     
-//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if notifications.count > 4 {
-//            if indexPath.item == notifications.count - 1 {
-//                fetchNotifications()
-//            }
-//        }
-//    }
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if notifications.count > 4 {
+            if indexPath.item == notifications.count - 1 {
+                fetchNotifications()
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationCell
