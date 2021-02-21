@@ -40,12 +40,12 @@ class MessagesController: UITableViewController {
         // register cell
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableFooterView = UIView()
-        
-        messagesUtils = MessagesUtils()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        messagesUtils = MessagesUtils()
         MessagesController.messages.removeAll()
         MessagesController.messagesDictionary.removeAll()
         self.tableView.reloadData()
