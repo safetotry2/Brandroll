@@ -20,96 +20,103 @@ class MessagesUtils: NSObject {
     /// The handle of the Firebase observer from `fetchMessages`.
     private var messagesRefHandle: DatabaseHandle?
     /// The uid passed into `messagesRefHandle`.
-    private var uiForMessages: String?
+    private var uidUser: String?
     
     /// Second handle.
     private var userMessagesRefHandle: DatabaseHandle?
     /// The uid passed into `userMessagesRefHandle`.
-    private var uidForUserMessagesRefHandle: String?
+    private var uidMessage: String?
     
     // MARK: Functions
     
     func removeObserver() {
-        // The sond observr
-        if let handle = userMessagesRefHandle,
-           let uiForMessages = uiForMessages,
-           let uidForUserMessagesRefHandle = uidForUserMessagesRefHandle {
+        // The first observer.
+        if let handle = messagesRefHandle,
+           let uidUser = uidUser {
+            
             USER_MESSAGES_REF
-                .child(uiForMessages)
-                .child(uidForUserMessagesRefHandle)
+                .child(uidUser)
                 .removeObserver(withHandle: handle)
             
             USER_MESSAGES_REF
-                .child(uiForMessages)
-                .child(uidForUserMessagesRefHandle)
+                .child(uidUser)
                 .removeAllObservers()
         }
         
-        // The first observer.
-        if let handle = messagesRefHandle,
-           let uiForMessages = uiForMessages {
-            
+        // The second observer
+        if let handle = userMessagesRefHandle,
+           let uiForMessages = uidUser,
+           let uidForUserMessagesRefHandle = uidMessage {
             USER_MESSAGES_REF
                 .child(uiForMessages)
+                .child(uidForUserMessagesRefHandle)
                 .removeObserver(withHandle: handle)
             
             USER_MESSAGES_REF
                 .child(uiForMessages)
+                .child(uidForUserMessagesRefHandle)
                 .removeAllObservers()
         }
     }
     
-    func fetchMessages(userId: String, completion block: FetchMessageCompletion) {
-        uiForMessages = userId
+    func fetchMessages(userId: String, completion block: FetchMessageCompletion?) {
+        uidUser = userId
         
         messagesRefHandle = USER_MESSAGES_REF
             .child(userId)
-            .observe(.childAdded, with: { (snapshot) in
+            .observe(.childAdded, with: { [weak self] (snapshot) in
                 let uid = snapshot.key
-                                
-                self.userMessagesRefHandle = USER_MESSAGES_REF
-                    .child(userId)
-                    .child(uid)
-                    .observe(.childAdded) { (snapshot) in
-                        let messageId = snapshot.key
-                        causes memleak
-                        //self.fetchMessage(withMessageId: messageId, complection: block)
-                    }
+                self?.uidMessage = uid
+                self?.continueFetchingMessage(
+                    userId: userId,
+                    messageId: uid,
+                    completion: nil
+                )
             }, withCancel: { (error) in
-                block?("")
+                if let block = block { block?("") }
             })
     }
     
-    func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion) {
+    func continueFetchingMessage(userId: String, messageId: String, completion block: FetchMessageCompletion?) {
+        userMessagesRefHandle = USER_MESSAGES_REF
+            .child(userId)
+            .child(messageId)
+            .observe(.childAdded) { [weak self] (snapshot) in
+                let messageId = snapshot.key
+                self?.fetchMessage(withMessageId: messageId, complection: block)
+            }
+    }
+    
+    func fetchMessage(withMessageId messageId: String, complection block: FetchMessageCompletion?) {
         MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { snapshot in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else {
-                block?("")
+                if let block = block { block?("") }
                 return
             }
-            
+
             let message = Message(key: messageId, dictionary: dictionary)
-            
+
             Database.fetchUser(with: message.getChatPartnerId()) { (user) in
                 message.user = user
-                
+
                 let chatPartnerId = message.getChatPartnerId()
-                
+
                 MessagesController.messagesDictionary[chatPartnerId] = message
                 MessagesController.messages = Array(MessagesController.messagesDictionary.values)
-                
+
                 // sort messages based on creation date of last message
                 MessagesController.messages.sort { (message1, message2) -> Bool in
                     return message1.creationDate > message2.creationDate
                 }
-                
+
                 self.lastFetchedMessage = MessagesController.messages.last
-                
+
                 // completion
-                block?(chatPartnerId)
+                if let block = block { block?(chatPartnerId) }
             }
-            
+
         }, withCancel: { error in
-            block?("")
+            if let block = block { block?("") }
         })
     }
 }
