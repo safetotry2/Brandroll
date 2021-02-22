@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import SVProgressHUD
+import UIKit
 
 class SignUpVC: UIViewController {
 
@@ -181,16 +182,15 @@ class SignUpVC: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
-        ProgressHUD.show("Please wait...", interaction: false)
+        SVProgressHUD.show()
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             guard error == nil else {
-                ProgressHUD.showError("Error signing up")
+                SVProgressHUD.showError(withStatus: "Error signing up")
                 print("Failed to create user with error", error!.localizedDescription)
                 return
             }
             
-            ProgressHUD.show("Updating your profile...", interaction: false)
             self.handleResult(result)
         }
     }
@@ -203,7 +203,7 @@ class SignUpVC: UIViewController {
         guard let username = usernameTextField.text?.lowercased() else { return }
         
         guard let uid = result?.user.uid else {
-            ProgressHUD.showError("User Id not found!")
+            SVProgressHUD.showError(withStatus: "User Id not found!")
             return
         }
         
@@ -251,9 +251,9 @@ class SignUpVC: UIViewController {
     private func updateUserValues(_ values: [String : Any]) {
         USER_REF.updateChildValues(values) { (error, ref) in
             if error != nil {
-                ProgressHUD.showFailed("Profile update failed!")
+                SVProgressHUD.showError(withStatus: "Profile update failed!")
             } else {
-                ProgressHUD.showSucceed()
+                SVProgressHUD.showSuccess(withStatus: "")
             }
             
             // Inform RootVC.

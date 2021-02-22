@@ -19,7 +19,7 @@ class UserProfileHeader: UICollectionViewCell {
     var user: User? {
         didSet {
             // configure edit profile button
-            //configureEditProfileFollowButton()
+            configureEditProfileFollowButton()
             
             // set user stats
             setUserStats(for: user)

@@ -8,6 +8,7 @@
 
 import Firebase
 import Kingfisher
+import SVProgressHUD
 import UIKit
 
 private let reuseIdentifier = "MessagesCell"
@@ -20,6 +21,7 @@ class MessagesController: UITableViewController {
     static var messagesDictionary = [String: Message]()
     
     private var messagesUtils: MessagesUtils?
+    private var didPresentNewMessage = false
     
     var userUid: String?
     var currentKey: String?
@@ -54,8 +56,12 @@ class MessagesController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // fetch messages
-        fetchMessages()
+        if didPresentNewMessage {
+            didPresentNewMessage = false
+        } else {
+            // fetch messages
+            fetchMessages()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -104,12 +110,13 @@ class MessagesController: UITableViewController {
         
         message.setSeen()
         
-        ProgressHUD.show()
+        SVProgressHUD.show()
         Database.fetchUser(with: chatPartnerId) { (user) in
-            ProgressHUD.dismiss()
-            guard let user = user else { return }
-            self.showChatController(forUser: user)
-            tableView.reloadRows(at: [indexPath], with: .none)
+            SVProgressHUD.dismiss {
+                guard let user = user else { return }
+                self.showChatController(forUser: user)
+                tableView.reloadRows(at: [indexPath], with: .none)
+            }
         }
     }
     
@@ -138,6 +145,7 @@ class MessagesController: UITableViewController {
     }
     
     @objc func handleNewMessage() {
+        didPresentNewMessage = true
         let newMessageController = NewMessageController()
         newMessageController.messagesController = self
         let navigationController = UINavigationController(rootViewController: newMessageController)
@@ -167,17 +175,17 @@ class MessagesController: UITableViewController {
     func fetchMessages() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        ProgressHUD.show()
+        SVProgressHUD.show()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
             // Just in case for 5 seconds nothing happens,
             // remove the HUD. This happens because Firebase won't return a callback if we have an empty data.
-            ProgressHUD.dismiss()
+            SVProgressHUD.dismiss()
         }
         
         messagesUtils?.fetchMessages(userId: currentUid) { (partnerId) in
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                ProgressHUD.dismiss()
+                SVProgressHUD.dismiss()
             }
             
             self.userUid = partnerId
