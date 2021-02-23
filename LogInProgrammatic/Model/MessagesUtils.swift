@@ -25,9 +25,6 @@ class MessagesUtils: NSObject {
     typealias secondTuple = (dbHandle: DatabaseHandle?, uidUser: String?, uidMessage: String?)
     private var userMessagesRefHandles = [secondTuple]()
     
-    var messages = [Message]()
-    var messagesDictionary = [String: Message]()
-    
     // MARK: Functions
     
     func removeObserver() {
@@ -113,18 +110,16 @@ class MessagesUtils: NSObject {
 
                 let chatPartnerId = message.getChatPartnerId()
 
-                guard let values = self?.messagesDictionary.values else { return }
-                
-                let array = Array(values)
-                self?.messagesDictionary[chatPartnerId] = message
-                self?.messages = array
+                let array = Array(MessagesController.messagesDictionary.values)
+                MessagesController.messagesDictionary[chatPartnerId] = message
+                MessagesController.messages = array
 
                 // sort messages based on creation date of last message
-                self?.messages.sort { (message1, message2) -> Bool in
+                MessagesController.messages.sort { (message1, message2) -> Bool in
                     return message1.creationDate > message2.creationDate
                 }
 
-                self?.lastFetchedMessage = self?.messages.last
+                self?.lastFetchedMessage = MessagesController.messages.last
 
                 // completion
                 if let block = block { block?(chatPartnerId) }

@@ -164,6 +164,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Public
 
     func logout() {
+        removeChats()
         removeObserver()
         
         // Inform RootVC.
@@ -171,6 +172,11 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             name: RootVC.didLogoutNotification,
             object: nil
         )
+    }
+    
+    func removeChats() {
+        MessagesController.messages.removeAll()
+        MessagesController.messagesDictionary.removeAll()
     }
     
     func removeObserver() {

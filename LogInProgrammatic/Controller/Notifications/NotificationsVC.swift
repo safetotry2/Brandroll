@@ -72,7 +72,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         
         func continueCheckingSeenMessages() {
             if Thread.isMainThread {
-                let areAllMessagesSeen = messagesUtils?.messages.filter {
+                let areAllMessagesSeen = MessagesController.messages.filter {
                     $0.seen == 0 && $0.fromId != currentUid
                 }.count == 0
                 sendBarButtonDot.isHidden = areAllMessagesSeen
@@ -83,9 +83,11 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
             }
         }
         
-        messagesUtils?.messages.removeAll()
-        messagesUtils?.messagesDictionary.removeAll()
-        messagesUtils?.fetchMessages(userId: currentUid) { _ in
+        if MessagesController.messages.count == 0 {
+            messagesUtils?.fetchMessages(userId: currentUid) { _ in
+                continueCheckingSeenMessages()
+            }
+        } else {
             continueCheckingSeenMessages()
         }
     }

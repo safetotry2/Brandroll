@@ -17,6 +17,9 @@ class MessagesController: UITableViewController {
     
     // MARK: - Properties
     
+    static var messages = [Message]()
+    static var messagesDictionary = [String: Message]()
+    
     private var messagesUtils: MessagesUtils?
     private var didPresentNewMessage = false
     
@@ -45,8 +48,8 @@ class MessagesController: UITableViewController {
         super.viewWillAppear(animated)
         
         messagesUtils = MessagesUtils()
-        messagesUtils?.messages.removeAll()
-        messagesUtils?.messagesDictionary.removeAll()
+        MessagesController.messages.removeAll()
+        MessagesController.messagesDictionary.removeAll()
         self.tableView.reloadData()
     }
     
@@ -79,32 +82,30 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = messagesUtils?.messages.count ?? 0
+        let count = MessagesController.messages.count
         print("MessagesVC numberOfRowsInSection: \(count)")
         return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MessageCell
-        cell.message = messagesUtils?.messages[indexPath.row]
+        cell.message = MessagesController.messages[indexPath.row]
         return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let count = messagesUtils?.messages.count,
-           count > 4 {
-            let lastStoredMessage = messagesUtils?.messages.last
+        if MessagesController.messages.count > 4 {
+            let lastStoredMessage = MessagesController.messages.last
             let previousFetchedMessage = messagesUtils?.lastFetchedMessage
             
-            if indexPath.item == (messagesUtils?.messages.count ?? 0) - 1 && lastStoredMessage != previousFetchedMessage {
+            if indexPath.item == MessagesController.messages.count - 1 && lastStoredMessage != previousFetchedMessage {
                 fetchMessages()
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let message = messagesUtils?.messages[indexPath.row] else { return }
-        
+        let message = MessagesController.messages[indexPath.row]
         let chatPartnerId = message.getChatPartnerId()
         
         message.setSeen()
@@ -127,11 +128,10 @@ class MessagesController: UITableViewController {
         if editingStyle == .delete {
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
-            guard let userUid = userUid,
-                  let messagesUtils = messagesUtils else { return }
+            guard let userUid = userUid else { return }
             
             USER_MESSAGES_REF.child(currentUid).child(userUid).removeValue { (err, ref) in
-                messagesUtils.messages.remove(at: indexPath.row)
+                MessagesController.messages.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 tableView.reloadData()
             }
@@ -190,7 +190,7 @@ class MessagesController: UITableViewController {
             
             self.userUid = partnerId
             
-            print("MessagesVC fetchMessage messages count: \(self.messagesUtils?.messages.count ?? 0)")
+            print("MessagesVC fetchMessage messages count: \(MessagesController.messages.count)")
             
             self.tableView.reloadData()
         }
