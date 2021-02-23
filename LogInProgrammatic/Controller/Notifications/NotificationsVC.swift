@@ -71,10 +71,16 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         func continueCheckingSeenMessages() {
-            let areAllMessagesSeen = MessagesController.messages.filter {
-                $0.seen == 0 && $0.fromId != currentUid
-            }.count == 0
-            sendBarButtonDot.isHidden = areAllMessagesSeen
+            if Thread.isMainThread {
+                let areAllMessagesSeen = MessagesController.messages.filter {
+                    $0.seen == 0 && $0.fromId != currentUid
+                }.count == 0
+                sendBarButtonDot.isHidden = areAllMessagesSeen
+            } else {
+                DispatchQueue.main.async {
+                    continueCheckingSeenMessages()
+                }
+            }
         }
         
         if MessagesController.messages.count == 0 {
@@ -88,7 +94,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     private func setAllNotifToViewed() {
         notifications.forEach { (notif) in
-            notif.didCheck = true
+            notif.locallyViewed = true
         }
         
         if let tabBarController = self.tabBarController as? MainTabVC {
