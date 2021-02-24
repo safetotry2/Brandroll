@@ -154,7 +154,7 @@ class NotificationCell: UITableViewCell {
             postImageView.isHidden = true
         }
         
-        backgroundColor = notification.locallyViewed ? .white : UIColor.colorWithRGBHex(0xdcdde1)
+        backgroundColor = notification.didCheck ? .white : UIColor.colorWithRGBHex(0xdcdde1)
     }
     
     func getNotificationTimestamp() -> String? {

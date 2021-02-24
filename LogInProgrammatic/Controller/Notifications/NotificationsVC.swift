@@ -94,7 +94,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     private func setAllNotifToViewed() {
         notifications.forEach { (notif) in
-            notif.locallyViewed = true
+            notif.didCheck = true
         }
         
         if let tabBarController = self.tabBarController as? MainTabVC {
@@ -119,6 +119,17 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let notification = notifications[indexPath.row]
+        
+        if let currentUid = Auth.auth().currentUser?.uid,
+           let notifId = notification.key {
+            NOTIFICATIONS_REF
+                .child(currentUid)
+                .child(notifId)
+                .child("checked")
+                .setValue(1)
+        }
+        
         if notifications.count > 4 {
             if indexPath.item == notifications.count - 1 {
                 fetchNotifications()
@@ -255,7 +266,6 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     // MARK: - API
     
     private func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
         guard let uid = dictionary["uid"] as? String else { return }
         
@@ -273,7 +283,6 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
                 self.addNewNotification(notification)
             }
         }
-        NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
     }
     
     private func addNewNotification(_ notification: AppNotif) {
