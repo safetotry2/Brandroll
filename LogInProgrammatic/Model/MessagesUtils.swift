@@ -110,9 +110,8 @@ class MessagesUtils: NSObject {
 
                 let chatPartnerId = message.getChatPartnerId()
 
-                let array = Array(MessagesController.messagesDictionary.values)
                 MessagesController.messagesDictionary[chatPartnerId] = message
-                MessagesController.messages = array
+                MessagesController.messages = Array(MessagesController.messagesDictionary.values)
 
                 // sort messages based on creation date of last message
                 MessagesController.messages.sort { (message1, message2) -> Bool in
