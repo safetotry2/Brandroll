@@ -70,20 +70,24 @@ class NotificationCell: UITableViewCell {
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         
-        let postTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
-        postTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(postTap)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
     
+    lazy var postTap: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
+        gesture.numberOfTapsRequired = 1
+        return gesture
+    }()
+    
     lazy var stackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [
             profileImageView,
             notificationTitleLabel,
-            postImageView,
-            followButton
+            followButton,
+            postImageView
         ])
         sv.axis = .horizontal
         sv.translatesAutoresizingMaskIntoConstraints = false
@@ -179,7 +183,7 @@ class NotificationCell: UITableViewCell {
         followButton.layer.cornerRadius = 3
         profileImageView.layer.cornerRadius = 40 / 2
         
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 40),
