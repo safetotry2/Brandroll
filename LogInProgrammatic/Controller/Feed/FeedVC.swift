@@ -63,10 +63,31 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         collectionView.refreshControl = refreshControl
 
         fetchPosts()
+        addObserver()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func applicationWillEnterForeground() {
+        print("applicationWillEnterForeground")
+        handleRefresh()
     }
 
     //MARK: - UICollectionViewFlowLayout
@@ -371,44 +392,4 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             self.collectionView.reloadData()
         }
     }
-    
-        
 }
-
-
-// NOTE: The original fetchPosts function as seen below accesses the user-feed data structure to update the Home Feed of the current user with 1) the user's own posts and 2) posts from individuals that the user follows.
-//    func fetchPosts() {
-//
-//        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-//
-//        if currentKey == nil {
-//
-//            USER_FEED_REF.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
-//
-//                self.collectionView.refreshControl?.endRefreshing()
-//
-//                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-//                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-//
-//                allObjects.forEach { (snapshot) in
-//                    let postId = snapshot.key
-//                    self.fetchPost(withPostId: postId)
-//                }
-//                self.currentKey = first.key
-//            }
-//        } else {
-//            USER_FEED_REF.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value) { (snapshot) in
-//                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-//                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-//
-//                allObjects.forEach { (snapshot) in
-//                    let postId = snapshot.key
-//                    if snapshot.key != self.currentKey {
-//                        self.fetchPost(withPostId: postId)
-//                    }
-//                }
-//                self.currentKey = first.key
-//            }
-//
-//        }
-//    }

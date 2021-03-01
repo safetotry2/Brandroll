@@ -192,6 +192,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             }
         }
         
+        // Remove observer from the feeds vc.
+        feedVC.removeObserver()
+        
         // Remove observer from the notifs vc.
         notificationsVC.removeObserver()
         
