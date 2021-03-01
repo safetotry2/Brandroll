@@ -93,15 +93,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     //MARK: - UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         let width = view.frame.width
-        var height = width + 8
+        let height = width + 70
 
-        // 50 is the height of the stackview (for the action buttons in FeedCell)
-        // 60 is merely an arbitrary number
-        height += 50
-        height += 50
-        
         return CGSize(width: width, height: height)
     }
 
