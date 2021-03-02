@@ -12,22 +12,8 @@ import Kingfisher
 
 class UploadPostVC: UIViewController, UITextViewDelegate {
 
-    //MARK: - Properties
+    // MARK: - Properties
     
-    enum UploadAction: Int {
-        case UploadPost
-        case SaveChanges
-        
-        init(index: Int) {
-            switch index {
-            case 0: self = .UploadPost
-            case 1: self = .SaveChanges
-            default: self = .UploadPost
-            }
-        }
-    }
-    
-    var uploadAction: UploadAction!
     var selectedImage: UIImage?
     var postToEdit: Post?
     
@@ -41,7 +27,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     
     let captionTextView: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.systemGroupedBackground
         tv.font = UIFont.systemFont(ofSize: 12)
         return tv
     }()
@@ -77,25 +63,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if uploadAction == .SaveChanges {
-            guard let post = self.postToEdit else { return }
-            actionButton.setTitle("Save Changes", for: .normal)
-            self.navigationItem.title = "Edit Post"
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-            navigationController?.navigationBar.tintColor = .black
-            
-            if let imageUrl = post.imageUrl,
-               let url = URL(string: imageUrl) {
-                let resource = ImageResource(downloadURL: url)
-                photoImageView.kf.setImage(with: resource)
-                
-            }
-            
-            captionTextView.text = post.caption
-        } else {
-            actionButton.setTitle("Share", for: .normal)
-            self.navigationItem.title = "Upload Post"
-        }
+        actionButton.setTitle("Share", for: .normal)
+        self.navigationItem.title = "Upload Post"
     }
     
     //MARK: - UITextView
@@ -138,22 +107,11 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     }
     
     @objc func handleUploadAction() {
-        buttonSelector(uploadAction: uploadAction)
+        handleUploadPost()
     }
     
     @objc func handleCancel() {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    func buttonSelector(uploadAction: UploadAction) {
-        
-        switch uploadAction {
-            
-        case .UploadPost:
-            handleUploadPost()
-        case .SaveChanges:
-            handleSavePostChanges()
-        }
     }
     
     func handleSavePostChanges() {
@@ -166,64 +124,62 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     }
     
     func handleUploadPost() {
-        // parameters
-        guard
-            let caption = captionTextView.text,
-            let postImg = photoImageView.image,
-            let currentUid = Auth.auth().currentUser?.uid else { return }
-        
-        // image upload data
-        guard let uploadData = postImg.jpegData(compressionQuality: 0.5) else { return }
-        
-        // create date
-        let creationDate = Int(NSDate().timeIntervalSince1970)
-        
-        // update storage
-        let filename = NSUUID().uuidString
-        let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
-        
-        storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-            
-            // handle error
-            if let error = error {
-                print("Failed to upload image to storage with error", error.localizedDescription)
-                return
-            }
-            
-            storageRef.downloadURL { (url, error) in
-                guard let imageURL = url?.absoluteString else { return }
-                
-                // post data
-                let values = ["caption": caption,
-                              "creationDate": creationDate,
-                              "likes": 0,
-                              "imageUrl": imageURL,
-                              "ownerUid": currentUid] as [String: Any]
-                
-                // post id
-                let postId = POSTS_REF.childByAutoId()
-                
-                // upload information to database
-                postId.updateChildValues(values) { (err, ref) in
-                    
-                    guard let postKey = postId.key else { return }
-                    
-                    // update user-posts structure
-                    USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
-                    
-                    // update user-feed structure
-                    self.updateUserFeeds(with: postKey)
-                    
-                    // return to home feed
-                    self.dismiss(animated: true, completion: {
-                        self.tabBarController?.selectedIndex = 0
-                        
-                    })
-                }
-            }
-            
-            
-        }
+//        // parameters
+//        guard
+//            let caption = captionTextView.text,
+//            let postImg = photoImageView.image,
+//            let currentUid = Auth.auth().currentUser?.uid else { return }
+//
+//        // image upload data
+//        guard let uploadData = postImg.jpegData(compressionQuality: 0.5) else { return }
+//
+//        // create date
+//        let creationDate = Int(NSDate().timeIntervalSince1970)
+//
+//        // update storage
+//        let filename = NSUUID().uuidString
+//        let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
+//
+//        // post data
+//        let values = ["caption": caption,
+//                      "creationDate": creationDate,
+//                      "likes": 0,
+//                      "ownerUid": currentUid] as [String: Any]
+//
+//        // post id
+//        let postId = POSTS_REF.childByAutoId()
+//
+//        // upload information to database
+//        postId.updateChildValues(values) { (err, ref) in
+//
+//            guard let postKey = postId.key else { return }
+//
+//            // update user-posts structure
+//            USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
+//
+//            // update user-feed structure
+//            self.updateUserFeeds(with: postKey)
+//
+//            // return to home feed
+//            self.dismiss(animated: true, completion: {
+//                self.tabBarController?.selectedIndex = 0
+//            })
+//        }
+//
+//        storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
+//
+//            // handle error
+//            if let error = error {
+//                print("Failed to upload image to storage with error", error.localizedDescription)
+//                return
+//            }
+//
+//            storageRef.downloadURL { (url, error) in
+//                guard let imageURL = url?.absoluteString else { return }
+//
+//
+//            }
+//        }
     }
     
     func configureViewComponents() {

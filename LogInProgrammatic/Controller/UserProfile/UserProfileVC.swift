@@ -253,21 +253,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "Delete Post", style: .destructive, handler: { (_) in
-                
                 post.deletePost()
-                
                 self.handleRefresh()
-                 
-            }))
-            
-            alertController.addAction(UIAlertAction(title: "Edit Post", style: .default, handler: { (_) in
-                
-                let uploadPostController = UploadPostVC()
-                let navigationController = UINavigationController(rootViewController: uploadPostController)
-                uploadPostController.postToEdit = post
-                uploadPostController.uploadAction = UploadPostVC.UploadAction(index: 1)
-                self.present(navigationController, animated: true, completion: nil)
-                
             }))
             
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

@@ -120,19 +120,15 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     @objc func handleNext() {
         let uploadPostVC = UploadPostVC()
         uploadPostVC.selectedImage = header?.photoImageView.image
-        uploadPostVC.uploadAction = UploadPostVC.UploadAction(index: 0)
         navigationController?.pushViewController(uploadPostVC, animated: true)
     }
     
     func configureNavigationButtons() {
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     
     func getAssetFetchOptions() -> PHFetchOptions {
-        
         let options = PHFetchOptions()
         
         // fetch limit

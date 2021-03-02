@@ -32,8 +32,14 @@ class FeedCell: UICollectionViewCell {
                 self.configureCaption(user: owner)
             }
             
-            if let imageUrl = post?.imageUrl,
-               let url = URL(string: imageUrl) {
+            if let images = post?.images,
+               let firstImage = images.first,
+               let url = URL(string: firstImage.imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                self.postImageView.kf.setImage(with: resource)
+                
+            } else if let imageUrl = post?.imageUrl,
+                      let url = URL(string: imageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 self.postImageView.kf.setImage(with: resource)
             }
