@@ -19,7 +19,19 @@ class FeedCell: UICollectionViewCell {
     private var maskedView: UIView!
     
     var post: Post? {
-        didSet {
+        didSet {            
+            if let owner = post?.user {
+                if let imageUrl = owner.profileImageUrl,
+                   let url = URL(string: imageUrl) {
+                    let resource = ImageResource(downloadURL: url)
+                    self.profileImageView.kf.setImage(with: resource)
+                }
+                
+                self.fullnameButton.setTitle(owner.name ?? "", for: .normal)
+                self.occupationLabel.text = owner.occupation ?? ""
+                self.configureCaption(user: owner)
+            }
+            
             if let imageUrl = post?.imageUrl,
                let url = URL(string: imageUrl) {
                 let resource = ImageResource(downloadURL: url)
@@ -28,7 +40,6 @@ class FeedCell: UICollectionViewCell {
             
             configureLikeLabel()
             configureLikeButton()
-            configureCaption()
         }
     }
         
@@ -40,6 +51,31 @@ class FeedCell: UICollectionViewCell {
         iv.layer.cornerRadius = 20
         iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return iv
+    }()
+    
+    let profileImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.backgroundColor = .lightGray
+        return iv
+    }()
+    
+    lazy var fullnameButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Fullname", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        button.addTarget(self, action: #selector(handleFullnameTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    let occupationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        label.text = "Occupation"
+        return label
     }()
     
     lazy var likeButton: UIButton = {
@@ -94,6 +130,16 @@ class FeedCell: UICollectionViewCell {
     let captionLabel: UILabel = {
         let label = UILabel()
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = .white
+        return label
+    }()
+    
+    let postTimeLabel: UILabel =  {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.text = "2 DAYS AGO"
         return label
     }()
     
@@ -118,21 +164,24 @@ class FeedCell: UICollectionViewCell {
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
         configureGradientOverlay()
+        
+        addSubview(profileImageView)
+        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImageView.layer.cornerRadius = 40 / 2
+        
+        addSubview(fullnameButton)
+        fullnameButton.anchor(top: postImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(postTimeLabel)
+        postTimeLabel.anchor(top: postImageView.bottomAnchor, left: fullnameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(occupationLabel)
+        occupationLabel.anchor(top: fullnameButton.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         configureActionButtons()
         
         addSubview(likeLabel)
-        likeLabel.anchor(
-            top: postImageView.bottomAnchor,
-            left: nil,
-            bottom: nil,
-            right: postImageView.rightAnchor,
-            paddingTop: -24,
-            paddingLeft: 0,
-            paddingBottom: 0,
-            paddingRight: 8,
-            width: 0,
-            height: 0
-        )
+        likeLabel.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: -24, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
         addSubview(captionLabel)
         captionLabel.anchor(
@@ -186,12 +235,10 @@ class FeedCell: UICollectionViewCell {
         }
     }
     
-    func configureCaption() {
+    func configureCaption(user: User?) {
         let caption = post?.caption ?? ""
-        
-        captionLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        captionLabel.textColor = .white
         captionLabel.text = caption
+        postTimeLabel.text = post?.creationDate.timeAgoToDisplay()
     }
     
     func configureGradientOverlay() {

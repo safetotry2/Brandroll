@@ -95,7 +95,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width
         let height = width + 70
-
+        
         return CGSize(width: width, height: height)
     }
 
@@ -110,7 +110,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -148,7 +147,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     //MARK: - FeedCellDelegate Protocol
     
     func handleFullnameTapped(for cell: FeedCell) {
-        
         guard let post = cell.post else { return }
         
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
@@ -163,11 +161,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             target: self,
             action: #selector(popToPrevious)
         )
-
     }
     
     func handleOptionsTapped(for cell: FeedCell) {
-        
         guard let post = cell.post else { return }
         
         if post.ownerUid == Auth.auth().currentUser?.uid {
@@ -277,7 +273,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func handleConfigureLikeButton(for cell: FeedCell) {
-        
         guard let post = cell.post else { return }
         guard let postId = post.postId else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
