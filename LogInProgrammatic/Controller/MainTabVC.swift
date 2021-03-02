@@ -79,10 +79,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // search feed controller
         searchVC = SearchVC()
         let searchNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "search_unselected"), selectedImage: #imageLiteral(resourceName: "search_selected"), rootViewController: searchVC)
-        
-        // select image controller
-        let selectImageVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"))
-        
+                
         // notification controller
         notificationsVC = NotificationsVC()
         let notificationsNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "like_unselected"), selectedImage: #imageLiteral(resourceName: "like_selected"), rootViewController: notificationsVC)
@@ -95,7 +92,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         viewControllers = [
             feedNavCon,
             searchNavCon,
-            selectImageVC,
+            UIViewController(),
             notificationsNavCon,
             userProfileNavCon
         ]

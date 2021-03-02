@@ -46,9 +46,7 @@ class PreviewViewController: UIViewController {
     }
     
     @objc func handleNextTapped() {
-        
         let vc = CreateTitleViewController()
-        //let vc = UploadPostVC()
         self.definesPresentationContext = true
         self.providesPresentationContextTransitionStyle = true
         vc.modalPresentationStyle = .overFullScreen
