@@ -11,6 +11,19 @@ import Firebase
 
 class Post {
     
+    struct PostImage {
+        var key: String = ""
+        var imageUrl: String = ""
+        
+        init(key: String, dictionary: [String : Any]) {
+            self.key = key
+            
+            if let imageUrl = dictionary["imageUrl"] as? String {
+                self.imageUrl = imageUrl
+            }
+        }
+    }
+    
     var caption: String!
     var likes: Int!
     var imageUrl: String!
@@ -21,12 +34,12 @@ class Post {
     var user: User?
     var didLike = false
     
+    var images: [PostImage]?
+    
     private var postRefHandle: DatabaseHandle?
     
     init(postId: String!, user: User?, dictionary: Dictionary<String, AnyObject>) {
-        
         self.postId = postId
-        
         self.user = user
         
         if let caption = dictionary["caption"] as? String {
@@ -39,6 +52,16 @@ class Post {
         
         if let imageUrl = dictionary["imageUrl"] as? String {
             self.imageUrl = imageUrl
+        }
+        
+        if let imagesDic = dictionary["images"] as? [String: Any] {
+            var newImages = [PostImage]()
+            
+            imagesDic.forEach { (dic) in
+                newImages.append(PostImage(key: dic.key, dictionary: dic.value as! [String : Any]))
+            }
+            
+            self.images = newImages
         }
         
         if let ownerUid = dictionary["ownerUid"] as? String {
