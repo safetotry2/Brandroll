@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
+import DKImagePickerController
 import Firebase
+import UIKit
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
@@ -15,6 +16,10 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     let dot = UIView()
     var notificationIDs = [String]()
+    
+    private var images: [UIImage] = []
+    private var imageAssets: [DKAsset] = []
+    
     private var notifRefHandle: DatabaseHandle?
     private var notifRefHandleChildAdded: DatabaseHandle?
     
@@ -120,7 +125,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                 // configure dot for iPhone X, iPhone XS, iPhone 11 Pro
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
             } else if UIScreen.main.nativeBounds.height == 1792 {
-               // configure dot for iPhone XR and iPhone 11
+                // configure dot for iPhone XR and iPhone 11
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
             } else {
                 // configure dot for other phone models
@@ -139,20 +144,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    
-    // MARK: - UITabBar
+    // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.firstIndex(of: viewController)
         
         if index == 2 {
-            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
-            let navController = UINavigationController(rootViewController: selectImageVC)
-            navController.navigationBar.tintColor = .black
-            
-            navController.modalPresentationStyle = .fullScreen
-            present(navController, animated: true, completion: nil)
-            
+            showImagePicker()
             return false
         } else if index == 3 {
             dot.isHidden = true
@@ -162,7 +160,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     // MARK: - Public
-
+    
     func logout() {
         removeChats()
         removeObserver()
@@ -217,7 +215,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                 
                 allObjects.forEach { (snapshot) in
                     let notificationId = snapshot.key
-                                        
+                    
                     guard let dic = snapshot.value as? [String : AnyObject],
                           let userIdFromNotification = dic["uid"] as? String else { return }
                     
@@ -232,7 +230,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             .child(currentUid)
             .observe(.childAdded) { (snapshot) in
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                            
+                
                 let typeSnapshot = allObjects.filter({ $0.key == "type" }).first
                 let valueType = typeSnapshot?.value as? Int ?? 0
                 
@@ -273,7 +271,58 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             
             return
         }
+    }
+}
+
+// MARK: - ShowPickerDelegate
+
+extension MainTabVC: ShowPickerDelegate {
+    func showImagePicker() {
+        let pickerController = DKImagePickerController()
+        pickerController.assetType = .allPhotos
+        pickerController.sourceType = .photo
+        pickerController.allowMultipleTypes = false
+        pickerController.showsCancelButton = true
+        pickerController.maxSelectableCount = 24
+        pickerController.select(assets: imageAssets)
+        pickerController.UIDelegate = CustomUIDelegate()
+        pickerController.modalPresentationStyle = .fullScreen
         
+        pickerController.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        pickerController.navigationBar.shadowImage = UIImage()
+        pickerController.navigationBar.tintColor = UIColor.black
         
+        self.present(pickerController, animated: true, completion: nil)
+        
+        pickerController.didCancel = {
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        }
+        pickerController.didSelectAssets = { (assets: [DKAsset]) in
+            
+            self.imageAssets = assets
+            self.images.removeAll(keepingCapacity: false)
+            var count = 0
+            for asset in assets {
+                asset.fetchOriginalImage(completeBlock: {(image, info) in
+                    if let image = image {
+                        self.images.append(image)
+                    }
+                    count += 1
+                    if count == assets.count {
+                        self.showPreview()
+                    }
+                })
+            }
+        }
+    }
+    
+    private func showPreview() {
+        let previewVC = PreviewViewController()
+        previewVC.images = images
+        previewVC.delegate = self
+        let navigationVC = UINavigationController(rootViewController: previewVC)
+        
+        navigationVC.modalPresentationStyle = .fullScreen
+        present(navigationVC, animated: true, completion: nil)
     }
 }

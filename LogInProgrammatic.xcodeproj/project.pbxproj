@@ -54,6 +54,10 @@
 		04FA756F258295D700814F9E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756E258295D700814F9E /* Message.swift */; };
 		04FA75712583BB5100814F9E /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75702583BB5100814F9E /* ChatController.swift */; };
 		04FA75732583BC4500814F9E /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75722583BC4500814F9E /* ChatCell.swift */; };
+		453EA7DE25EE547800051ADC /* PreviewUploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA7DD25EE547800051ADC /* PreviewUploadVC.swift */; };
+		453EA7E225EE570E00051ADC /* CustomUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA7E125EE570E00051ADC /* CustomUIDelegate.swift */; };
+		453EA7E525EE579300051ADC /* CreateTitleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA7E425EE579300051ADC /* CreateTitleVC.swift */; };
+		453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA7E725EE58F500051ADC /* PreviewTableViewCell.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
@@ -113,6 +117,10 @@
 		04FA756E258295D700814F9E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		04FA75702583BB5100814F9E /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		04FA75722583BC4500814F9E /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		453EA7DD25EE547800051ADC /* PreviewUploadVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewUploadVC.swift; sourceTree = "<group>"; };
+		453EA7E125EE570E00051ADC /* CustomUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIDelegate.swift; sourceTree = "<group>"; };
+		453EA7E425EE579300051ADC /* CreateTitleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTitleVC.swift; sourceTree = "<group>"; };
+		453EA7E725EE58F500051ADC /* PreviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewTableViewCell.swift; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
@@ -259,8 +267,12 @@
 		045C64DA25143123002E8E1C /* UploadPost */ = {
 			isa = PBXGroup;
 			children = (
+				453EA7EC25EE590B00051ADC /* Cells */,
+				453EA7EB25EE590600051ADC /* Protocols */,
 				045C64D2250FCF10002E8E1C /* UploadPostVC.swift */,
 				043332842540FCA700C26BB6 /* SelectImageVC.swift */,
+				453EA7DD25EE547800051ADC /* PreviewUploadVC.swift */,
+				453EA7E425EE579300051ADC /* CreateTitleVC.swift */,
 			);
 			path = UploadPost;
 			sourceTree = "<group>";
@@ -319,6 +331,22 @@
 				04FA75722583BC4500814F9E /* ChatCell.swift */,
 			);
 			path = Messages;
+			sourceTree = "<group>";
+		};
+		453EA7EB25EE590600051ADC /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				453EA7E125EE570E00051ADC /* CustomUIDelegate.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		453EA7EC25EE590B00051ADC /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				453EA7E725EE58F500051ADC /* PreviewTableViewCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		459B2F8B25BE005F00402599 /* App */ = {
@@ -521,6 +549,7 @@
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
 				045C64D3250FCF11002E8E1C /* UploadPostVC.swift in Sources */,
+				453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */,
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
 				043D3667259802290094CE4F /* EditProfileController.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
@@ -551,12 +580,15 @@
 				04044697257A9A450029F738 /* NotificationCell.swift in Sources */,
 				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
 				456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */,
+				453EA7DE25EE547800051ADC /* PreviewUploadVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
+				453EA7E525EE579300051ADC /* CreateTitleVC.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
 				04044699257DA1B20029F738 /* AppNotif.swift in Sources */,
 				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
+				453EA7E225EE570E00051ADC /* CustomUIDelegate.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
 				043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */,
 				043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */,
