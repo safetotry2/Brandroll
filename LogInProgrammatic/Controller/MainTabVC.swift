@@ -28,6 +28,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     private (set)var notificationsVC: NotificationsVC!
     private (set)var userProfileVC: UserProfileVC!
     
+    private var pickerController = DKImagePickerController()
+    private var uiDelegate = CustomUIDelegate()
+    
     // MARK: - Functions
     // MARK: Overrides
     
@@ -278,38 +281,34 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
 
 extension MainTabVC: ShowPickerDelegate {
     func showImagePicker() {
-        let pickerController = DKImagePickerController()
         pickerController.assetType = .allPhotos
         pickerController.sourceType = .photo
         pickerController.allowMultipleTypes = false
         pickerController.showsCancelButton = true
         pickerController.maxSelectableCount = 24
         pickerController.select(assets: imageAssets)
-        pickerController.UIDelegate = CustomUIDelegate()
+        pickerController.UIDelegate = uiDelegate
         pickerController.modalPresentationStyle = .fullScreen
-        
-        pickerController.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        pickerController.navigationBar.shadowImage = UIImage()
         pickerController.navigationBar.tintColor = UIColor.black
         
-        self.present(pickerController, animated: true, completion: nil)
+        present(pickerController, animated: true, completion: nil)
         
+        weak var weakSelf = self
         pickerController.didCancel = {
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+            weakSelf?.pickerController.dismiss(animated: true, completion: nil)
         }
         pickerController.didSelectAssets = { (assets: [DKAsset]) in
-            
-            self.imageAssets = assets
-            self.images.removeAll(keepingCapacity: false)
+            weakSelf?.imageAssets = assets
+            weakSelf?.images.removeAll(keepingCapacity: false)
             var count = 0
             for asset in assets {
                 asset.fetchOriginalImage(completeBlock: {(image, info) in
                     if let image = image {
-                        self.images.append(image)
+                        weakSelf?.images.append(image)
                     }
                     count += 1
                     if count == assets.count {
-                        self.showPreview()
+                        weakSelf?.showPreview()
                     }
                 })
             }

@@ -11,21 +11,32 @@ import UIKit
 
 open class CustomUIDelegate: DKImagePickerControllerBaseUIDelegate {
     override open func updateDoneButtonTitle(_ button: UIButton) {
-        if self.imagePickerController.selectedAssets.count == 0 {
-            button.setTitle(String(format: "Select", self.imagePickerController.selectedAssets.count), for: .normal)
-            button.setTitleColor(.systemGray, for: .normal)
-            button.isEnabled = false
-        } else if self.imagePickerController.selectedAssets.count == 24 {
-            button.setTitle("Done", for: .normal)
-            button.setTitleColor(.systemBlue, for: .normal)
-            button.isEnabled = true
-            button.addTarget(self.imagePickerController, action: #selector(DKImagePickerController.done), for: .touchUpInside)
-        } else {
-            button.setTitle("Select", for: .normal)
-            button.setTitleColor(.systemBlue, for: .normal)
-            button.isEnabled = true
-            button.addTarget(self.imagePickerController, action: #selector(DKImagePickerController.done), for: .touchUpInside)
+        DispatchQueue.main.async {
+            self.disableButton(button)
+            
+            if self.imagePickerController.selectedAssets.count == 0 {
+                button.setTitle(String(format: "Select", self.imagePickerController.selectedAssets.count), for: .normal)
+            } else if self.imagePickerController.selectedAssets.count == 24 {
+                button.setTitle("Done", for: .normal)
+                self.enableButton(button)
+            } else {
+                button.setTitle("Select", for: .normal)
+                self.enableButton(button)
+            }
+            
+            button.sizeToFit()
         }
-        button.sizeToFit()
+    }
+    
+    private func enableButton(_ button: UIButton) {
+        button.setTitleColor(.black, for: .normal)
+        button.isUserInteractionEnabled = true
+        button.addTarget(self.imagePickerController, action: #selector(DKImagePickerController.done), for: .touchUpInside)
+    }
+    
+    private func disableButton(_ button: UIButton) {
+        button.setTitleColor(.systemGray, for: .normal)
+        button.isUserInteractionEnabled = false
+        button.removeTarget(self.imagePickerController, action: #selector(DKImagePickerController.done), for: .touchUpInside)
     }
 }
