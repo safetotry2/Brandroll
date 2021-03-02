@@ -5,6 +5,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'LogInProgrammatic' do
+  pod 'DKImagePickerController'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
