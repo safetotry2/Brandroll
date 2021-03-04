@@ -7,6 +7,7 @@
 //
 
 import DKImagePickerController
+import Kingfisher
 import UIKit
 
 protocol ShowPickerDelegate {
@@ -17,6 +18,7 @@ class PreviewUploadVC: UIViewController {
     
     let tableView = UITableView()
     var images: [UIImage] = []
+    var imageUrls: Array<String>?
     let cellID = "PreviewImageCell"
 
     var delegate: ShowPickerDelegate?
@@ -56,10 +58,18 @@ class PreviewUploadVC: UIViewController {
     }
     
     func setNavBarAndTableView() {
-        self.navigationItem.title = "Preview"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBackTapped))
+        if imageUrls != nil {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(handleBackTapped))
+            navigationItem.rightBarButtonItem = nil
+            self.navigationItem.title = "Photos"
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBackTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNextTapped))
+            self.navigationItem.title = "Preview"
+        }
+
         navigationItem.leftBarButtonItem?.tintColor = UIColor.black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNextTapped))
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
@@ -86,20 +96,35 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return images.count
+        return imageUrls == nil ? images.count : imageUrls?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PreviewTableViewCell
-        let image = images[indexPath.item]
-        cell.cellImageView.image = image
+        
+        if imageUrls != nil {
+            let imageUrl = imageUrls![indexPath.row]
+            
+            if let url = URL(string: imageUrl) {
+                let resource = ImageResource(downloadURL: url)
+                cell.cellImageView.kf.setImage(with: resource)
+            }
+        } else {
+            let image = images[indexPath.item]
+            cell.cellImageView.image = image
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let currentImage = images[indexPath.row]
-        let imageCrop = currentImage.getCropRatio()
-        return tableView.frame.width / imageCrop
+        if imageUrls != nil {
+            
+        } else {
+            let currentImage = images[indexPath.row]
+            let imageCrop = currentImage.getCropRatio()
+            return tableView.frame.width / imageCrop
+        }
     }
 }
 

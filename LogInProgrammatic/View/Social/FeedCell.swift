@@ -56,7 +56,15 @@ class FeedCell: UICollectionViewCell {
         iv.backgroundColor = .lightGray
         iv.layer.cornerRadius = 20
         iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(postTap)
         return iv
+    }()
+    
+    lazy var postTap: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
+        gesture.numberOfTapsRequired = 1
+        return gesture
     }()
     
     let profileImageView: UIImageView = {
@@ -205,6 +213,16 @@ class FeedCell: UICollectionViewCell {
     }
     
     //MARK: - Handlers
+    
+    @objc func handlePostTapped() {
+        guard let imageUrls = post?.images?.compactMap({$0.imageUrl}) else { return }
+        
+        NotificationCenter.default.post(
+            name: tappedPostCellImageNotificationKey,
+            object: imageUrls,
+            userInfo: nil
+        )
+    }
     
     @objc func handleFullnameTapped() {
         delegate?.handleFullnameTapped(for: self)

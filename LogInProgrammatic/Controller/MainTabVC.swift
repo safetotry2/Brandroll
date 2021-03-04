@@ -55,11 +55,17 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // observe notifications
         observeNotifications()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.tappedPostCellImage(_:)), name: tappedPostCellImageNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.newPostSuccess(_:)), name: newPostSuccessNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)        
     }
     
     // MARK: - Handlers
+    
+    @objc func tappedPostCellImage(_ notification: Notification) {
+        guard let imageUrls = notification.object as? Array<String> else { return }
+        showPreview(imageUrls)
+    }
     
     @objc func newPostSuccess(_ notification: Notification) {
         weak var weakSelf = self
@@ -324,9 +330,15 @@ extension MainTabVC: ShowPickerDelegate {
         }
     }
     
-    private func showPreview() {
+    private func showPreview(_ imageUrls: Array<String>? = nil) {
         previewVC = PreviewUploadVC()
-        previewVC?.images = images
+    
+        if imageUrls != nil {
+            previewVC?.imageUrls = imageUrls
+        } else {
+            previewVC?.images = images
+        }
+        
         previewVC?.delegate = self
         let navigationVC = UINavigationController(rootViewController: previewVC!)
         
