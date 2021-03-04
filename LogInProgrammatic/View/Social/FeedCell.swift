@@ -32,7 +32,7 @@ class FeedCell: UICollectionViewCell {
                 self.configureCaption(user: owner)
             }
             
-            if let images = post?.images,
+            if let images = post?.images?.sorted(by: { $0.key > $1.key }),
                let firstImage = images.first,
                let url = URL(string: firstImage.imageUrl) {
                 let resource = ImageResource(downloadURL: url)
