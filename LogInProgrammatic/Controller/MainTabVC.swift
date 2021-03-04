@@ -63,8 +63,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Handlers
     
     @objc func tappedPostCellImage(_ notification: Notification) {
-        guard let imageUrls = notification.object as? Array<String> else { return }
-        showPreview(imageUrls)
+        guard let postImages = notification.object as? Array<Post.PostImage> else { return }
+        showPreview(postImages)
     }
     
     @objc func newPostSuccess(_ notification: Notification) {
@@ -330,11 +330,11 @@ extension MainTabVC: ShowPickerDelegate {
         }
     }
     
-    private func showPreview(_ imageUrls: Array<String>? = nil) {
+    private func showPreview(_ postImages: Array<Post.PostImage>? = nil) {
         previewVC = PreviewUploadVC()
     
-        if imageUrls != nil {
-            previewVC?.imageUrls = imageUrls
+        if postImages != nil {
+            previewVC?.postImages = postImages
         } else {
             previewVC?.images = images
         }

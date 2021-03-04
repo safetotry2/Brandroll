@@ -10,6 +10,9 @@ import Firebase
 import SVProgressHUD
 import UIKit
 
+typealias ImageDataTuple = (data: Data, width: CGFloat, height: CGFloat)
+typealias UploadedPostImageTuple = (imageUrl: String, width: CGFloat, height: CGFloat)
+
 class CreateTitleVC: UIViewController {
     
     // MARK: - Properties
@@ -161,7 +164,14 @@ extension CreateTitleVC {
             return
         }
         
-        let imagesData = images.compactMap { $0.jpegData(compressionQuality: 0.5) }
+        let imagesData = images.compactMap { (image) -> ImageDataTuple? in
+            if let data = image.jpegData(compressionQuality: 0.5) {
+                return ImageDataTuple(data: data, width: image.size.width, height: image.size.height)
+            } else {
+                return nil
+            }
+        }
+            
         guard imagesData.count > 0 else { return }
         
         var imagesLeft = imagesData.count
@@ -174,7 +184,7 @@ extension CreateTitleVC {
         SVProgressHUD.setDefaultMaskType(.black)
         
         let group = DispatchGroup()
-        var imageUrls = Array<String>()
+        var uploadedImageTuples = Array<UploadedPostImageTuple>()
         
         func updateLoader() {
             let noun = imagesLeft == 1 ? "photo" : "photos"
@@ -183,13 +193,15 @@ extension CreateTitleVC {
         
         updateLoader()
         
-        func upload(_ imageData: Data, index: Int) {
+        func upload(_ tuple: ImageDataTuple, index: Int) {
             let filename = NSUUID().uuidString
             let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
             
-            let uploadtask = storageRef.putData(imageData, metadata: nil) { (metadata, uploadError) in
+            let uploadtask = storageRef.putData(tuple.data, metadata: nil) { (metadata, uploadError) in
                 storageRef.downloadURL { (url, urlError) in
-                    imageUrls.append(url?.absoluteString ?? "")
+                    let urlString = url?.absoluteString ?? ""
+                    let newTuple: UploadedPostImageTuple = UploadedPostImageTuple(imageUrl: urlString, width: tuple.width, height: tuple.height)
+                    uploadedImageTuples.append(newTuple)
                     group.leave()
                     imagesLeft -= 1
                 }
@@ -210,11 +222,11 @@ extension CreateTitleVC {
         }
         
         group.notify(queue: .main) { [self] in
-            post(caption, userId: currentUid, imageUrls: imageUrls)
+            post(caption, userId: currentUid, uploadedImageTuples: uploadedImageTuples)
         }
     }
     
-    private func post(_ caption: String, userId: String, imageUrls: Array<String>) {
+    private func post(_ caption: String, userId: String, uploadedImageTuples: Array<UploadedPostImageTuple>) {
         // create date
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
@@ -223,12 +235,17 @@ extension CreateTitleVC {
         
         var imageDic: [String : Any] = [:]
         
-        imageUrls.forEach { (url) in
+        uploadedImageTuples.forEach { (tuple) in
             guard let imageKey = postId
                     .child("images")
                     .childByAutoId()
                     .key else { return }
-            imageDic[imageKey] = ["imageUrl" : url]
+            
+            imageDic[imageKey] = [
+                "imageUrl" : tuple.imageUrl,
+                "width" : tuple.width,
+                "height" : tuple.height
+            ]
         }
         
         // post data

@@ -18,7 +18,7 @@ class PreviewUploadVC: UIViewController {
     
     let tableView = UITableView()
     var images: [UIImage] = []
-    var imageUrls: Array<String>?
+    var postImages: Array<Post.PostImage>?
     let cellID = "PreviewImageCell"
 
     var delegate: ShowPickerDelegate?
@@ -51,7 +51,11 @@ class PreviewUploadVC: UIViewController {
     
     @objc func handleBackTapped() {
         self.dismiss(animated: true, completion: nil)
-        self.delegate?.showImagePicker()
+        
+        if postImages == nil {
+            // Only do this when showing previews.
+            self.delegate?.showImagePicker()
+        }
     }
     
     @objc func handleNextTapped() {
@@ -66,7 +70,7 @@ class PreviewUploadVC: UIViewController {
     }
     
     func setNavBarAndTableView() {
-        if imageUrls != nil {
+        if postImages != nil {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(handleBackTapped))
             navigationItem.rightBarButtonItem = nil
             self.navigationItem.title = "Photos"
@@ -104,30 +108,25 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return imageUrls == nil ? images.count : imageUrls?.count ?? 0
+        return postImages == nil ? images.count : postImages?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PreviewTableViewCell
         
-        if imageUrls != nil {
-            let imageUrl = imageUrls![indexPath.row]
+        if postImages != nil {
+            let postImage = postImages![indexPath.row]
             
-            if let url = URL(string: imageUrl) {
+            if let url = URL(string: postImage.imageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 cell.cellImageView.kf.indicatorType = .activity
-                cell.cellImageView.kf.setImage(with: resource) { (result) in
-                    switch result {
-                    case let .success(imageResult):
-                        DispatchQueue.main.async {
-                            let image = imageResult.image
-                            let imageCrop = image.getCropRatio()
-                            let height = tableView.frame.width / imageCrop
-                            cell.cellImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
-                            self.cellDynamicHeights[indexPath.row] = height
-                        }
-                    case .failure(_): break
-                    }
+                cell.cellImageView.kf.setImage(with: resource)
+                
+                DispatchQueue.main.async {
+                    let widthRatio = CGFloat(postImage.width / postImage.height)
+                    let height = tableView.frame.width / widthRatio
+                    print("✅ HEIGHT: \(height)")
+                    cell.heightConstraint?.constant = height
                 }
             }
         } else {
@@ -139,7 +138,7 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if imageUrls != nil {
+        if postImages != nil {
             return UITableView.automaticDimension
         } else {
             let currentImage = images[indexPath.row]

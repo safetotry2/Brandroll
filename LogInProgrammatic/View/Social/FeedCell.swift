@@ -215,11 +215,11 @@ class FeedCell: UICollectionViewCell {
     //MARK: - Handlers
     
     @objc func handlePostTapped() {
-        guard let imageUrls = post?.images?.compactMap({$0.imageUrl}) else { return }
+        guard let postImages = post?.images else { return }
         
         NotificationCenter.default.post(
             name: tappedPostCellImageNotificationKey,
-            object: imageUrls,
+            object: postImages,
             userInfo: nil
         )
     }

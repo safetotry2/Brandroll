@@ -14,12 +14,22 @@ class Post {
     struct PostImage {
         var key: String = ""
         var imageUrl: String = ""
+        var width: CGFloat = 0
+        var height: CGFloat = 0
         
         init(key: String, dictionary: [String : Any]) {
             self.key = key
             
             if let imageUrl = dictionary["imageUrl"] as? String {
                 self.imageUrl = imageUrl
+            }
+            
+            if let width = dictionary["width"] as? CGFloat {
+                self.width = width
+            }
+            
+            if let height = dictionary["height"] as? CGFloat {
+                self.height = height
             }
         }
     }
