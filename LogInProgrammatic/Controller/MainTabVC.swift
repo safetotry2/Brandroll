@@ -28,6 +28,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     private (set)var notificationsVC: NotificationsVC!
     private (set)var userProfileVC: UserProfileVC!
     
+    private (set)var previewVC: PreviewUploadVC?
+    
     private var pickerController = DKImagePickerController()
     private var uiDelegate = CustomUIDelegate()
     
@@ -53,16 +55,22 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // observe notifications
         observeNotifications()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.newPostSuccess(_:)), name: newPostSuccessNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // MARK: - Handlers
+    
+    @objc func newPostSuccess(_ notification: Notification) {
+        weak var weakSelf = self
+        previewVC?.presentedViewController?.dismiss(animated: true, completion: {
+            weakSelf?.previewVC?.dismiss(animated: true, completion: {
+                weakSelf?.previewVC = nil
+                weakSelf?.feedVC.handleRefresh()
+                weakSelf?.selectedIndex = 0
+            })
+        })
+    }
     
     @objc func notificationReceived(_ notification: Foundation.Notification) {
         guard let isHidden = notification.userInfo?["isHidden"] as? Bool else { return }
@@ -180,6 +188,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
+        
         // Remove observer from self.
         if let currentUid = Auth.auth().currentUser?.uid {
             if let notifRefHandle = self.notifRefHandle {
@@ -315,10 +325,10 @@ extension MainTabVC: ShowPickerDelegate {
     }
     
     private func showPreview() {
-        let previewVC = PreviewUploadVC()
-        previewVC.images = images
-        previewVC.delegate = self
-        let navigationVC = UINavigationController(rootViewController: previewVC)
+        previewVC = PreviewUploadVC()
+        previewVC?.images = images
+        previewVC?.delegate = self
+        let navigationVC = UINavigationController(rootViewController: previewVC!)
         
         navigationVC.modalPresentationStyle = .fullScreen
         present(navigationVC, animated: true, completion: nil)

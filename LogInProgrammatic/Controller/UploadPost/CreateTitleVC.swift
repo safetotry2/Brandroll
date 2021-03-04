@@ -161,14 +161,27 @@ extension CreateTitleVC {
             return
         }
         
-        let imagesData = images.compactMap { $0.jpegData(compressionQuality: 0.7) }
+        let imagesData = images.compactMap { $0.jpegData(compressionQuality: 0.5) }
         guard imagesData.count > 0 else { return }
         
-        SVProgressHUD.show(withStatus: "Uploading...")
+        var imagesLeft = imagesData.count
+        
+        UIView.animate(withDuration: 0.3) {
+            self.containerView.isHidden = true
+            self.textField.resignFirstResponder()
+        }
+        
         SVProgressHUD.setDefaultMaskType(.black)
         
         let group = DispatchGroup()
         var imageUrls = Array<String>()
+        
+        func updateLoader() {
+            let noun = imagesLeft == 1 ? "photo" : "photos"
+            SVProgressHUD.show(withStatus: "\(imagesLeft) \(noun) remaining")
+        }
+        
+        updateLoader()
         
         func upload(_ imageData: Data, index: Int) {
             let filename = NSUUID().uuidString
@@ -178,15 +191,16 @@ extension CreateTitleVC {
                 storageRef.downloadURL { (url, urlError) in
                     imageUrls.append(url?.absoluteString ?? "")
                     group.leave()
+                    imagesLeft -= 1
                 }
             }
             
-            uploadtask.observe(.progress) { (snapshot) in
-                DispatchQueue.main.async(execute: {
-                    guard let progress = snapshot.progress else { return }
-                    let percentComplete: CGFloat = CGFloat(100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount))
-                    SVProgressHUD.showProgress(Float(percentComplete / 100), status: "Uploading photo \(index)...")
-                })
+            uploadtask.observe(.success) { _ in
+                updateLoader()
+            }
+            
+            uploadtask.observe(.failure) { _ in
+                updateLoader()
             }
         }
         
@@ -204,38 +218,47 @@ extension CreateTitleVC {
         // create date
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
+        // post id
+        let postId = POSTS_REF.childByAutoId()
+        
+        var imageDic: [String : Any] = [:]
+        
+        imageUrls.forEach { (url) in
+            guard let imageKey = postId
+                    .child("images")
+                    .childByAutoId()
+                    .key else { return }
+            imageDic[imageKey] = ["imageUrl" : url]
+        }
+        
         // post data
         let values = [
             "caption": caption,
             "creationDate": creationDate,
             "likes": 0,
-            "ownerUid": userId
+            "ownerUid": userId,
+            "images": imageDic
         ] as [String: Any]
-        
-        // post id
-        let postId = POSTS_REF.childByAutoId()
         
         // upload information to database
         SVProgressHUD.show(withStatus: "Posting...")
         postId.updateChildValues(values) { (err, ref) in
-            SVProgressHUD.showSuccess(withStatus: "")
-            
-            let postKey = postId.key ?? ""
-            
-            // update user-posts structure
-            USER_POSTS_REF.child(userId).updateChildValues([postKey: 1])
-            
-            // update user-feed structure
-            self.updateUserFeeds(with: postKey)
-            
-            self.returnToNewsFeed()
+            SVProgressHUD.dismiss {
+                let postKey = postId.key ?? ""
+                
+                // update user-posts structure
+                USER_POSTS_REF.child(userId).updateChildValues([postKey: 1])
+                
+                // update user-feed structure
+                self.updateUserFeeds(with: postKey)
+                
+                self.returnToNewsFeed()
+            }
         }
     }
     
     private func returnToNewsFeed() {
-        dismiss(animated: true, completion: {
-            self.tabBarController?.selectedIndex = 0
-        })
+        NotificationCenter.default.post(name: newPostSuccessNotificationKey, object: nil)
     }
 }
 

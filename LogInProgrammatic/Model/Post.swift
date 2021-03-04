@@ -137,9 +137,11 @@ class Post {
               let postId = postId else { return }
         
         images?.forEach({ (image) in
-            Storage.storage()
-                .reference(forURL: image.imageUrl)
-                .delete(completion: nil)
+            if image.imageUrl != "" {
+                Storage.storage()
+                    .reference(forURL: image.imageUrl)
+                    .delete(completion: nil)
+            }
         })
         
         USER_FOLLOWER_REF.child(currentUid).observeSingleEvent(of: .childAdded) { (snapshot) in
