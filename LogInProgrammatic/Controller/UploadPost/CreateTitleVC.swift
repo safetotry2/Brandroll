@@ -163,68 +163,72 @@ extension CreateTitleVC {
         }
         
         let imagesData = imageAssets.compactMap { $0.image?.jpegData(compressionQuality: 0.7) }
-        
         guard imagesData.count > 0 else { return }
         
+        SVProgressHUD.show(withStatus: "Uploading...")
+        
+        let group = DispatchGroup()
+        var imageUrls = Array<String>()
+        
+        func upload(_ imageData: Data, index: Int) {
+            let filename = NSUUID().uuidString
+            let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
+            
+            let uploadtask = storageRef.putData(imageData, metadata: nil) { (metadata, uploadError) in
+                storageRef.downloadURL { (url, urlError) in
+                    imageUrls.append(url?.absoluteString ?? "")
+                    group.leave()
+                }
+            }
+            
+            uploadtask.observe(.progress) { (snapshot) in
+                DispatchQueue.main.async(execute: {
+                    guard let progress = snapshot.progress else { return }
+                    let percentComplete: CGFloat = CGFloat(100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount))
+                    SVProgressHUD.showProgress(Float(percentComplete / 100), status: "Uploading photo \(index)...")
+                })
+            }
+        }
+        
+        for (index, data) in imagesData.enumerated() {
+            group.enter()
+            upload(data, index: index)
+        }
+        
+        group.notify(queue: .main) { [self] in
+            post(caption, userId: currentUid, imageUrls: imageUrls)
+        }
+    }
+    
+    private func post(_ caption: String, userId: String, imageUrls: Array<String>) {
         // create date
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
         // post data
-        let values = ["caption": caption,
-                      "creationDate": creationDate,
-                      "likes": 0,
-                      "ownerUid": currentUid] as [String: Any]
+        let values = [
+            "caption": caption,
+            "creationDate": creationDate,
+            "likes": 0,
+            "ownerUid": userId
+        ] as [String: Any]
         
         // post id
         let postId = POSTS_REF.childByAutoId()
         
         // upload information to database
-        SVProgressHUD.show()
+        SVProgressHUD.show(withStatus: "Posting...")
         postId.updateChildValues(values) { (err, ref) in
-            SVProgressHUD.dismiss {
-                guard let postKey = postId.key else { return }
-                
-                // update user-posts structure
-                USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
-                
-                // update user-feed structure
-                self.updateUserFeeds(with: postKey)
-                
-                // continue the uploads.
-                self.uploadAssetsToPostWithKey(postKey, imagesData: imagesData)
-            }
-        }
-    }
-    
-    private func uploadAssetsToPostWithKey(_ postKey: String, imagesData: Array<Data>) {
-        SVProgressHUD.show(withStatus: "Uploading...")
-        
-        let group = DispatchGroup()
-        var error: Error?
-        
-        func upload(_ imageData: Data) {
-            let filename = NSUUID().uuidString
-            let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
+            SVProgressHUD.showSuccess(withStatus: "")
             
-            storageRef.putData(imageData, metadata: nil) { (metadata, error) in
-                
-                // handle error
-                if let error = error {
-                    print("Failed to upload image to storage with error", error.localizedDescription)
-                    return
-                }
-                
-                storageRef.downloadURL { (url, error) in
-                    guard let imageURL = url?.absoluteString else { return }
-                    
-                }
-            }
-        }
-        
-        for data in imagesData {
-            group.enter()
+            let postKey = postId.key ?? ""
             
-            upload(data)
+            // update user-posts structure
+            USER_POSTS_REF.child(userId).updateChildValues([postKey: 1])
+            
+            // update user-feed structure
+            self.updateUserFeeds(with: postKey)
+            
+            self.returnToNewsFeed()
         }
     }
     
