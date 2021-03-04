@@ -6,11 +6,15 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
+import DKImagePickerController
+import Firebase
 import UIKit
 
-class CreateTitleViewController: UIViewController {
+class CreateTitleVC: UIViewController {
 
     // MARK: - Properties
+    
+    var imageAssets: [DKAsset] = []
     
     lazy var containerView: UIView = {
         let cv = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 180))
@@ -61,6 +65,13 @@ class CreateTitleViewController: UIViewController {
         return pb
     }()
     
+    // MARK: - Functions
+    // MARK: Overrides
+    
+    deinit {
+        print("Create title deallocated! ✅")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
@@ -75,7 +86,8 @@ class CreateTitleViewController: UIViewController {
     }
     
     @objc func handlePostTapped() {
-        print("Handle post tapped")
+        guard imageAssets.count > 0 else { return }
+        beginUploadAndPost()
     }
     
     func configureViewComponents() {
@@ -114,6 +126,89 @@ class CreateTitleViewController: UIViewController {
         blurView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0.0).isActive = true
         blurView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0.0).isActive = true
     }
+}
+
+// MARK: - API
+
+extension CreateTitleVC {
+    func updateUserFeeds(with postId: String) {
+        // current user id
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+
+        // database values
+        let values = [postId: 1]
+
+        // update follower feeds
+        USER_FOLLOWER_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+            USER_FOLLOWER_REF.child(currentUid).removeAllObservers()
+
+            let followerUid = snapshot.key
+            USER_FEED_REF.child(followerUid).updateChildValues(values)
+        }
+
+        // update current user feed
+        USER_FEED_REF.child(currentUid).updateChildValues(values)
+    }
+
+    func beginUploadAndPost() {
+//        // parameters
+//        guard
+//            let caption = captionTextView.text,
+//            let postImg = photoImageView.image,
+//            let currentUid = Auth.auth().currentUser?.uid else { return }
+//
+//        // image upload data
+//        guard let uploadData = postImg.jpegData(compressionQuality: 0.5) else { return }
+//
+//        // create date
+//        let creationDate = Int(NSDate().timeIntervalSince1970)
+//
+//        // update storage
+//        let filename = NSUUID().uuidString
+//        let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
+//
+//        // post data
+//        let values = ["caption": caption,
+//                      "creationDate": creationDate,
+//                      "likes": 0,
+//                      "ownerUid": currentUid] as [String: Any]
+//
+//        // post id
+//        let postId = POSTS_REF.childByAutoId()
+//
+//        // upload information to database
+//        postId.updateChildValues(values) { (err, ref) in
+//
+//            guard let postKey = postId.key else { return }
+//
+//            // update user-posts structure
+//            USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
+//
+//            // update user-feed structure
+//            self.updateUserFeeds(with: postKey)
+//
+//            // return to home feed
+//            self.dismiss(animated: true, completion: {
+//                self.tabBarController?.selectedIndex = 0
+//            })
+//        }
+//
+//        storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
+//
+//            // handle error
+//            if let error = error {
+//                print("Failed to upload image to storage with error", error.localizedDescription)
+//                return
+//            }
+//
+//            storageRef.downloadURL { (url, error) in
+//                guard let imageURL = url?.absoluteString else { return }
+//
+//
+//            }
+//        }
+    }
+
 }
 
 extension UITextField {

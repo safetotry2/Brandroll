@@ -46,11 +46,12 @@ class PreviewViewController: UIViewController {
     }
     
     @objc func handleNextTapped() {
-        let vc = CreateTitleViewController()
+        let vc = CreateTitleVC()
         self.definesPresentationContext = true
         self.providesPresentationContextTransitionStyle = true
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .coverVertical
+        vc.imageAssets = imageAssets
 
         self.present(vc, animated: true, completion: nil)
     }
