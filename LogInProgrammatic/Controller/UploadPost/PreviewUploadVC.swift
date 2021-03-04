@@ -22,6 +22,7 @@ class PreviewUploadVC: UIViewController {
     let cellID = "PreviewImageCell"
 
     var delegate: ShowPickerDelegate?
+    var cellDynamicHeights: [Int : CGFloat] = [:]
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -35,6 +36,13 @@ class PreviewUploadVC: UIViewController {
         registerTable()
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         tableView.reloadData()
     }
     
@@ -107,7 +115,20 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
             
             if let url = URL(string: imageUrl) {
                 let resource = ImageResource(downloadURL: url)
-                cell.cellImageView.kf.setImage(with: resource)
+                cell.cellImageView.kf.indicatorType = .activity
+                cell.cellImageView.kf.setImage(with: resource) { (result) in
+                    switch result {
+                    case let .success(imageResult):
+                        DispatchQueue.main.async {
+                            let image = imageResult.image
+                            let imageCrop = image.getCropRatio()
+                            let height = tableView.frame.width / imageCrop
+                            cell.cellImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+                            self.cellDynamicHeights[indexPath.row] = height
+                        }
+                    case .failure(_): break
+                    }
+                }
             }
         } else {
             let image = images[indexPath.item]
@@ -119,7 +140,7 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if imageUrls != nil {
-            
+            return UITableView.automaticDimension
         } else {
             let currentImage = images[indexPath.row]
             let imageCrop = currentImage.getCropRatio()
