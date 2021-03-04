@@ -8,10 +8,11 @@
 
 import DKImagePickerController
 import Firebase
+import SVProgressHUD
 import UIKit
 
 class CreateTitleVC: UIViewController {
-
+    
     // MARK: - Properties
     
     var imageAssets: [DKAsset] = []
@@ -27,7 +28,7 @@ class CreateTitleVC: UIViewController {
     let textField: UITextField = {
         let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: "Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray,
-            .font: UIFont.boldSystemFont(ofSize: 22.0)])
+                                                                                    .font: UIFont.boldSystemFont(ofSize: 22.0)])
         tf.backgroundColor = UIColor.white.withAlphaComponent(0.0)
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.white.withAlphaComponent(0.8).cgColor
@@ -86,7 +87,6 @@ class CreateTitleVC: UIViewController {
     }
     
     @objc func handlePostTapped() {
-        guard imageAssets.count > 0 else { return }
         beginUploadAndPost()
     }
     
@@ -116,7 +116,7 @@ class CreateTitleVC: UIViewController {
     func addOverlayBlurredBackgroundView() {
         let blurView = UIVisualEffectView()
         blurView.effect = UIBlurEffect(style: .systemUltraThinMaterialLight)
-
+        
         self.view.addSubview(blurView)
         
         blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,87 +128,111 @@ class CreateTitleVC: UIViewController {
     }
 }
 
-// MARK: - API
+// MARK: - API & Posting
 
 extension CreateTitleVC {
     func updateUserFeeds(with postId: String) {
         // current user id
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-
+        
         // database values
         let values = [postId: 1]
-
+        
         // update follower feeds
         USER_FOLLOWER_REF.child(currentUid).observe(.childAdded) { (snapshot) in
             USER_FOLLOWER_REF.child(currentUid).removeAllObservers()
-
+            
             let followerUid = snapshot.key
             USER_FEED_REF.child(followerUid).updateChildValues(values)
         }
-
+        
         // update current user feed
         USER_FEED_REF.child(currentUid).updateChildValues(values)
     }
-
+    
+    /**
+     Creates a post first, and then upload all the assets, finally update the post images node.
+     */
     func beginUploadAndPost() {
-//        // parameters
-//        guard
-//            let caption = captionTextView.text,
-//            let postImg = photoImageView.image,
-//            let currentUid = Auth.auth().currentUser?.uid else { return }
-//
-//        // image upload data
-//        guard let uploadData = postImg.jpegData(compressionQuality: 0.5) else { return }
-//
-//        // create date
-//        let creationDate = Int(NSDate().timeIntervalSince1970)
-//
-//        // update storage
-//        let filename = NSUUID().uuidString
-//        let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
-//
-//        // post data
-//        let values = ["caption": caption,
-//                      "creationDate": creationDate,
-//                      "likes": 0,
-//                      "ownerUid": currentUid] as [String: Any]
-//
-//        // post id
-//        let postId = POSTS_REF.childByAutoId()
-//
-//        // upload information to database
-//        postId.updateChildValues(values) { (err, ref) in
-//
-//            guard let postKey = postId.key else { return }
-//
-//            // update user-posts structure
-//            USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
-//
-//            // update user-feed structure
-//            self.updateUserFeeds(with: postKey)
-//
-//            // return to home feed
-//            self.dismiss(animated: true, completion: {
-//                self.tabBarController?.selectedIndex = 0
-//            })
-//        }
-//
-//        storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-//
-//            // handle error
-//            if let error = error {
-//                print("Failed to upload image to storage with error", error.localizedDescription)
-//                return
-//            }
-//
-//            storageRef.downloadURL { (url, error) in
-//                guard let imageURL = url?.absoluteString else { return }
-//
-//
-//            }
-//        }
+        // parameters
+        guard
+            imageAssets.count > 0,
+            let caption = textField.text,
+            let currentUid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let imagesData = imageAssets.compactMap { $0.image?.jpegData(compressionQuality: 0.7) }
+        
+        guard imagesData.count > 0 else { return }
+        
+        // create date
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
+        // post data
+        let values = ["caption": caption,
+                      "creationDate": creationDate,
+                      "likes": 0,
+                      "ownerUid": currentUid] as [String: Any]
+        
+        // post id
+        let postId = POSTS_REF.childByAutoId()
+        
+        // upload information to database
+        SVProgressHUD.show()
+        postId.updateChildValues(values) { (err, ref) in
+            SVProgressHUD.dismiss {
+                guard let postKey = postId.key else { return }
+                
+                // update user-posts structure
+                USER_POSTS_REF.child(currentUid).updateChildValues([postKey: 1])
+                
+                // update user-feed structure
+                self.updateUserFeeds(with: postKey)
+                
+                // continue the uploads.
+                self.uploadAssetsToPostWithKey(postKey, imagesData: imagesData)
+            }
+        }
     }
-
+    
+    private func uploadAssetsToPostWithKey(_ postKey: String, imagesData: Array<Data>) {
+        SVProgressHUD.show(withStatus: "Uploading...")
+        
+        let group = DispatchGroup()
+        var error: Error?
+        
+        func upload(_ imageData: Data) {
+            let filename = NSUUID().uuidString
+            let storageRef = STORAGE_POST_IMAGES_REF.child(filename)
+            
+            storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+                
+                // handle error
+                if let error = error {
+                    print("Failed to upload image to storage with error", error.localizedDescription)
+                    return
+                }
+                
+                storageRef.downloadURL { (url, error) in
+                    guard let imageURL = url?.absoluteString else { return }
+                    
+                }
+            }
+        }
+        
+        for data in imagesData {
+            group.enter()
+            
+            upload(data)
+        }
+    }
+    
+    private func returnToNewsFeed() {
+        dismiss(animated: true, completion: {
+            self.tabBarController?.selectedIndex = 0
+        })
+    }
 }
 
 extension UITextField {
