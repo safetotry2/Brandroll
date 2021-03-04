@@ -6,7 +6,6 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
-import DKImagePickerController
 import Firebase
 import SVProgressHUD
 import UIKit
@@ -15,7 +14,7 @@ class CreateTitleVC: UIViewController {
     
     // MARK: - Properties
     
-    var imageAssets: [DKAsset] = []
+    var images: [UIImage] = []
     
     lazy var containerView: UIView = {
         let cv = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 180))
@@ -156,16 +155,17 @@ extension CreateTitleVC {
     func beginUploadAndPost() {
         // parameters
         guard
-            imageAssets.count > 0,
+            images.count > 0,
             let caption = textField.text,
             let currentUid = Auth.auth().currentUser?.uid else {
             return
         }
         
-        let imagesData = imageAssets.compactMap { $0.image?.jpegData(compressionQuality: 0.7) }
+        let imagesData = images.compactMap { $0.jpegData(compressionQuality: 0.7) }
         guard imagesData.count > 0 else { return }
         
         SVProgressHUD.show(withStatus: "Uploading...")
+        SVProgressHUD.setDefaultMaskType(.black)
         
         let group = DispatchGroup()
         var imageUrls = Array<String>()

@@ -315,7 +315,7 @@ extension MainTabVC: ShowPickerDelegate {
     }
     
     private func showPreview() {
-        let previewVC = PreviewViewController()
+        let previewVC = PreviewUploadVC()
         previewVC.images = images
         previewVC.delegate = self
         let navigationVC = UINavigationController(rootViewController: previewVC)

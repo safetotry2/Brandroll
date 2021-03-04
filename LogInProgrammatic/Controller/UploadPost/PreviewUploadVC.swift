@@ -13,11 +13,10 @@ protocol ShowPickerDelegate {
     func showImagePicker()
 }
 
-class PreviewViewController: UIViewController {
+class PreviewUploadVC: UIViewController {
     
     let tableView = UITableView()
     var images: [UIImage] = []
-    var imageAssets: [DKAsset] = []
     let cellID = "PreviewImageCell"
 
     var delegate: ShowPickerDelegate?
@@ -51,7 +50,7 @@ class PreviewViewController: UIViewController {
         self.providesPresentationContextTransitionStyle = true
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .coverVertical
-        vc.imageAssets = imageAssets
+        vc.images = images
 
         self.present(vc, animated: true, completion: nil)
     }
@@ -78,7 +77,7 @@ class PreviewViewController: UIViewController {
 
 //MARK: - TableView DataSource and Delegate
 
-extension PreviewViewController: UITableViewDataSource, UITableViewDelegate {
+extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     
     func registerTable() {
         tableView.register(PreviewTableViewCell.self, forCellReuseIdentifier: cellID)

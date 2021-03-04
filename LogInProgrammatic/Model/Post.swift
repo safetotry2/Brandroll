@@ -136,7 +136,11 @@ class Post {
         guard let currentUid = Auth.auth().currentUser?.uid,
               let postId = postId else { return }
         
-        Storage.storage().reference(forURL: self.imageUrl).delete(completion: nil)
+        images?.forEach({ (image) in
+            Storage.storage()
+                .reference(forURL: image.imageUrl)
+                .delete(completion: nil)
+        })
         
         USER_FOLLOWER_REF.child(currentUid).observeSingleEvent(of: .childAdded) { (snapshot) in
             let followerUid = snapshot.key
