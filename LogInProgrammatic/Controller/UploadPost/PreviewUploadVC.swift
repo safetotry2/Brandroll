@@ -121,13 +121,6 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
                 let resource = ImageResource(downloadURL: url)
                 cell.cellImageView.kf.indicatorType = .activity
                 cell.cellImageView.kf.setImage(with: resource)
-                
-                DispatchQueue.main.async {
-                    let widthRatio = CGFloat(postImage.width / postImage.height)
-                    let height = tableView.frame.width / widthRatio
-                    print("✅ HEIGHT: \(height)")
-                    cell.heightConstraint?.constant = height
-                }
             }
         } else {
             let image = images[indexPath.item]
@@ -139,7 +132,10 @@ extension PreviewUploadVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if postImages != nil {
-            return UITableView.automaticDimension
+            let postImage = postImages![indexPath.row]
+            let widthRatio = CGFloat(postImage.width / postImage.height)
+            let height = tableView.frame.width / widthRatio
+            return height
         } else {
             let currentImage = images[indexPath.row]
             let imageCrop = currentImage.getCropRatio()
