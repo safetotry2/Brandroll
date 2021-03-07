@@ -73,8 +73,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         imageAssets.removeAll()
         images.removeAll(keepingCapacity: false)
         
-        previewVC?.presentedViewController?.dismiss(animated: true, completion: {
-            weakSelf?.previewVC?.dismiss(animated: true, completion: {
+        previewVC?.presentedViewController?.dismiss(animated: false, completion: {
+            weakSelf?.previewVC?.dismiss(animated: false, completion: {
                 weakSelf?.previewVC = nil
                 weakSelf?.feedVC.handleRefresh()
                 weakSelf?.userProfileVC.handleRefresh()
