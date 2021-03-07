@@ -16,6 +16,7 @@ class Post {
         var imageUrl: String = ""
         var width: CGFloat = 0
         var height: CGFloat = 0
+        var position: Int = 0
         
         init(key: String, dictionary: [String : Any]) {
             self.key = key
@@ -30,6 +31,10 @@ class Post {
             
             if let height = dictionary["height"] as? CGFloat {
                 self.height = height
+            }
+            
+            if let position = dictionary["position"] as? Int {
+                self.position = position
             }
         }
     }

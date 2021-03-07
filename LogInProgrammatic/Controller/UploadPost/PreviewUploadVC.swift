@@ -36,6 +36,9 @@ class PreviewUploadVC: UIViewController {
         super.viewDidLoad()
         view = UIView()
         view.backgroundColor = UIColor.white
+        
+        postImages?.sort(by: { $0.position < $1.position } )
+        
         setNavBarAndTableView()
         registerTable()
         tableView.separatorStyle = .none

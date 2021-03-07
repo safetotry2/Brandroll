@@ -11,7 +11,7 @@ import SVProgressHUD
 import UIKit
 
 typealias ImageDataTuple = (data: Data, width: CGFloat, height: CGFloat)
-typealias UploadedPostImageTuple = (imageUrl: String, width: CGFloat, height: CGFloat)
+typealias UploadedPostImageTuple = (imageUrl: String, width: CGFloat, height: CGFloat, imagePosition: Int)
 
 class CreateTitleVC: UIViewController {
     
@@ -200,7 +200,7 @@ extension CreateTitleVC {
             let uploadtask = storageRef.putData(tuple.data, metadata: nil) { (metadata, uploadError) in
                 storageRef.downloadURL { (url, urlError) in
                     let urlString = url?.absoluteString ?? ""
-                    let newTuple: UploadedPostImageTuple = UploadedPostImageTuple(imageUrl: urlString, width: tuple.width, height: tuple.height)
+                    let newTuple: UploadedPostImageTuple = UploadedPostImageTuple(imageUrl: urlString, width: tuple.width, height: tuple.height, imagePosition: index)
                     uploadedImageTuples.append(newTuple)
                     group.leave()
                     imagesLeft -= 1
@@ -244,7 +244,8 @@ extension CreateTitleVC {
             imageDic[imageKey] = [
                 "imageUrl" : tuple.imageUrl,
                 "width" : tuple.width,
-                "height" : tuple.height
+                "height" : tuple.height,
+                "position" : tuple.imagePosition
             ]
         }
         
