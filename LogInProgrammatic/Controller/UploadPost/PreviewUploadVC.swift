@@ -73,7 +73,7 @@ class PreviewUploadVC: UIViewController {
         if postImages != nil {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(handleBackTapped))
             navigationItem.rightBarButtonItem = nil
-            self.navigationItem.title = "Photos"
+            self.navigationItem.title = nil
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(handleBackTapped))
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNextTapped))
