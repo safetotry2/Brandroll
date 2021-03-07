@@ -30,7 +30,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     private (set)var previewVC: PreviewUploadVC?
     
-    private var pickerController = DKImagePickerController()
     private var uiDelegate = CustomUIDelegate()
     
     // MARK: - Functions
@@ -57,6 +56,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.tappedPostCellImage(_:)), name: tappedPostCellImageNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.newPostSuccess(_:)), name: newPostSuccessNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.deletePost(_:)), name: deletePostNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)        
     }
     
@@ -69,13 +69,23 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     @objc func newPostSuccess(_ notification: Notification) {
         weak var weakSelf = self
+        
+        imageAssets.removeAll()
+        images.removeAll(keepingCapacity: false)
+        
         previewVC?.presentedViewController?.dismiss(animated: true, completion: {
             weakSelf?.previewVC?.dismiss(animated: true, completion: {
                 weakSelf?.previewVC = nil
                 weakSelf?.feedVC.handleRefresh()
+                weakSelf?.userProfileVC.handleRefresh()
                 weakSelf?.selectedIndex = 0
             })
         })
+    }
+    
+    @objc func deletePost(_ notification: Notification) {
+        feedVC.handleRefresh()
+        userProfileVC.handleRefresh()
     }
     
     @objc func notificationReceived(_ notification: Foundation.Notification) {
@@ -296,6 +306,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
 
 extension MainTabVC: ShowPickerDelegate {
     func showImagePicker() {
+        let pickerController = DKImagePickerController()
         pickerController.assetType = .allPhotos
         pickerController.sourceType = .photo
         pickerController.allowMultipleTypes = false
@@ -310,7 +321,9 @@ extension MainTabVC: ShowPickerDelegate {
         
         weak var weakSelf = self
         pickerController.didCancel = {
-            weakSelf?.pickerController.dismiss(animated: true, completion: nil)
+            weakSelf?.imageAssets.removeAll()
+            weakSelf?.images.removeAll(keepingCapacity: false)
+            pickerController.dismiss(animated: true, completion: nil)
         }
         pickerController.didSelectAssets = { (assets: [DKAsset]) in
             weakSelf?.imageAssets = assets

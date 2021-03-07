@@ -13,6 +13,7 @@ import FirebaseDatabase
 private let reuseIdentifier = "Cell"
 public let tabBarNotificationKey = NSNotification.Name(rawValue: "tabBarNotificationKey")
 public let newPostSuccessNotificationKey = NSNotification.Name(rawValue: "newPostSuccessNotificationKey")
+public let deletePostNotificationKey = NSNotification.Name(rawValue: "deletePostNotificationKey")
 public let tappedPostCellImageNotificationKey = NSNotification.Name(rawValue: "tappedPostCellImageNotificationKey")
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {

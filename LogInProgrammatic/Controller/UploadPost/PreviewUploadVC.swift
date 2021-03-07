@@ -10,7 +10,7 @@ import DKImagePickerController
 import Kingfisher
 import UIKit
 
-protocol ShowPickerDelegate {
+protocol ShowPickerDelegate: class {
     func showImagePicker()
 }
 
@@ -21,8 +21,12 @@ class PreviewUploadVC: UIViewController {
     var postImages: Array<Post.PostImage>?
     let cellID = "PreviewImageCell"
 
-    var delegate: ShowPickerDelegate?
+    weak var delegate: ShowPickerDelegate?
     var cellDynamicHeights: [Int : CGFloat] = [:]
+    
+    deinit {
+        print("PreviewUploadVC deallocated! ✅")
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
