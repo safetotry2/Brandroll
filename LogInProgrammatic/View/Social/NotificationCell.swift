@@ -31,10 +31,14 @@ class NotificationCell: UITableViewCell {
                 profileImageView.kf.setImage(with: resource)
             }
             
-            if let imageUrl = notification?.post?.imageUrl,
-               let url = URL(string: imageUrl) {
-                let resource = ImageResource(downloadURL: url)
-                postImageView.kf.setImage(with: resource)
+            if let imageUrl = notification?.post?.imageUrl {
+                setPostImageWithStringUrl(imageUrl)
+            } else if let postImage = notification?.post?.images {
+                if let position0Image = postImage.filter({ $0.position == 0 }).first {
+                    setPostImageWithStringUrl(position0Image.imageUrl)
+                } else {
+                    setPostImageWithStringUrl(postImage.first?.imageUrl ?? "")
+                }
             }
         }
     }
@@ -96,6 +100,13 @@ class NotificationCell: UITableViewCell {
     }()
     
     // MARK: - Handlers
+    
+    private func setPostImageWithStringUrl(_ imageUrl: String) {
+        if let url = URL(string: imageUrl) {
+            let resource = ImageResource(downloadURL: url)
+            postImageView.kf.setImage(with: resource)
+        }
+    }
     
     @objc func handleFollowTapped() {
         delegate?.handleFollowTapped(for: self)
