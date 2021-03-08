@@ -84,7 +84,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     @objc func deletePost(_ notification: Notification) {
+        guard let post = notification.object as? Post else { return }
         feedVC.handleRefresh()
+        notificationsVC.removeNotifByPost(post)
         userProfileVC.handleRefresh()
     }
     

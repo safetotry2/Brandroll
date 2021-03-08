@@ -192,7 +192,7 @@ class Post {
         
         POSTS_REF.child(postId).removeValue()
         
-        NotificationCenter.default.post(name: deletePostNotificationKey, object: nil)
+        NotificationCenter.default.post(name: deletePostNotificationKey, object: self)
     }
     
     func sendLikeNotificationToServer() {

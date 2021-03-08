@@ -263,6 +263,16 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         }
     }
     
+    func removeNotifByPost(_ post: Post) {
+        for (index, notif) in notifications.enumerated() {
+            if notif.post?.postId == post.postId {
+                notifications.remove(at: index)
+                self.tableView.reloadData()
+                continue
+            }
+        }
+    }
+    
     // MARK: - API
     
     private func fetchNotifications(withNotificationId notificationId: String, dataSnapshot snapshot: DataSnapshot) {
