@@ -264,15 +264,32 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     func removeNotifByPost(_ post: Post) {
-        for (index, notif) in notifications.enumerated() {
-            if notif.post?.postId == post.postId {
-                DispatchQueue.main.async {
-                    self.notifications.remove(at: index)
-                    self.tableView.reloadData()
-                }
-                continue
-            }
+        guard let currentUid = Auth.auth().currentUser?.uid,
+              let postId = post.postId else {
+            return
         }
+        
+        weak var weakSelf = self
+        NOTIFICATIONS_REF
+            .child(currentUid)
+            .queryOrdered(byChild: "postId")
+            .queryEqual(toValue: postId)
+            .observeSingleEvent(of: .value) { (snapshot) in
+                guard let notifsWithPostIdResult = snapshot.value as? [String : Any] else {
+                    return
+                }
+                
+                for notif in notifsWithPostIdResult {
+                    let notifId = notif.key
+                    NOTIFICATIONS_REF
+                        .child(currentUid)
+                        .child(notifId)
+                        .removeValue()
+                }
+                
+                weakSelf?.notifications.removeAll()
+                weakSelf?.fetchNotifications()
+            }
     }
     
     // MARK: - API
