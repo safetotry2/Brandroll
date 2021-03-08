@@ -73,14 +73,16 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         imageAssets.removeAll()
         images.removeAll(keepingCapacity: false)
         
-        previewVC?.presentedViewController?.dismiss(animated: false, completion: {
-            weakSelf?.previewVC?.dismiss(animated: false, completion: {
-                weakSelf?.previewVC = nil
-                weakSelf?.feedVC.handleRefresh()
-                weakSelf?.userProfileVC.handleRefresh()
-                weakSelf?.selectedIndex = 0
+        DispatchQueue.main.async {
+            self.previewVC?.presentedViewController?.dismiss(animated: false, completion: {
+                weakSelf?.previewVC?.dismiss(animated: false, completion: {
+                    weakSelf?.previewVC = nil
+                    weakSelf?.feedVC.handleRefresh()
+                    weakSelf?.userProfileVC.handleRefresh()
+                    weakSelf?.selectedIndex = 0
+                })
             })
-        })
+        }
     }
     
     @objc func deletePost(_ notification: Notification) {

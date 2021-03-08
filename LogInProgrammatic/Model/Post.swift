@@ -159,10 +159,27 @@ class Post {
             }
         })
         
-        USER_FOLLOWER_REF.child(currentUid).observeSingleEvent(of: .childAdded) { (snapshot) in
-            let followerUid = snapshot.key
-            USER_FEED_REF.child(followerUid).child(self.postId).removeValue()
+        if imageUrl != nil {
+            Storage.storage()
+                .reference(forURL: imageUrl)
+                .delete(completion: nil)
         }
+        
+        USER_FOLLOWER_REF
+            .child(currentUid)
+            .observeSingleEvent(of: .value) { (snapshot) in
+                guard let followers = snapshot.value as? [String : Any] else {
+                    return
+                }
+                
+                for follower in followers {
+                    let followerKey = follower.key
+                    USER_FEED_REF
+                        .child(followerKey)
+                        .child(self.postId)
+                        .removeValue()
+                }
+            }
         
         USER_FEED_REF.child(currentUid).child(postId).removeValue()
         
