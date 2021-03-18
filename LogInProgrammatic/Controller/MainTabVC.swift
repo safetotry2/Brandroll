@@ -157,6 +157,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             } else if UIScreen.main.nativeBounds.height == 1792 {
                 // configure dot for iPhone XR and iPhone 11
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
+            } else if UIScreen.main.nativeBounds.height == 2688 {
+                // configure dot for iPhone XS Max and iPhone 11 Pro Max
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
             } else {
                 // configure dot for other phone models
                 dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16, width: 6, height: 6)

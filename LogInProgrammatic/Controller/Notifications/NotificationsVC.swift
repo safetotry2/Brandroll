@@ -40,6 +40,8 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.showsVerticalScrollIndicator = false
+        
         // clear separator lines
         tableView.separatorColor = .clear
 

@@ -29,6 +29,10 @@ protocol FeedCellDelegate: class {
     func handleShowLikes(for cell: FeedCell)
 }
 
+protocol CommentCellDelegate: class {
+    func handleFullnameTapped(for cell: CommentCell)
+}
+
 protocol NotitificationCellDelegate: class {
     func handleFollowTapped(for cell: NotificationCell)
     func handlePostTapped(for cell: NotificationCell)

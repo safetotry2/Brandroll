@@ -36,6 +36,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.showsVerticalScrollIndicator = false
+        
         // register cell classes
         tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
         
@@ -140,6 +142,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
         
         //tableView.addSubview(collectionView)
         view.addSubview(collectionView)

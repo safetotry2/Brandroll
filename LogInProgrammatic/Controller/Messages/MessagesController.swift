@@ -39,6 +39,8 @@ class MessagesController: UITableViewController {
         // configure navigation bar
         configureNavigationBar()
         
+        tableView.showsVerticalScrollIndicator = false
+        
         // register cell
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableFooterView = UIView()

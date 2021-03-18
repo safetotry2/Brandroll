@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 private let reuseIdentifier = "CommentCell"
 
-class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CommentCellDelegate {
     
     // MARK: - Properties
     
@@ -46,7 +46,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         // navigation title
         navigationItem.title = "Comments"
-        
+                
         // configure collectionView
         configureCollectionView()
                 
@@ -54,7 +54,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         // configure layout
-        collectionView.collectionViewLayout = layout
+        //collectionView.collectionViewLayout = layout
         
         // fetch comments
         fetchComments()
@@ -101,6 +101,20 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     // MARK: - UICollectionView
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let dummyCell = CommentCell(frame: frame)
+        dummyCell.comment = comments[indexPath.item]
+        dummyCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        
+        let height = max(40 + 8 + 8, estimatedSize.height)
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return comments.count
     }
@@ -131,6 +145,27 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     // MARK: - Handlers
+    
+    func handleFullnameTapped(for cell: CommentCell) {
+        guard let comment = cell.comment else { return }
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        userProfileVC.user = comment.user
+        userProfileVC.fromTabBar = false
+        
+        navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+    }
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc func handleKeyboardDidShow() {
         scrollToBottom()
@@ -166,9 +201,11 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
-        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 40, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 40, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
+    
+    // MARK: - API
     
     func fetchComments() {
         guard let postId = post?.postId else { return }

@@ -35,6 +35,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         super.viewDidLoad()
 
         self.collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
         
         // Register cell classes
         self.collectionView.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -329,6 +330,12 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
         followLikeVC.postID = postID
         navigationController?.pushViewController(followLikeVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     // MARK: - Handlers

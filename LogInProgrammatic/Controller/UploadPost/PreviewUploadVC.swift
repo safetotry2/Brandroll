@@ -16,6 +16,8 @@ protocol ShowPickerDelegate: class {
 
 class PreviewUploadVC: UIViewController {
     
+    private var statusBarIsHidden = true
+    
     let tableView = UITableView()
     var images: [UIImage] = []
     var postImages: Array<Post.PostImage>?
@@ -29,30 +31,25 @@ class PreviewUploadVC: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool {
-        return true
+        return self.statusBarIsHidden
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = UIView()
         view.backgroundColor = UIColor.white
+        setNeedsStatusBarAppearanceUpdate()
         
         postImages?.sort(by: { $0.position < $1.position } )
         
         setNavBarAndTableView()
         registerTable()
-        tableView.separatorStyle = .none
-        tableView.allowsSelection = false
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         tableView.reloadData()
     }
-    
     
     // MARK: - Handlers
     
@@ -100,6 +97,11 @@ class PreviewUploadVC: UIViewController {
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
         tableView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 0, right: 0)
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
+        tableView.showsVerticalScrollIndicator = false
     }
     
 }

@@ -222,7 +222,7 @@ extension CreateTitleVC {
         }
         
         group.notify(queue: .main) { [self] in
-            post(caption, userId: currentUid, uploadedImageTuples: uploadedImageTuples)
+            self.post(caption, userId: currentUid, uploadedImageTuples: uploadedImageTuples)
         }
     }
     

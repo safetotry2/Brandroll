@@ -169,9 +169,9 @@ class FeedCell: UICollectionViewCell {
             bottom: nil,
             right: rightAnchor,
             paddingTop: 14,
-            paddingLeft: 12,
+            paddingLeft: 16,
             paddingBottom: 0,
-            paddingRight: 12,
+            paddingRight: 16,
             width: 0,
             height: 0
         )
@@ -180,7 +180,7 @@ class FeedCell: UICollectionViewCell {
         configureGradientOverlay()
         
         addSubview(profileImageView)
-        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        profileImageView.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40 / 2
         
         addSubview(fullnameButton)
@@ -204,7 +204,7 @@ class FeedCell: UICollectionViewCell {
             bottom: nil,
             right: likeLabel.leftAnchor,
             paddingTop: -24,
-            paddingLeft: 12,
+            paddingLeft: 8,
             paddingBottom: 0,
             paddingRight: 8,
             width: 0,
@@ -303,7 +303,7 @@ class FeedCell: UICollectionViewCell {
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 100, height: 50)
+        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 100, height: 50)
     }
     
     required init?(coder: NSCoder) {

@@ -60,7 +60,7 @@
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
-		BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */; };
+		95256C892396FCDEBFD5410F /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40436978C43198F94E49662B /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +111,7 @@
 		04FA756E258295D700814F9E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		04FA75702583BB5100814F9E /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		04FA75722583BC4500814F9E /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		40436978C43198F94E49662B /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		453EA7DD25EE547800051ADC /* PreviewUploadVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewUploadVC.swift; sourceTree = "<group>"; };
 		453EA7E125EE570E00051ADC /* CustomUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIDelegate.swift; sourceTree = "<group>"; };
 		453EA7E425EE579300051ADC /* CreateTitleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTitleVC.swift; sourceTree = "<group>"; };
@@ -120,9 +121,8 @@
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
-		4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
-		5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
-		D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5712533D4F25E3A991972635 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
+		5FC8E1BB79011AFDF236A5C0 /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA0773F21F4B5CAFE2F8337D /* Pods_LogInProgrammatic.framework in Frameworks */,
+				95256C892396FCDEBFD5410F /* Pods_LogInProgrammatic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 				045C64AB250844DC002E8E1C /* LogInProgrammatic */,
 				045C64AA250844DC002E8E1C /* Products */,
 				9E61F1BE2E3ED4335CD61D1D /* Pods */,
-				ACD6988964874D1DDF11A5AE /* Frameworks */,
+				69E89CBA39C94C091F95A67C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -401,21 +401,21 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		69E89CBA39C94C091F95A67C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40436978C43198F94E49662B /* Pods_LogInProgrammatic.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */,
-				5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */,
+				5FC8E1BB79011AFDF236A5C0 /* Pods-LogInProgrammatic.debug.xcconfig */,
+				5712533D4F25E3A991972635 /* Pods-LogInProgrammatic.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		ACD6988964874D1DDF11A5AE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D32F3875C211942A1EA86C98 /* Pods_LogInProgrammatic.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -425,11 +425,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "LogInProgrammatic" */;
 			buildPhases = (
-				E409CC927DB13F622C381326 /* [CP] Check Pods Manifest.lock */,
+				666AE63ED44D2E4E5F939925 /* [CP] Check Pods Manifest.lock */,
 				045C64A5250844DC002E8E1C /* Sources */,
 				045C64A6250844DC002E8E1C /* Frameworks */,
 				045C64A7250844DC002E8E1C /* Resources */,
-				A3A031F827A6027F399F4D7D /* [CP] Embed Pods Frameworks */,
+				CCF0FB6AFBE15706FE2C6E91 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -487,24 +487,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A3A031F827A6027F399F4D7D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E409CC927DB13F622C381326 /* [CP] Check Pods Manifest.lock */ = {
+		666AE63ED44D2E4E5F939925 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -524,6 +507,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CCF0FB6AFBE15706FE2C6E91 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -716,7 +716,7 @@
 		};
 		045C64BE250844EF002E8E1C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B966BC3798BD5A82B30B64F /* Pods-LogInProgrammatic.debug.xcconfig */;
+			baseConfigurationReference = 5FC8E1BB79011AFDF236A5C0 /* Pods-LogInProgrammatic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LogInProgrammatic/LogInProgrammatic.entitlements;
@@ -740,7 +740,7 @@
 		};
 		045C64BF250844EF002E8E1C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BAA9677922A5BF357C2DF5D /* Pods-LogInProgrammatic.release.xcconfig */;
+			baseConfigurationReference = 5712533D4F25E3A991972635 /* Pods-LogInProgrammatic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LogInProgrammatic/LogInProgrammatic.entitlements;
