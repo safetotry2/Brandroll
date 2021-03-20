@@ -135,7 +135,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     // construct navigation controller
     func constructNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
         // construct nav controller
-        let navController = UINavigationController(rootViewController: rootViewController)
+        let navController = BaseNavCon(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage
         navController.tabBarItem.selectedImage = selectedImage
         navController.navigationBar.tintColor = .black

@@ -8,6 +8,13 @@
 
 import UIKit
 
+/**
+ This base navigationController class conforms to `StatusBarToggelable` protocol.
+ We can set the statusBar states (ie visibility, and animation style) by using navCon init method.
+ We can also set it by using the extension method `setStatusBarAppearance` of `UIViewController`.
+ The reason why we put everything in the navCon subclass is that ideally and most of the time, we embed the controller
+ in a navCon even if our controller has no navBar.
+ */
 class BaseNavCon: UINavigationController, StatusBarToggleable {
     
     // MARK: - Properties

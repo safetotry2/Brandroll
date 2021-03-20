@@ -57,6 +57,7 @@
 		453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA7E725EE58F500051ADC /* PreviewTableViewCell.swift */; };
 		454596722605AE9B0088D3A7 /* StatusBarToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */; };
 		454596782605B1520088D3A7 /* BaseNavCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596772605B1520088D3A7 /* BaseNavCon.swift */; };
+		4545967B260618C90088D3A7 /* UIViewController+StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
@@ -120,6 +121,7 @@
 		453EA7E725EE58F500051ADC /* PreviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewTableViewCell.swift; sourceTree = "<group>"; };
 		454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarToggleable.swift; sourceTree = "<group>"; };
 		454596772605B1520088D3A7 /* BaseNavCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavCon.swift; sourceTree = "<group>"; };
+		4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+StatusBar.swift"; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				0433327E25378C6C00C26BB6 /* Protocols.swift */,
 				45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */,
 				456BB6A025C4835E0053F034 /* UIViewController+Current.swift */,
+				4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -581,6 +584,7 @@
 				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
 				04044697257A9A450029F738 /* NotificationCell.swift in Sources */,
 				04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */,
+				4545967B260618C90088D3A7 /* UIViewController+StatusBar.swift in Sources */,
 				456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */,
 				453EA7DE25EE547800051ADC /* PreviewUploadVC.swift in Sources */,
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,

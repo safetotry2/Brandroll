@@ -26,7 +26,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     private var followersRefHandle: DatabaseHandle?
     
     // MARK: - Init
-    
+
     deinit {
         print("UserProfileVC deallocated! 🐶")
     }
