@@ -76,22 +76,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    private func addObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationWillEnterForeground),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
-    }
+    private func addObserver() { }
     
     func removeObserver() {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func applicationWillEnterForeground() {
-        print("applicationWillEnterForeground")
-        handleRefresh()
     }
 
     //MARK: - UICollectionViewFlowLayout

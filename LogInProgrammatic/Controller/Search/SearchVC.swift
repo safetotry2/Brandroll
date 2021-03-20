@@ -215,7 +215,10 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     
                     Database.fetchUser(with: uid) { (user) in
                         guard let user = user else { return }
-                        self.users.append(user)
+                        if user.uid != Auth.auth().currentUser?.uid {
+                            self.users.append(user)
+                        }
+                        
                         self.collectionView.reloadData()
                     }
                 }
@@ -234,7 +237,10 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     if uid != self.userCurrentKey {
                         Database.fetchUser(with: uid) { (user) in
                             guard let user = user else { return }
-                            self.users.append(user)
+                            if user.uid != Auth.auth().currentUser?.uid {
+                                self.users.append(user)
+                            }
+                            
                             self.collectionView.reloadData()
                         }
                     }

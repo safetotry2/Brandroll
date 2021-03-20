@@ -245,6 +245,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         self.dot.isHidden = true
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+        
         notifRefHandle = NOTIFICATIONS_REF
             .child(currentUid)
             .observe(.value) { (snapshot) in
@@ -283,6 +290,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                     }
                 }
             }
+    }
+    
+    @objc func applicationWillEnterForeground() {
+        print("applicationWillEnterForeground")
+        feedVC.handleRefresh()
+        searchVC.handleRefresh()
     }
     
     /// Checks if we are ought to proceed to hiding the dot navBar notif.
