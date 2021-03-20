@@ -21,8 +21,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var searchBar = UISearchBar()
     var inSearchMode = false
     var collectionViewEnabled = true
-    var posts = [Post]()
-    var currentKey: String?
     var userCurrentKey: String?
     
     private let reuseIdentifier = "SearchUserCell"
@@ -47,7 +45,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         // fetch profiles
         fetchUsers()
-        
     }
     
     // MARK: - UICollectionView
@@ -151,8 +148,8 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     @objc func handleRefresh() {
-        posts.removeAll(keepingCapacity: false)
-        self.currentKey = nil
+        users.removeAll(keepingCapacity: false)
+        userCurrentKey = nil
         fetchUsers()
         collectionView.reloadData()
     }
@@ -205,36 +202,20 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     func fetchUsers() {
         if userCurrentKey == nil {
-            USER_REF.queryLimited(toLast: 12).observeSingleEvent(of: .value) { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach { (snapshot) in
-                    let uid = snapshot.key
+            USER_REF
+                .queryOrderedByKey()
+                .queryEnding(atValue: SearchUtils.getRandomFirebaseIndex())
+                .queryLimited(toLast: 12)
+                .observeSingleEvent(of: .value) { (snapshot) in
                     
-                    Database.fetchUser(with: uid) { (user) in
-                        guard let user = user else { return }
-                        if user.uid != Auth.auth().currentUser?.uid {
-                            self.users.append(user)
-                        }
+                    self.collectionView.refreshControl?.endRefreshing()
+                    
+                    guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    
+                    allObjects.forEach { (snapshot) in
+                        let uid = snapshot.key
                         
-                        self.collectionView.reloadData()
-                    }
-                }
-                
-                self.userCurrentKey = first.key
-            }
-        } else {
-            USER_REF.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 13).observeSingleEvent(of: .value) { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach { (snapshot) in
-                    let uid = snapshot.key
-                    
-                    if uid != self.userCurrentKey {
                         Database.fetchUser(with: uid) { (user) in
                             guard let user = user else { return }
                             if user.uid != Auth.auth().currentUser?.uid {
@@ -244,9 +225,35 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             self.collectionView.reloadData()
                         }
                     }
+                    
+                    self.userCurrentKey = first.key
                 }
-                self.userCurrentKey = first.key
-            }
+        } else {
+            USER_REF
+                .queryOrderedByKey()
+                .queryEnding(atValue: userCurrentKey)
+                .queryLimited(toLast: 13)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    
+                    allObjects.forEach { (snapshot) in
+                        let uid = snapshot.key
+                        
+                        if uid != self.userCurrentKey {
+                            Database.fetchUser(with: uid) { (user) in
+                                guard let user = user else { return }
+                                if user.uid != Auth.auth().currentUser?.uid {
+                                    self.users.append(user)
+                                }
+                                
+                                self.collectionView.reloadData()
+                            }
+                        }
+                    }
+                    self.userCurrentKey = first.key
+                }
         }
     }
 }

@@ -57,6 +57,7 @@
 		454596722605AE9B0088D3A7 /* StatusBarToggleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */; };
 		454596782605B1520088D3A7 /* BaseNavCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596772605B1520088D3A7 /* BaseNavCon.swift */; };
 		4545967B260618C90088D3A7 /* UIViewController+StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */; };
+		454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596D42606681C0088D3A7 /* SearchUtils.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
@@ -120,6 +121,7 @@
 		454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarToggleable.swift; sourceTree = "<group>"; };
 		454596772605B1520088D3A7 /* BaseNavCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavCon.swift; sourceTree = "<group>"; };
 		4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+StatusBar.swift"; sourceTree = "<group>"; };
+		454596D42606681C0088D3A7 /* SearchUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtils.swift; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				04044698257DA1B10029F738 /* AppNotif.swift */,
 				04FA756E258295D700814F9E /* Message.swift */,
 				456BB7EE25C865F60053F034 /* MessagesUtils.swift */,
+				454596D42606681C0088D3A7 /* SearchUtils.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
 				453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */,
+				454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */,
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
 				043D3667259802290094CE4F /* EditProfileController.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
