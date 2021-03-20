@@ -105,7 +105,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let feedNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "home_unselected"), selectedImage: #imageLiteral(resourceName: "home_selected"), rootViewController: feedVC)
         
         // search feed controller
-        searchVC = SearchVC()
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        searchVC = SearchVC(collectionViewLayout: layout)
         let searchNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "search_unselected"), selectedImage: #imageLiteral(resourceName: "search_selected"), rootViewController: searchVC)
         
         // select image controller

@@ -42,7 +42,6 @@
 		045C64DE25150AED002E8E1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DD25150AED002E8E1C /* Constants.swift */; };
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
-		045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E32522BA09002E8E1C /* SearchUserCell.swift */; };
 		04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75622580325E00814F9E /* SearchPostCell.swift */; };
 		04FA756625813C2D00814F9E /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756525813C2D00814F9E /* MessagesController.swift */; };
 		04FA75692581430200814F9E /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75682581430100814F9E /* MessageCell.swift */; };
@@ -105,7 +104,6 @@
 		045C64DD25150AED002E8E1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		045C64E32522BA09002E8E1C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
 		04FA75622580325E00814F9E /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		04FA756525813C2D00814F9E /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		04FA75682581430100814F9E /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
@@ -305,7 +303,6 @@
 				04333290254727DA00C26BB6 /* FeedCell.swift */,
 				0404469225786C240029F738 /* CommentCell.swift */,
 				04044696257A9A450029F738 /* NotificationCell.swift */,
-				045C64E32522BA09002E8E1C /* SearchUserCell.swift */,
 				04FA75622580325E00814F9E /* SearchPostCell.swift */,
 				0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */,
 			);
@@ -561,7 +558,6 @@
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
 				04FA75692581430200814F9E /* MessageCell.swift in Sources */,
 				045C64D7250FCF60002E8E1C /* UserProfileVC.swift in Sources */,
-				045C64E42522BA09002E8E1C /* SearchUserCell.swift in Sources */,
 				45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */,
 				45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */,
 				456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */,
