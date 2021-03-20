@@ -9,6 +9,12 @@
 import UIKit
 
 class BaseVC: UIViewController {
+    
+    // MARK: - Properties
+
+    // MARK: - Overrides
+    // MARK: Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white

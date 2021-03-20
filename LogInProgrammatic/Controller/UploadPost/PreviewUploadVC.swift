@@ -14,10 +14,10 @@ protocol ShowPickerDelegate: class {
     func showImagePicker()
 }
 
-class PreviewUploadVC: UIViewController {
+class PreviewUploadVC: BaseVC {
     
-    private var statusBarIsHidden = true
-    
+    // MARK: - Properties
+        
     let tableView = UITableView()
     var images: [UIImage] = []
     var postImages: Array<Post.PostImage>?
@@ -29,10 +29,10 @@ class PreviewUploadVC: UIViewController {
     deinit {
         print("PreviewUploadVC deallocated! ✅")
     }
+
     
-    override var prefersStatusBarHidden: Bool {
-        return self.statusBarIsHidden
-    }
+    // MARK: - Functions
+    // MARK: Overrides
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -13,10 +13,10 @@ import UIKit
 typealias ImageDataTuple = (data: Data, width: CGFloat, height: CGFloat)
 typealias UploadedPostImageTuple = (imageUrl: String, width: CGFloat, height: CGFloat, imagePosition: Int)
 
-class CreateTitleVC: UIViewController {
+class CreateTitleVC: BaseVC {
     
     // MARK: - Properties
-    
+
     var images: [UIImage] = []
     
     lazy var containerView: UIView = {

@@ -360,7 +360,11 @@ extension MainTabVC: ShowPickerDelegate {
         }
         
         previewVC?.delegate = self
-        let navigationVC = UINavigationController(rootViewController: previewVC!)
+        let navigationVC = BaseNavCon(
+            rootViewController: previewVC!,
+            statusBarShouldBeHidden: true,
+            statusBarAnimationStyle: .slide
+        )
         
         navigationVC.modalPresentationStyle = .fullScreen
         present(navigationVC, animated: true, completion: nil)

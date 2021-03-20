@@ -60,6 +60,8 @@ class MessagesController: UITableViewController {
         
         if didPresentNewMessage {
             didPresentNewMessage = false
+            // fetch messages
+            fetchMessages(showHud: false)
         } else {
             // fetch messages
             fetchMessages()
@@ -174,10 +176,12 @@ class MessagesController: UITableViewController {
     
     // MARK: - API
     
-    func fetchMessages() {
+    func fetchMessages(showHud: Bool = true) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        SVProgressHUD.show()
+        if showHud {
+            SVProgressHUD.show()
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
             // Just in case for 5 seconds nothing happens,
