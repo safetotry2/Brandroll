@@ -158,6 +158,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     @objc func handleRefresh() {
         users.removeAll(keepingCapacity: false)
         userCurrentKey = nil
+        userCurrentKeyForBackwards = nil
+        lastUserKeyOnFirebase = nil
+        firstUserKeyFetched = nil
         fetchUsers()
         collectionView.reloadData()
     }
@@ -247,11 +250,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             Database.fetchUser(with: uid) { (user) in
                                 guard let user = user else { return }
-                                if user.uid != Auth.auth().currentUser?.uid {
-                                    self.users.append(user)
-                                }
-                                
-                                self.collectionView.reloadData()
+                                self.addNewUser(user)
                             }
                         }
                         
@@ -277,12 +276,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             if uid != self.userCurrentKey {
                                 Database.fetchUser(with: uid) { (user) in
-                                    guard let user = user else { return }
-                                    if user.uid != Auth.auth().currentUser?.uid {
-                                        self.users.append(user)
-                                    }
-                                    
-                                    self.collectionView.reloadData()
+                                    self.addNewUser(user)
                                 }
                             }
                         }
@@ -310,12 +304,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                                 
                                 if uid != self.userCurrentKeyForBackwards {
                                     Database.fetchUser(with: uid) { (user) in
-                                        guard let user = user else { return }
-                                        if user.uid != Auth.auth().currentUser?.uid {
-                                            self.users.append(user)
-                                        }
-                                        
-                                        self.collectionView.reloadData()
+                                        self.addNewUser(user)
                                     }
                                 }
                             }
@@ -340,12 +329,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                                 
                                 if uid != self.userCurrentKeyForBackwards {
                                     Database.fetchUser(with: uid) { (user) in
-                                        guard let user = user else { return }
-                                        if user.uid != Auth.auth().currentUser?.uid {
-                                            self.users.append(user)
-                                        }
-                                        
-                                        self.collectionView.reloadData()
+                                        self.addNewUser(user)
                                     }
                                 }
                             }
@@ -364,6 +348,19 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         } else if let lastUserKey = self.lastUserKeyOnFirebase {
             continueFetchingUsers(lastUserKey)
         }
+    }
+    
+    private func addNewUser(_ user: User?) {
+        guard let user = user else { return }
+        if user.uid != Auth.auth().currentUser?.uid {
+            if !users.contains(where: { (u) -> Bool in
+                return u.uid == user.uid
+            }) {
+                users.append(user)
+            }
+        }
+        
+        self.collectionView.reloadData()
     }
     
     private func printDebugAllObjects(_ allObjects: Array<DataSnapshot>, from: String) {
