@@ -18,7 +18,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var user: User?
     var users = [User]()
     var filteredUsers = [User]()
-    var searchController: UISearchController!
+    var searchBar = UISearchBar()
     var inSearchMode = false
     var collectionViewEnabled = true
     
@@ -42,7 +42,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         super.viewDidLoad()
         
         // configure search bar
-        configureSearchController()
+        configureSearchBar()
         
         // configure collection view
         configureCollectionView()
@@ -114,9 +114,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if inSearchMode {
-            if filteredUsers.count >= 3 {
+            if filteredUsers.count >= 4 {
                 if indexPath.item == filteredUsers.count - 1 {
-//                    searchForUsers()
+                    searchForUsers()
                     return
                 }
             }
@@ -166,16 +166,12 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         cell.configureFollowButton()
     }
     
-    func configureSearchController() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.definesPresentationContext = false
-        
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.delegate = self
-        navigationItem.titleView = searchController.searchBar
-        searchController.searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-        searchController.searchBar.tintColor = .black
+    func configureSearchBar() {
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        searchBar.tintColor = .black
     }
     
     @objc func handleRefresh() {
@@ -191,6 +187,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     private func clearSearchData() {
+        filteredUsers.removeAll()
         search_searchText = nil
         search_userCurrentKey = nil
     }
@@ -205,16 +202,13 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
-        
-        collectionView.isHidden = true
-        collectionViewEnabled = false
-        
-        fetchUsers()
+        searchForUsers()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        clearSearchData()
+        
         if searchText.isEmpty || searchText == " " {
-            clearSearchData()
             inSearchMode = false
         } else {
             search_searchText = searchText
@@ -407,12 +401,16 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     private func addNewUser(_ user: User?) {
         guard let user = user else { return }
         if user.uid != Auth.auth().currentUser?.uid {
-            if !users.contains(where: { (u) -> Bool in
-                return u.uid == user.uid
-            }) {
-                if inSearchMode {
+            if inSearchMode {
+                if !filteredUsers.contains(where: { (u) -> Bool in
+                    return u.uid == user.uid
+                }) {
                     filteredUsers.append(user)
-                } else {
+                }
+            } else {
+                if !users.contains(where: { (u) -> Bool in
+                    return u.uid == user.uid
+                }) {
                     users.append(user)
                 }
             }
