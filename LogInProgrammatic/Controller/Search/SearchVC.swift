@@ -210,7 +210,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         if searchText.isEmpty || searchText == " " {
             inSearchMode = false
+            self.collectionView.refreshControl?.isEnabled = true
         } else {
+            self.collectionView.refreshControl?.isEnabled = false
             search_searchText = searchText
             inSearchMode = true
             searchForUsers()
@@ -375,27 +377,55 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     private func searchForUsers()  {
         guard let text = self.search_searchText else { return }
-        USER_REF
-            .queryOrdered(byChild: "name")
-            .queryStarting(atValue: text, childKey: "name")
-            .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
-            .queryLimited(toFirst: 10)
-            .observeSingleEvent(of: .value) { (snapshot) in
-                guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                self.printDebugAllObjects(allObjects, from: "SEARCHING")
-                
-                allObjects.forEach { (snapshot) in
-                    let uid = snapshot.key
+
+        if search_userCurrentKey == nil {
+            // First search
+            USER_REF
+                .queryOrdered(byChild: "name")
+                .queryStarting(atValue: text, childKey: "name")
+                .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
+                .queryLimited(toFirst: 4)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    self.printDebugAllObjects(allObjects, from: "SEARCHING")
                     
-                    if uid != self.userCurrentKey {
-                        Database.fetchUser(with: uid) { (user) in
-                            self.addNewUser(user)
+                    allObjects.forEach { (snapshot) in
+                        let uid = snapshot.key
+                        
+                        if uid != self.userCurrentKey {
+                            Database.fetchUser(with: uid) { (user) in
+                                self.addNewUser(user)
+                            }
                         }
                     }
+                    self.search_userCurrentKey = last.key
                 }
-                self.search_userCurrentKey = last.key
-            }
+        } else {
+            // Pagination
+            // Ref: https://dev.srdanstanic.com/2017/10/14/firebase-realtime-database-lists-sorting-pagination-filtering/
+            USER_REF
+                .queryOrdered(byChild: "name")
+                .queryStarting(atValue: self.search_userCurrentKey, childKey: "name")
+                .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
+                .queryLimited(toFirst: 4)
+                .observeSingleEvent(of: .value) { (snapshot) in
+                    guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    self.printDebugAllObjects(allObjects, from: "SEARCHING -- SECOND PAGE")
+                    
+                    allObjects.forEach { (snapshot) in
+                        let uid = snapshot.key
+                        
+                        if uid != self.userCurrentKey {
+                            Database.fetchUser(with: uid) { (user) in
+                                self.addNewUser(user)
+                            }
+                        }
+                    }
+                    self.search_userCurrentKey = last.key
+                }
+        }
     }
     
     private func addNewUser(_ user: User?) {
@@ -420,7 +450,15 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     private func printDebugAllObjects(_ allObjects: Array<DataSnapshot>, from: String) {
-        let tuple = allObjects.compactMap { (($0.value as! [String : Any])["testKey"] as! Int) }
+        if allObjects.count == 0 { return }
+        let tuple: [String] = allObjects.map({
+            if let val = $0.value as? [String : Any],
+               let testKey = val["testKey"] as? Int {
+                return "\(testKey)"
+            } else {
+                return $0.key
+            }
+        })
         print("========= FROM: \(from) ==========")
         print(tuple)
     }
