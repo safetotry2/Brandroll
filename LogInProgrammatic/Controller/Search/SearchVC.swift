@@ -224,7 +224,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.collectionView.refreshControl?.endRefreshing()
                         
-                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                        guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
                         guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                         
                         allObjects.forEach { (snapshot) in
@@ -240,13 +240,13 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             }
                         }
                         
-                        self.userCurrentKey = first.key
+                        self.userCurrentKey = last.key
                     }
             } else {
                 USER_REF
                     .queryOrderedByKey()
                     .queryStarting(atValue: self.userCurrentKey)
-                    .queryLimited(toLast: 6)
+                    .queryLimited(toFirst: 6)
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
                         guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
