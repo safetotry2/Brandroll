@@ -21,10 +21,14 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var searchBar = UISearchBar()
     var inSearchMode = false
     var collectionViewEnabled = true
+    
     var userCurrentKey: String?
     var userCurrentKeyForBackwards: String?
     var lastUserKeyOnFirebase: String?
     var firstUserKeyFetched: String?
+    
+    var search_userCurrentKey: String?
+    var search_searchText: String?
     
     private let reuseIdentifier = "SearchUserCell"
     
@@ -47,8 +51,8 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         configureRefreshControl()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         if users.isEmpty {
             // fetch profiles
@@ -109,21 +113,36 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if users.count >= 3 {
-            if indexPath.item == users.count - 1 {
-                fetchUsers()
+        if inSearchMode {
+            if filteredUsers.count >= 3 {
+                if indexPath.item == filteredUsers.count - 1 {
+                    searchForUsers()
+                    return
+                }
+            }
+        } else {
+            if users.count >= 3 {
+                if indexPath.item == users.count - 1 {
+                    fetchUsers()
+                    return
+                }
             }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return users.count
+        return inSearchMode ? filteredUsers.count : users.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as! SearchProfileCell
         cell.delegate = self
-        cell.user = users[indexPath.item]
+        
+        if inSearchMode {
+            cell.user = filteredUsers[indexPath.item]
+        } else {
+            cell.user = users[indexPath.item]
+        }
         
         return cell
     }
@@ -157,12 +176,19 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     @objc func handleRefresh() {
         users.removeAll(keepingCapacity: false)
+        
         userCurrentKey = nil
         userCurrentKeyForBackwards = nil
         lastUserKeyOnFirebase = nil
         firstUserKeyFetched = nil
         fetchUsers()
+        
         collectionView.reloadData()
+    }
+    
+    private func clearSearchData() {
+        search_searchText = nil
+        search_userCurrentKey = nil
     }
     
     func configureRefreshControl() {
@@ -184,21 +210,20 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText == " " {
+            clearSearchData()
             inSearchMode = false
-            collectionView.reloadData()
         } else {
+            search_searchText = searchText
             inSearchMode = true
-            
-            filteredUsers = users.filter({ (user) -> Bool in
-                
-                return (user.name?.contains(searchText) ?? true) || (user.occupation?.contains(searchText) ?? true)
-                
-            })
-            collectionView.reloadData()
+            searchForUsers()
         }
+        
+        collectionView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        clearSearchData()
+        
         searchBar.endEditing(true)
         searchBar.showsCancelButton = false
         inSearchMode = false
@@ -212,7 +237,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     // MARK: - API
     
     public typealias LastUserKeyCallBack = ((_ lastUserKey: String) -> Void)
-    func getLastUserKey(completion: @escaping LastUserKeyCallBack) {
+    private func getLastUserKey(completion: @escaping LastUserKeyCallBack) {
         USER_REF
             .queryOrderedByKey()
             .queryLimited(toLast: 1)
@@ -226,7 +251,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     // TODO: Refactor firebase calls.
-    func fetchUsers() {
+    private func fetchUsers() {
         func continueFetchingUsers(_ lastUserKey: String) {
             if self.userCurrentKey == nil {
                 // Once, first-time fetching.
@@ -350,13 +375,42 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         }
     }
     
+    private func searchForUsers()  {
+        guard let text = self.search_searchText else { return }
+        USER_REF
+            .queryOrdered(byChild: "name")
+            .queryStarting(atValue: text, childKey: "name")
+            .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
+            .queryLimited(toFirst: 10)
+            .observeSingleEvent(of: .value) { (snapshot) in
+                guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                self.printDebugAllObjects(allObjects, from: "SEARCHING")
+                
+                allObjects.forEach { (snapshot) in
+                    let uid = snapshot.key
+                    
+                    if uid != self.userCurrentKey {
+                        Database.fetchUser(with: uid) { (user) in
+                            self.addNewUser(user)
+                        }
+                    }
+                }
+                self.search_userCurrentKey = last.key
+            }
+    }
+    
     private func addNewUser(_ user: User?) {
         guard let user = user else { return }
         if user.uid != Auth.auth().currentUser?.uid {
             if !users.contains(where: { (u) -> Bool in
                 return u.uid == user.uid
             }) {
-                users.append(user)
+                if inSearchMode {
+                    filteredUsers.append(user)
+                } else {
+                    users.append(user)
+                }
             }
         }
         
