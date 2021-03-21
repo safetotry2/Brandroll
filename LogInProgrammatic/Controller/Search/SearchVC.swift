@@ -295,7 +295,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     // The second-time and future fetch from backwards.
                     USER_REF
                         .queryOrderedByKey()
-                        .queryStarting(atValue: self.userCurrentKeyForBackwards)
+                        .queryEnding(atValue: self.userCurrentKeyForBackwards)
                         .queryLimited(toLast: 6)
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
