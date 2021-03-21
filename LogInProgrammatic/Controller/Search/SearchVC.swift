@@ -22,6 +22,8 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var inSearchMode = false
     var collectionViewEnabled = true
     var userCurrentKey: String?
+    var lastUserKeyOnFirebase: String?
+    var firstUserKeyFetched: String?
     
     private let reuseIdentifier = "SearchUserCell"
     
@@ -214,8 +216,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func fetchUsers() {
-        getLastUserKey { (lastUserKey) in
+        func continueFetchingUsers(_ lastUserKey: String) {
             if self.userCurrentKey == nil {
+                // Once, first-time fetching.
                 USER_REF
                     .queryOrderedByKey()
                     .queryEnding(atValue: SearchUtils.getRandomFirebaseIndex())
@@ -224,8 +227,11 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.collectionView.refreshControl?.endRefreshing()
                         
+                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                         guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
                         guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        
+                        self.firstUserKeyFetched = first.key
                         
                         allObjects.forEach { (snapshot) in
                             let uid = snapshot.key
@@ -242,7 +248,8 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.userCurrentKey = last.key
                     }
-            } else {
+            } else if self.userCurrentKey != self.lastUserKeyOnFirebase {
+                // If we haven't reached the end yet.
                 USER_REF
                     .queryOrderedByKey()
                     .queryStarting(atValue: self.userCurrentKey)
@@ -250,7 +257,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
                         guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
-                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        // Exclude the last one.
+                        allObjects.remove(at: 0)
                         
                         allObjects.forEach { (snapshot) in
                             let uid = snapshot.key
@@ -268,7 +277,44 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         }
                         self.userCurrentKey = last.key
                     }
+            } else {
+                // And if we've reached the end
+                // Then fetch backwards starting from the `firstUserKeyFetched`.
+                USER_REF
+                    .queryOrderedByKey()
+                    .queryStarting(atValue: self.firstUserKeyFetched)
+                    .queryLimited(toLast: 6)
+                    .observeSingleEvent(of: .value) { (snapshot) in
+                        
+                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        
+                        allObjects.forEach { (snapshot) in
+                            let uid = snapshot.key
+                            
+                            if uid != self.userCurrentKey {
+                                Database.fetchUser(with: uid) { (user) in
+                                    guard let user = user else { return }
+                                    if user.uid != Auth.auth().currentUser?.uid {
+                                        self.users.append(user)
+                                    }
+                                    
+                                    self.collectionView.reloadData()
+                                }
+                            }
+                        }
+                        self.userCurrentKey = first.key
+                    }
             }
+        }
+        
+        if lastUserKeyOnFirebase == nil {
+            getLastUserKey { (lastUserKey) in
+                self.lastUserKeyOnFirebase = lastUserKey
+                continueFetchingUsers(lastUserKey)
+            }
+        } else if let lastUserKey = self.lastUserKeyOnFirebase {
+            continueFetchingUsers(lastUserKey)
         }
     }
 }
