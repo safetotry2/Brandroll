@@ -18,7 +18,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var user: User?
     var users = [User]()
     var filteredUsers = [User]()
-    var searchBar = UISearchBar()
+    var searchController: UISearchController!
     var inSearchMode = false
     var collectionViewEnabled = true
     
@@ -42,7 +42,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         super.viewDidLoad()
         
         // configure search bar
-        configureSearchBar()
+        configureSearchController()
         
         // configure collection view
         configureCollectionView()
@@ -116,7 +116,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         if inSearchMode {
             if filteredUsers.count >= 3 {
                 if indexPath.item == filteredUsers.count - 1 {
-                    searchForUsers()
+//                    searchForUsers()
                     return
                 }
             }
@@ -166,12 +166,16 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         cell.configureFollowButton()
     }
     
-    func configureSearchBar() {
-        searchBar.sizeToFit()
-        searchBar.delegate = self
-        navigationItem.titleView = searchBar
-        searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-        searchBar.tintColor = .black
+    func configureSearchController() {
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.definesPresentationContext = false
+        
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.delegate = self
+        navigationItem.titleView = searchController.searchBar
+        searchController.searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+        searchController.searchBar.tintColor = .black
     }
     
     @objc func handleRefresh() {
