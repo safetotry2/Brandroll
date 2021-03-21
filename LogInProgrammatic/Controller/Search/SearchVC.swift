@@ -22,6 +22,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var inSearchMode = false
     var collectionViewEnabled = true
     var userCurrentKey: String?
+    var userCurrentKeyForBackwards: String?
     var lastUserKeyOnFirebase: String?
     var firstUserKeyFetched: String?
     
@@ -44,9 +45,15 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         // configure refresh control
         configureRefreshControl()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        // fetch profiles
-        fetchUsers()
+        if users.isEmpty {
+            // fetch profiles
+            fetchUsers()
+        }
     }
     
     // MARK: - UICollectionView
@@ -232,6 +239,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                         
                         self.firstUserKeyFetched = first.key
+                        self.printDebugAllObjects(allObjects, from: "First fetch 🍏")
                         
                         allObjects.forEach { (snapshot) in
                             let uid = snapshot.key
@@ -248,7 +256,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.userCurrentKey = last.key
                     }
-            } else if self.userCurrentKey != self.lastUserKeyOnFirebase {
+            } else if (self.userCurrentKey != self.lastUserKeyOnFirebase) && self.userCurrentKeyForBackwards == nil {
                 // If we haven't reached the end yet.
                 USER_REF
                     .queryOrderedByKey()
@@ -260,6 +268,8 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                         // Exclude the last one.
                         allObjects.remove(at: 0)
+                        
+                        self.printDebugAllObjects(allObjects, from: "HAVEN'T REACHED THE END YET 🍎")
                         
                         allObjects.forEach { (snapshot) in
                             let uid = snapshot.key
@@ -280,31 +290,68 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             } else {
                 // And if we've reached the end
                 // Then fetch backwards starting from the `firstUserKeyFetched`.
-                USER_REF
-                    .queryOrderedByKey()
-                    .queryStarting(atValue: self.firstUserKeyFetched)
-                    .queryLimited(toLast: 6)
-                    .observeSingleEvent(of: .value) { (snapshot) in
-                        
-                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                        
-                        allObjects.forEach { (snapshot) in
-                            let uid = snapshot.key
+                
+                if self.userCurrentKeyForBackwards != nil {
+                    // The second-time and future fetch from backwards.
+                    USER_REF
+                        .queryOrderedByKey()
+                        .queryStarting(atValue: self.userCurrentKeyForBackwards)
+                        .queryLimited(toLast: 6)
+                        .observeSingleEvent(of: .value) { (snapshot) in
                             
-                            if uid != self.userCurrentKey {
-                                Database.fetchUser(with: uid) { (user) in
-                                    guard let user = user else { return }
-                                    if user.uid != Auth.auth().currentUser?.uid {
-                                        self.users.append(user)
+                            guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            
+                            self.printDebugAllObjects(allObjects, from: "SECOND-TIME GOING BACKWARDS 🍊")
+                            
+                            allObjects.forEach { (snapshot) in
+                                let uid = snapshot.key
+                                
+                                if uid != self.userCurrentKeyForBackwards {
+                                    Database.fetchUser(with: uid) { (user) in
+                                        guard let user = user else { return }
+                                        if user.uid != Auth.auth().currentUser?.uid {
+                                            self.users.append(user)
+                                        }
+                                        
+                                        self.collectionView.reloadData()
                                     }
-                                    
-                                    self.collectionView.reloadData()
                                 }
                             }
+                            
+                            self.userCurrentKeyForBackwards = first.key
                         }
-                        self.userCurrentKey = first.key
-                    }
+                } else {
+                    // The first-time fetch from backwards.
+                    USER_REF
+                        .queryOrderedByKey()
+                        .queryEnding(atValue: self.firstUserKeyFetched)
+                        .queryLimited(toLast: 6)
+                        .observeSingleEvent(of: .value) { (snapshot) in
+                            
+                            guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            
+                            self.printDebugAllObjects(allObjects, from: "FIRST-TIME - GOING BACKWARDS 🍐")
+                            
+                            allObjects.forEach { (snapshot) in
+                                let uid = snapshot.key
+                                
+                                if uid != self.userCurrentKeyForBackwards {
+                                    Database.fetchUser(with: uid) { (user) in
+                                        guard let user = user else { return }
+                                        if user.uid != Auth.auth().currentUser?.uid {
+                                            self.users.append(user)
+                                        }
+                                        
+                                        self.collectionView.reloadData()
+                                    }
+                                }
+                            }
+                            
+                            self.userCurrentKeyForBackwards = first.key
+                        }
+                }
             }
         }
         
@@ -316,5 +363,11 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         } else if let lastUserKey = self.lastUserKeyOnFirebase {
             continueFetchingUsers(lastUserKey)
         }
+    }
+    
+    private func printDebugAllObjects(_ allObjects: Array<DataSnapshot>, from: String) {
+        let tuple = allObjects.compactMap { (($0.value as! [String : Any])["testKey"] as! Int) }
+        print("========= FROM: \(from) ==========")
+        print(tuple)
     }
 }
