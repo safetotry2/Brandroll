@@ -222,6 +222,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             })
     }
     
+    // TODO: Refactor firebase calls.
     func fetchUsers() {
         func continueFetchingUsers(_ lastUserKey: String) {
             if self.userCurrentKey == nil {
