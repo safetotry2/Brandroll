@@ -300,6 +300,12 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
         commentVC.post = post
         navigationController?.pushViewController(commentVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     func handleConfigureLikeButton(for cell: FeedCell) {
