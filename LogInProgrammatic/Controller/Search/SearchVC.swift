@@ -250,6 +250,27 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             })
     }
     
+    private func handleUsersAllObjects(_ allObjects: [DataSnapshot]) {
+        let group = DispatchGroup()
+        
+        allObjects.forEach { (snapshot) in
+            group.enter()
+            
+            let uid = snapshot.key
+            
+            Database.fetchUser(with: uid) { (user) in
+                guard let user = user else { return }
+                
+                group.leave()
+                self.addNewUser(user)
+            }
+        }
+        
+        group.notify(queue: .main) { [self] in
+            collectionView.reloadData()
+        }
+    }
+    
     // TODO: Refactor firebase calls.
     private func fetchUsers() {
         func continueFetchingUsers(_ lastUserKey: String) {
@@ -277,14 +298,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         self.firstUserKeyFetched = first.key
                         self.printDebugAllObjects(allObjects, from: "First fetch 🍏")
                         
-                        allObjects.forEach { (snapshot) in
-                            let uid = snapshot.key
-                            
-                            Database.fetchUser(with: uid) { (user) in
-                                guard let user = user else { return }
-                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                            }
-                        }
+                        self.handleUsersAllObjects(allObjects)
                         
                         self.userCurrentKey = last.key
                     }
@@ -305,15 +319,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.printDebugAllObjects(allObjects, from: "HAVEN'T REACHED THE END YET 🍎")
                         
-                        allObjects.forEach { (snapshot) in
-                            let uid = snapshot.key
-                            
-                            if uid != self.userCurrentKey {
-                                Database.fetchUser(with: uid) { (user) in
-                                    self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                                }
-                            }
-                        }
+                        self.handleUsersAllObjects(allObjects)
                         self.userCurrentKey = last.key
                     }
             } else {
@@ -336,16 +342,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             self.printDebugAllObjects(allObjects, from: "SECOND-TIME GOING BACKWARDS 🍊")
                             
-                            allObjects.forEach { (snapshot) in
-                                let uid = snapshot.key
-                                
-                                if uid != self.userCurrentKeyForBackwards {
-                                    Database.fetchUser(with: uid) { (user) in
-                                        self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                                    }
-                                }
-                            }
-                            
+                            self.handleUsersAllObjects(allObjects)
                             self.userCurrentKeyForBackwards = first.key
                         }
                 } else {
@@ -364,16 +361,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             self.printDebugAllObjects(allObjects, from: "FIRST-TIME - GOING BACKWARDS 🍐")
                             
-                            allObjects.forEach { (snapshot) in
-                                let uid = snapshot.key
-                                
-                                if uid != self.userCurrentKeyForBackwards {
-                                    Database.fetchUser(with: uid) { (user) in
-                                        self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                                    }
-                                }
-                            }
-                            
+                            self.handleUsersAllObjects(allObjects)
                             self.userCurrentKeyForBackwards = first.key
                         }
                 }
@@ -408,15 +396,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                     self.printDebugAllObjects(allObjects, from: "SEARCHING")
                     
-                    allObjects.forEach { (snapshot) in
-                        let uid = snapshot.key
-                        
-                        if uid != self.userCurrentKey {
-                            Database.fetchUser(with: uid) { (user) in
-                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                            }
-                        }
-                    }
+                    self.handleUsersAllObjects(allObjects)
                     self.search_userCurrentKey = last.key
                 }
         } else {
@@ -432,21 +412,13 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                     self.printDebugAllObjects(allObjects, from: "SEARCHING -- SECOND PAGE")
                     
-                    allObjects.forEach { (snapshot) in
-                        let uid = snapshot.key
-                        
-                        if uid != self.userCurrentKey {
-                            Database.fetchUser(with: uid) { (user) in
-                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
-                            }
-                        }
-                    }
+                    self.handleUsersAllObjects(allObjects)
                     self.search_userCurrentKey = last.key
                 }
         }
     }
     
-    private func addNewUser(_ user: User?, shouldReloadCollection: Bool) {
+    private func addNewUser(_ user: User?) {
         guard let user = user else { return }
         if user.uid != Auth.auth().currentUser?.uid {
             if inSearchMode {
@@ -462,10 +434,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     users.append(user)
                 }
             }
-        }
-        
-        if shouldReloadCollection {
-            collectionView.reloadData()
         }
     }
     

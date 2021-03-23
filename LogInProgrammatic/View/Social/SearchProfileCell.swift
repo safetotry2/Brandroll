@@ -34,9 +34,7 @@ class SearchProfileCell: UICollectionViewCell {
                 occupationLabel.text = occupation
             } else if user?.occupation == nil {
                 occupationLabel.text = " "
-            }
-            
-            configureFollowButton()
+            }            
         }
     }
     
