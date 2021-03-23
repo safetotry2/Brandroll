@@ -54,7 +54,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if users.isEmpty {
+        if users.isEmpty || users.count == 0 {
             // fetch profiles
             fetchUsers()
         }
@@ -263,9 +263,16 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         self.collectionView.refreshControl?.endRefreshing()
                         
-                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                        guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
-                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        guard let first = snapshot.children.allObjects.first as? DataSnapshot,
+                              let last = snapshot.children.allObjects.last as? DataSnapshot,
+                              let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                            
+                            if self.users.isEmpty || self.users.count < 4 {
+                                self.handleRefresh()
+                            }
+                            
+                            return
+                        }
                         
                         self.firstUserKeyFetched = first.key
                         self.printDebugAllObjects(allObjects, from: "First fetch 🍏")
@@ -275,7 +282,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             Database.fetchUser(with: uid) { (user) in
                                 guard let user = user else { return }
-                                self.addNewUser(user)
+                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                             }
                         }
                         
@@ -289,8 +296,10 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     .queryLimited(toFirst: 6)
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
-                        guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
-                        guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        guard let last = snapshot.children.allObjects.last as? DataSnapshot,
+                              var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                            return
+                        }
                         // Exclude the last one.
                         allObjects.remove(at: 0)
                         
@@ -301,7 +310,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                             
                             if uid != self.userCurrentKey {
                                 Database.fetchUser(with: uid) { (user) in
-                                    self.addNewUser(user)
+                                    self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                                 }
                             }
                         }
@@ -319,8 +328,11 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         .queryLimited(toLast: 6)
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
-                            guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            guard let first = snapshot.children.allObjects.first as? DataSnapshot,
+                                  let last = snapshot.children.allObjects.last as? DataSnapshot,
+                                  let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                                return
+                            }
                             
                             self.printDebugAllObjects(allObjects, from: "SECOND-TIME GOING BACKWARDS 🍊")
                             
@@ -329,7 +341,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                                 
                                 if uid != self.userCurrentKeyForBackwards {
                                     Database.fetchUser(with: uid) { (user) in
-                                        self.addNewUser(user)
+                                        self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                                     }
                                 }
                             }
@@ -344,8 +356,11 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         .queryLimited(toLast: 6)
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
-                            guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            guard let first = snapshot.children.allObjects.first as? DataSnapshot,
+                                  let last = snapshot.children.allObjects.last as? DataSnapshot,
+                                  let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                                return
+                            }
                             
                             self.printDebugAllObjects(allObjects, from: "FIRST-TIME - GOING BACKWARDS 🍐")
                             
@@ -354,7 +369,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                                 
                                 if uid != self.userCurrentKeyForBackwards {
                                     Database.fetchUser(with: uid) { (user) in
-                                        self.addNewUser(user)
+                                        self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                                     }
                                 }
                             }
@@ -372,12 +387,14 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             }
         } else if let lastUserKey = self.lastUserKeyOnFirebase {
             continueFetchingUsers(lastUserKey)
+        } else {
+            assert(true)
         }
     }
     
     private func searchForUsers()  {
         guard let text = self.search_searchText else { return }
-
+        
         if search_userCurrentKey == nil {
             // First search
             USER_REF
@@ -386,6 +403,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
                 .queryLimited(toFirst: 4)
                 .observeSingleEvent(of: .value) { (snapshot) in
+                    
                     guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
                     guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                     self.printDebugAllObjects(allObjects, from: "SEARCHING")
@@ -395,7 +413,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         if uid != self.userCurrentKey {
                             Database.fetchUser(with: uid) { (user) in
-                                self.addNewUser(user)
+                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                             }
                         }
                     }
@@ -419,7 +437,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         
                         if uid != self.userCurrentKey {
                             Database.fetchUser(with: uid) { (user) in
-                                self.addNewUser(user)
+                                self.addNewUser(user, shouldReloadCollection: snapshot.key == last.key)
                             }
                         }
                     }
@@ -428,7 +446,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         }
     }
     
-    private func addNewUser(_ user: User?) {
+    private func addNewUser(_ user: User?, shouldReloadCollection: Bool) {
         guard let user = user else { return }
         if user.uid != Auth.auth().currentUser?.uid {
             if inSearchMode {
@@ -446,7 +464,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             }
         }
         
-        self.collectionView.reloadData()
+        if shouldReloadCollection {
+            collectionView.reloadData()
+        }
     }
     
     private func printDebugAllObjects(_ allObjects: Array<DataSnapshot>, from: String) {
