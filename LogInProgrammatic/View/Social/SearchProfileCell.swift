@@ -16,25 +16,29 @@ class SearchProfileCell: UICollectionViewCell {
     
     weak var delegate: SearchProfileCellDelegate?
     
-    var user: User? {
+    var userAndFollowed: UserAndFollowedTuple? {
         didSet {
-            if let profileImageUrl = user?.profileImageUrl,
+            guard let userAndFollowed = self.userAndFollowed,
+                  let user = userAndFollowed.user else { return }
+            if let profileImageUrl = user.profileImageUrl,
                let url = URL(string: profileImageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
             }
             
-            if let fullname = user?.name {
+            if let fullname = user.name {
                 fullnameLabel.text = fullname
-            } else if user?.name == nil {
+            } else if user.name == nil {
                 fullnameLabel.text = "Problem User"
             }
             
-            if let occupation = user?.occupation {
+            if let occupation = user.occupation {
                 occupationLabel.text = occupation
-            } else if user?.occupation == nil {
+            } else if user.occupation == nil {
                 occupationLabel.text = " "
-            }            
+            }
+            
+            self.setFollowButton(userAndFollowed.followed)
         }
     }
     
@@ -127,28 +131,31 @@ class SearchProfileCell: UICollectionViewCell {
     
     func configureFollowButton() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard let user = user else { return }
+        guard let user = userAndFollowed?.user else { return }
         
         if currentUid == user.uid {
             self.followButton.isHidden = true
         } else {
             user.checkIfUserIsFollowed { (followed) in
-                if followed {
-                    self.followButton.setTitle("Following", for: .normal)
-                    self.followButton.setTitleColor(.black, for: .normal)
-                    self.followButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-                    self.followButton.layer.borderWidth = 0.4
-                    self.followButton.layer.borderColor = UIColor.lightGray.cgColor
-                    self.followButton.backgroundColor = .white
-                } else {
-                    self.followButton.setTitle("Follow", for: .normal)
-                    self.followButton.setTitleColor(.white, for: .normal)
-                    self.followButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
-                    self.followButton.layer.borderWidth = 0
-                    self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
-                }
+                self.setFollowButton(followed)
             }
         }
     }
     
+    private func setFollowButton(_ followed: Bool) {
+        if followed {
+            self.followButton.setTitle("Following", for: .normal)
+            self.followButton.setTitleColor(.black, for: .normal)
+            self.followButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            self.followButton.layer.borderWidth = 0.4
+            self.followButton.layer.borderColor = UIColor.lightGray.cgColor
+            self.followButton.backgroundColor = .white
+        } else {
+            self.followButton.setTitle("Follow", for: .normal)
+            self.followButton.setTitleColor(.white, for: .normal)
+            self.followButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+            self.followButton.layer.borderWidth = 0
+            self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        }
+    }
 }

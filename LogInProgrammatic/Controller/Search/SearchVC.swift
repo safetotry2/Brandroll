@@ -10,14 +10,16 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
+typealias UserAndFollowedTuple = (user: User?, followed: Bool)
+
 class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 UISearchBarDelegate, SearchProfileCellDelegate {
     
     // MARK: - Properties
     
     var user: User?
-    var users = [User]()
-    var filteredUsers = [User]()
+    var users =  [UserAndFollowedTuple]()
+    var filteredUsers = [UserAndFollowedTuple]()
     var searchBar = UISearchBar()
     var inSearchMode = false
     var collectionViewEnabled = true
@@ -90,9 +92,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         var user: User!
         
         if inSearchMode {
-            user = filteredUsers[indexPath.row]
+            user = filteredUsers[indexPath.row].user
         } else {
-            user = users[indexPath.row]
+            user = users[indexPath.row].user
         }
         
         // create instance of user profile vc
@@ -139,9 +141,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         cell.delegate = self
         
         if inSearchMode {
-            cell.user = filteredUsers[indexPath.item]
+            cell.userAndFollowed = filteredUsers[indexPath.item]
         } else {
-            cell.user = users[indexPath.item]
+            cell.userAndFollowed = users[indexPath.item]
         }
         
         return cell
@@ -154,7 +156,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func handleFollowTapped(for cell: SearchProfileCell) {
-        guard let user = cell.user else { return }
+        guard let user = cell.userAndFollowed?.user else { return }
         
         if user.isFollowed {
             // handle unfollow user
@@ -258,11 +260,12 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             
             let uid = snapshot.key
             
-            Database.fetchUser(with: uid) { (user) in
+            Database.fetchUser(with: uid) { (user, followed) in
                 guard let user = user else { return }
                 
                 group.leave()
-                self.addNewUser(user)
+                let tuple = (user, followed)
+                self.addNewUser(tuple)
             }
         }
         
@@ -335,7 +338,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
                             guard let first = snapshot.children.allObjects.first as? DataSnapshot,
-                                  let last = snapshot.children.allObjects.last as? DataSnapshot,
                                   let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                                 return
                             }
@@ -354,7 +356,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
                             guard let first = snapshot.children.allObjects.first as? DataSnapshot,
-                                  let last = snapshot.children.allObjects.last as? DataSnapshot,
                                   let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                                 return
                             }
@@ -418,20 +419,20 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         }
     }
     
-    private func addNewUser(_ user: User?) {
-        guard let user = user else { return }
+    private func addNewUser(_ tuple: UserAndFollowedTuple) {
+        guard let user = tuple.user else { return }
         if user.uid != Auth.auth().currentUser?.uid {
             if inSearchMode {
                 if !filteredUsers.contains(where: { (u) -> Bool in
-                    return u.uid == user.uid
+                    return u.user?.uid == user.uid
                 }) {
-                    filteredUsers.append(user)
+                    filteredUsers.append(tuple)
                 }
             } else {
                 if !users.contains(where: { (u) -> Bool in
-                    return u.uid == user.uid
+                    return u.user?.uid == user.uid
                 }) {
-                    users.append(user)
+                    users.append(tuple)
                 }
             }
         }
