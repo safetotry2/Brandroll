@@ -72,7 +72,7 @@ class SearchProfileCell: UICollectionViewCell {
     
     lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Loading", for: .normal)
+        button.setTitle("", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
         button.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)

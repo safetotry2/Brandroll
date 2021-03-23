@@ -137,16 +137,23 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as! SearchProfileCell
-        cell.delegate = self
+        var cell: SearchProfileCell?
         
-        if inSearchMode {
-            cell.userAndFollowed = filteredUsers[indexPath.item]
-        } else {
-            cell.userAndFollowed = users[indexPath.item]
+        cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as? SearchProfileCell
+        
+        if cell == nil {
+            cell = SearchProfileCell()
         }
         
-        return cell
+        cell?.delegate = self
+        
+        if inSearchMode {
+            cell?.userAndFollowed = filteredUsers[indexPath.item]
+        } else {
+            cell?.userAndFollowed = users[indexPath.item]
+        }
+        
+        return cell!
     }
     
     // MARK: - Handlers
@@ -252,7 +259,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             })
     }
     
-    private func handleUsersAllObjects(_ allObjects: [DataSnapshot]) {
+    private func handleUsersAllObjects(_ allObjects: [DataSnapshot], shouldReload: Bool = false) {
         let group = DispatchGroup()
         
         allObjects.forEach { (snapshot) in
@@ -270,7 +277,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         }
         
         group.notify(queue: .main) { [self] in
-            collectionView.reloadData()
+            UIView.setAnimationsEnabled(false)
+            collectionView?.reloadSections(IndexSet.init(integer: 0))
+            UIView.setAnimationsEnabled(true)
         }
     }
     
