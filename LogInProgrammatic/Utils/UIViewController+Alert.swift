@@ -11,6 +11,9 @@ import UIKit
 /// The completion callback for the `alert`.
 public typealias AlertCallBack = ((_ userDidTapOk: Bool) -> Void)
 
+/// Empty callback
+public typealias EmptyCallBack = (() -> Void)
+
 extension UIViewController {
     /**
      Presents an alertController with completion.

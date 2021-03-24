@@ -41,13 +41,10 @@ class User {
         
     }
     
-    func follow() {
+    func follow(completion: EmptyCallBack? = nil) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         guard let uid = uid else { return }
-        
-        // set is followed to true
-        self.isFollowed = true
         
         // add followed user to current user-following structure
         USER_FOLLOWING_REF.child(currentUid).updateChildValues([uid: 1])
@@ -59,45 +56,62 @@ class User {
         uploadFollowNotificaitonToServer()
         
         // add followed users posts to current user feed
-        usersPostRefHandle = USER_POSTS_REF
+        USER_POSTS_REF
             .child(self.uid)
-            .observe(.childAdded) { (snapshot) in
-                let postId = snapshot.key
+            .observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+                self.isFollowed = true
                 
-                USER_POSTS_REF
-                    .child(self.uid)
-                    .removeObserver(withHandle: self.usersPostRefHandle!)
+                if snapshot.value == nil || snapshot.value is NSNull {
+                    completion?()
+                    return
+                }
                 
-            }
+                if let postsDic = snapshot.value as? [String : Any] {
+                    for post in postsDic {
+                        let postId = post.key
+                        
+                        USER_FEED_REF.child(currentUid).updateChildValues([postId: 1])
+                    }
+                }
+                
+                completion?()
+            })
     }
     
-    func unfollow() {
+    func unfollow(completion: EmptyCallBack? = nil) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         guard let uid = uid else { return }
         
-        self.isFollowed = false
-        
         // remove followed user to current user-following structure
         USER_FOLLOWING_REF.child(currentUid).child(uid).removeValue()
-        
+
         // remove current user to followed user-follower structure
         USER_FOLLOWER_REF.child(uid).child(currentUid).removeValue()
         
         // remove unfollowed users posts from current user-feed
-        usersPostRefHandle = USER_POSTS_REF
+        USER_POSTS_REF
             .child(self.uid)
-            .observe(.childAdded) { (snapshot) in
-                let postId = snapshot.key
+            .observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                USER_FEED_REF.child(currentUid).child(postId).removeValue()
+                self.isFollowed = false
                 
-                USER_POSTS_REF
-                    .child(self.uid)
-                    .removeObserver(withHandle: self.usersPostRefHandle!)
-            }
+                if snapshot.value == nil || snapshot.value is NSNull {
+                    completion?()
+                    return
+                }
+                
+                if let postsDic = snapshot.value as? [String : Any] {
+                    for post in postsDic {
+                        let postId = post.key
+                        
+                        USER_FEED_REF.child(currentUid).child(postId).removeValue()
+                    }
+                }
+                
+                completion?()
+            })
     }
     
     func checkIfUserIsFollowed(completion: @escaping(Bool) ->()) {

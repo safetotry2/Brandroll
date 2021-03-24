@@ -16,6 +16,8 @@ class SearchProfileCell: UICollectionViewCell {
     
     weak var delegate: SearchProfileCellDelegate?
     
+    var indexPath: IndexPath?
+    
     var userAndFollowed: UserAndFollowedTuple? {
         didSet {
             guard let userAndFollowed = self.userAndFollowed,
@@ -93,7 +95,7 @@ class SearchProfileCell: UICollectionViewCell {
     // MARK: - Handlers
     
     @objc func handleFollowTapped() {
-        delegate?.handleFollowTapped(for: self)
+        delegate?.handleFollowTapped(for: self, indexPath: indexPath)
     }
     
     func layoutView() {
@@ -129,20 +131,8 @@ class SearchProfileCell: UICollectionViewCell {
 
     }
     
-    func configureFollowButton() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard let user = userAndFollowed?.user else { return }
-        
-        if currentUid == user.uid {
-            self.followButton.isHidden = true
-        } else {
-            user.checkIfUserIsFollowed { (followed) in
-                self.setFollowButton(followed)
-            }
-        }
-    }
-    
     private func setFollowButton(_ followed: Bool) {
+        print("INDEXPATH: \(self.indexPath!.item) Follow/Unfollow: 🔥 - setFollowButton to followed? \(followed)... | USER.isFollowed: \(String(describing: self.userAndFollowed?.user?.isFollowed))")
         if followed {
             self.followButton.setTitle("Following", for: .normal)
             self.followButton.setTitleColor(.black, for: .normal)

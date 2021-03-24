@@ -39,7 +39,7 @@ protocol NotitificationCellDelegate: class {
 }
 
 protocol SearchProfileCellDelegate: class {
-    func handleFollowTapped(for cell: SearchProfileCell)
+    func handleFollowTapped(for cell: SearchProfileCell, indexPath: IndexPath?)
 }
 
 protocol Printable {

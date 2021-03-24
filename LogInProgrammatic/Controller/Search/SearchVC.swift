@@ -145,6 +145,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             cell = SearchProfileCell()
         }
         
+        cell?.indexPath = indexPath
         cell?.delegate = self
         
         if inSearchMode {
@@ -162,17 +163,44 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         navigationController?.popViewController(animated: true)
     }
     
-    func handleFollowTapped(for cell: SearchProfileCell) {
-        guard let user = cell.userAndFollowed?.user else { return }
+    func handleFollowTapped(for cell: SearchProfileCell, indexPath: IndexPath?) {
+        guard let user = cell.userAndFollowed?.user,
+              let indexPath = indexPath  else {
+            return
+        }
+        
+        weak var weakSelf = self
+        
+        func reload() {
+            print("INDEXPATH: \(indexPath.item) Follow/Unfollow: 🔥 - Reloading Data... | USER.isFollowed: \(String(describing: user.isFollowed)) | self.user.isfollowed: \((String(describing: self.users[indexPath.item].user?.isFollowed)))")
+            UIView.setAnimationsEnabled(false)
+            weakSelf?.collectionView.reloadSections(IndexSet.init(integer: 0))
+            UIView.setAnimationsEnabled(true)
+        }
         
         if user.isFollowed {
             // handle unfollow user
-            user.unfollow()
+            print("INDEXPATH: \(indexPath.item) Follow/Unfollow: 🔥 - user is followed: unfollowing... | USER.isFollowed: \(String(describing: user.isFollowed)) | self.user.isfollowed: \((String(describing: self.users[indexPath.item].user?.isFollowed)))")
+            user.unfollow {
+                if weakSelf?.inSearchMode == true {
+                    weakSelf?.filteredUsers[indexPath.item].followed = false
+                } else {
+                    weakSelf?.users[indexPath.item].followed = false
+                }
+                reload()
+            }
         } else {
             // handle follow user
-            user.follow()
+            print("INDEXPATH: \(indexPath.item) Follow/Unfollow: 🔥 - user is NOT followed: following... | USER.isFollowed: \(String(describing: user.isFollowed)) | self.user.isfollowed: \((String(describing: self.users[indexPath.item].user?.isFollowed)))")
+            user.follow {
+                if weakSelf?.inSearchMode == true {
+                    weakSelf?.filteredUsers[indexPath.item].followed = true
+                } else {
+                    weakSelf?.users[indexPath.item].followed = true
+                }
+                reload()
+            }
         }
-        cell.configureFollowButton()
     }
     
     func configureSearchBar() {
