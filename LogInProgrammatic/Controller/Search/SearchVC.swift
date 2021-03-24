@@ -137,24 +137,17 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell: SearchProfileCell?
-        
-        cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as? SearchProfileCell
-        
-        if cell == nil {
-            cell = SearchProfileCell()
-        }
-        
-        cell?.indexPath = indexPath
-        cell?.delegate = self
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchProfileCell", for: indexPath) as! SearchProfileCell
+        cell.indexPath = indexPath
+        cell.delegate = self
         
         if inSearchMode {
-            cell?.userAndFollowed = filteredUsers[indexPath.item]
+            cell.userAndFollowed = filteredUsers[indexPath.item]
         } else {
-            cell?.userAndFollowed = users[indexPath.item]
+            cell.userAndFollowed = users[indexPath.item]
         }
         
-        return cell!
+        return cell
     }
     
     // MARK: - Handlers
@@ -220,7 +213,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         firstUserKeyFetched = nil
         fetchUsers()
         
+        UIView.setAnimationsEnabled(false)
         collectionView.reloadData()
+        UIView.setAnimationsEnabled(true)
     }
     
     private func clearSearchData() {
@@ -255,7 +250,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
             searchForUsers()
         }
         
+        UIView.setAnimationsEnabled(false)
         collectionView.reloadData()
+        UIView.setAnimationsEnabled(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -268,7 +265,10 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         collectionViewEnabled = true
         collectionView.isHidden = false
-        collectionView.reloadData()
+      
+        UIView.setAnimationsEnabled(false)
+        collectionView.reloadSections(IndexSet.init(integer: 0))
+        UIView.setAnimationsEnabled(true)
     }
     
     // MARK: - API

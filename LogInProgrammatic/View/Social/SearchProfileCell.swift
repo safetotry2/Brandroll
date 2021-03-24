@@ -83,8 +83,16 @@ class SearchProfileCell: UICollectionViewCell {
     
     // MARK: - Init
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        followButton.isHidden = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        followButton.isHidden = true
         layoutView()
     }
     
@@ -147,5 +155,7 @@ class SearchProfileCell: UICollectionViewCell {
             self.followButton.layer.borderWidth = 0
             self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
         }
+        
+        followButton.isHidden = false
     }
 }
