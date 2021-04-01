@@ -116,9 +116,26 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     // MARK: - Handlers
     
+    func handleProfileImageTapped(for cell: CommentCell) {
+        
+        guard let comment = cell.comment else { return }
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        userProfileVC.user = comment.user
+        userProfileVC.fromTabBar = false
+
+        navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+    }
+    
     func handleFullnameTapped(for cell: CommentCell) {
         
-        print("handle full name tapped")
         guard let comment = cell.comment else { return }
         
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())

@@ -33,11 +33,18 @@ class CommentCell: UICollectionViewCell {
         }
     }
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
+        
+        // add gesture recognizer to image
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        profileTap.numberOfTouchesRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        
         return iv
     }()
     
@@ -100,6 +107,10 @@ class CommentCell: UICollectionViewCell {
     }
     
     //MARK: - Handlers
+    
+    @objc func handleProfileImageTapped() {
+        delegate?.handleProfileImageTapped(for: self)
+    }
     
     @objc func handleFullnameTapped() {
         delegate?.handleFullnameTapped(for: self)

@@ -61,6 +61,7 @@ class ChatCell: UICollectionViewCell {
 //        return iv
 //    }()
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

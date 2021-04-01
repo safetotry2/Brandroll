@@ -112,10 +112,21 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - Handlers
     
-    @objc func handleInfoTapped() {
-        let userProfileController = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        userProfileController.user = user
-        navigationController?.pushViewController(userProfileController, animated: true)
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleFullnameTapped() {
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileVC.user = user
+        userProfileVC.fromTabBar = false
+        navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     @objc func handleKeyboardDidShow() {
@@ -161,14 +172,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func configureNavigationBar() {
         guard let user = self.user else { return }
         
-        navigationItem.title = user.name
+        let fullnameButton = UIButton(type: .custom)
+        fullnameButton.setTitle(user.name, for: .normal)
+        fullnameButton.setTitleColor(.black, for: .normal)
+        fullnameButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        fullnameButton.addTarget(self, action: #selector(handleFullnameTapped), for: .touchUpInside)
         
-        let infoButton = UIButton(type: .infoLight)
-        infoButton.tintColor = .black
-        infoButton.addTarget(self, action: #selector(handleInfoTapped), for: .touchUpInside)
-        
-        let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
-        navigationItem.rightBarButtonItem = infoBarButtonItem
+        navigationItem.titleView = fullnameButton
     }
 
     func uploadMessageNotification() {

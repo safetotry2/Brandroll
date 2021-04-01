@@ -30,6 +30,7 @@ protocol FeedCellDelegate: class {
 }
 
 protocol CommentCellDelegate: class {
+    func handleProfileImageTapped(for cell: CommentCell)
     func handleFullnameTapped(for cell: CommentCell)
 }
 
