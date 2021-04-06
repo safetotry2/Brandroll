@@ -30,15 +30,6 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         return containerView
     }()
     
-    // test
-    var layout: UICollectionViewFlowLayout = {
-        let layout = UICollectionViewFlowLayout()
-        let width = UIScreen.main.bounds.size.width
-        layout.estimatedItemSize = CGSize(width: width, height: 10)
-        return layout
-    }()
-    
-    
     // MARK: - Init
     
     override func viewDidLoad() {
@@ -52,9 +43,6 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 
         // register cell class
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        // configure layout
-        //collectionView.collectionViewLayout = layout
         
         // fetch comments
         fetchComments()
@@ -121,39 +109,40 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CommentCell
+        cell.delegate = self
         cell.comment = comments[indexPath.item]
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    // test
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        layout.estimatedItemSize = CGSize(width: view.bounds.size.width, height: 10)
-        super.traitCollectionDidChange(previousTraitCollection)
-    }
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        layout.estimatedItemSize = CGSize(width: view.bounds.size.width, height: 10)
-        layout.invalidateLayout()
-        super.viewWillTransition(to: size, with: coordinator)
-    }
-    
     // MARK: - Handlers
     
-    func handleFullnameTapped(for cell: CommentCell) {
+    func handleProfileImageTapped(for cell: CommentCell) {
+        
         guard let comment = cell.comment else { return }
         
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         userProfileVC.user = comment.user
         userProfileVC.fromTabBar = false
+
+        navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+    }
+    
+    func handleFullnameTapped(for cell: CommentCell) {
         
+        guard let comment = cell.comment else { return }
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        userProfileVC.user = comment.user
+        userProfileVC.fromTabBar = false
+
         navigationController?.pushViewController(userProfileVC, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "",
@@ -201,7 +190,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
-        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 40, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 40, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     

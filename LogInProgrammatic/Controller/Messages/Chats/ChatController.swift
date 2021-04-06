@@ -38,15 +38,20 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .white
+        
+        configureNavigationBar()
+        
         collectionView.backgroundColor = .white
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView?.keyboardDismissMode = .interactive
         
-        configureNavigationBar()
         configureKeyboardObservers()
-        
         observeMessages()
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
@@ -112,10 +117,21 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: - Handlers
     
-    @objc func handleInfoTapped() {
-        let userProfileController = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        userProfileController.user = user
-        navigationController?.pushViewController(userProfileController, animated: true)
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleFullnameTapped() {
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileVC.user = user
+        userProfileVC.fromTabBar = false
+        navigationController?.pushViewController(userProfileVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     @objc func handleKeyboardDidShow() {
@@ -161,14 +177,13 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func configureNavigationBar() {
         guard let user = self.user else { return }
         
-        navigationItem.title = user.name
+        let fullnameButton = UIButton(type: .custom)
+        fullnameButton.setTitle(user.name, for: .normal)
+        fullnameButton.setTitleColor(.black, for: .normal)
+        fullnameButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        fullnameButton.addTarget(self, action: #selector(handleFullnameTapped), for: .touchUpInside)
         
-        let infoButton = UIButton(type: .infoLight)
-        infoButton.tintColor = .black
-        infoButton.addTarget(self, action: #selector(handleInfoTapped), for: .touchUpInside)
-        
-        let infoBarButtonItem = UIBarButtonItem(customView: infoButton)
-        navigationItem.rightBarButtonItem = infoBarButtonItem
+        navigationItem.titleView = fullnameButton
     }
 
     func uploadMessageNotification() {

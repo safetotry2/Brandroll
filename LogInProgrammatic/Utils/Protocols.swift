@@ -10,7 +10,9 @@ import Foundation
 
 protocol UserProfileHeaderDelegate: class {
     
-    func handleEditFollowTapped(for header: UserProfileHeader)
+    func handleEditProfileTapped(for header: UserProfileHeader)
+    func handleFollowButtonTapped(for header: UserProfileHeader)
+    func handleMessageTapped(for header: UserProfileHeader)
     func setUserStats(for header: UserProfileHeader)
     func handleFollowersTapped(for header: UserProfileHeader)
     func handleFollowingTapped(for header: UserProfileHeader)
@@ -30,6 +32,7 @@ protocol FeedCellDelegate: class {
 }
 
 protocol CommentCellDelegate: class {
+    func handleProfileImageTapped(for cell: CommentCell)
     func handleFullnameTapped(for cell: CommentCell)
 }
 
