@@ -306,7 +306,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         
         group.notify(queue: .main) { [self] in
             UIView.setAnimationsEnabled(false)
-            collectionView?.reloadSections(IndexSet.init(integer: 0))
+            self.collectionView?.reloadSections(IndexSet.init(integer: 0))
             UIView.setAnimationsEnabled(true)
         }
     }
