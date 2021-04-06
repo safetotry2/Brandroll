@@ -40,12 +40,6 @@ class EditProfileController: UIViewController {
         return button
     }()
     
-    let separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }()
-    
     let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.textAlignment = .left
@@ -178,22 +172,20 @@ class EditProfileController: UIViewController {
         
         view.backgroundColor = .white
 
-        let frame = CGRect(x: 0, y: 88, width: view.frame.width, height: 150)
+        let frame = CGRect(x: 0, y: 66, width: view.frame.width, height: 150)
         let containerView = UIView(frame: frame)
-        containerView.backgroundColor = UIColor.systemGroupedBackground
+        containerView.backgroundColor = UIColor.white
+
         view.addSubview(containerView)
         
         containerView.addSubview(profileImageView)
-        profileImageView.anchor(top: containerView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
+        profileImageView.anchor(top: containerView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         profileImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        profileImageView.layer.cornerRadius = 80 / 2
+        profileImageView.layer.cornerRadius = 100 / 2
         
         containerView.addSubview(changePhotoButton)
         changePhotoButton.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         changePhotoButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        
-        containerView.addSubview(separatorView)
-        separatorView.anchor(top: nil, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         view.addSubview(fullnameLabel)
         fullnameLabel.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -224,6 +216,9 @@ class EditProfileController: UIViewController {
     }
     
     func configureNavigationBar() {
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .white
         
         navigationItem.title = "Edit Profile"
         

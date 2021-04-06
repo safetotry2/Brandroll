@@ -39,7 +39,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         tableView.showsVerticalScrollIndicator = false
         
         // clear separator lines
@@ -227,6 +227,10 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     private func configureNavigationBar() {
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"

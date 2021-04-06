@@ -33,6 +33,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func viewDidLoad() {
         super.viewDidLoad()
+                
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .white
+        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         self.collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
@@ -57,6 +62,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // fetch posts
         fetchPosts()
     }
+    
+    
     
     /**
      Remove the observers. Called by tabBarController.
@@ -90,13 +97,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width
-        var height = width + 8
-
-        // 50 is the height of the stackview (for the action buttons in FeedCell)
-        // 60 is merely an arbitrary number
-        height += 50
-        height += 60
-        
+        let height = width + 78
         return CGSize(width: width, height: height)
     }
     
@@ -135,8 +136,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 
         // set the user in header
         header.user = self.user
-        //navigationItem.title = user?.username
-        navigationItem.title = nil
+        navigationItem.title = user?.name
 
         // return header
         return header
@@ -177,27 +177,31 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         )
     }
     
-    func handleEditFollowTapped(for header: UserProfileHeader) {
+    func handleEditProfileTapped(for header: UserProfileHeader) {
+
+        let editProfileController = EditProfileController()
+        editProfileController.user = user
+        editProfileController.userProfileController = self
+        let navigationController = UINavigationController(rootViewController: editProfileController)
+        navigationController.modalPresentationStyle = .automatic
+
+        present(navigationController, animated: true, completion: nil)
+    }
+    
+    func handleFollowButtonTapped(for header: UserProfileHeader) {
         guard let user = header.user else { return }
 
-        if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
-            
-            let editProfileController = EditProfileController()
-            editProfileController.user = user
-            editProfileController.userProfileController = self
-            let navigationController = UINavigationController(rootViewController: editProfileController)
-            navigationController.modalPresentationStyle = .fullScreen
-            present(navigationController, animated: true, completion: nil)
-            
+        if header.followButton.titleLabel?.text == "Follow" {
+            header.followButton.setTitle("Following", for: .normal)
+            user.follow()
         } else {
-            if header.editProfileFollowButton.titleLabel?.text == "Follow" {
-                header.editProfileFollowButton.setTitle("Following", for: .normal)
-                user.follow()
-            } else {
-                header.editProfileFollowButton.setTitle("Follow", for: .normal)
-                user.unfollow()
-            }
+            header.followButton.setTitle("Follow", for: .normal)
+            user.unfollow()
         }
+    }
+    
+    func handleMessageTapped(for header: UserProfileHeader) {
+        print("Handle message tapped")
     }
     
     func setUserStats(for header: UserProfileHeader) {
@@ -216,8 +220,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                     numberOfFollowers = 0
                 }
                 
-                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowers!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
-                attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowers!)", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 16)])
+                attributedText.append(NSAttributedString(string: " Followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.black]))
                 
                 header.followersLabel.attributedText = attributedText
             }
@@ -232,8 +236,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                     numberOfFollowing = 0
                 }
                 
-                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 14)])
-                attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+                let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 16)])
+                attributedText.append(NSAttributedString(string: " Following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.black]))
                 
                 header.followingLabel.attributedText = attributedText
             }
@@ -385,8 +389,14 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         present(alertController, animated: true, completion: nil)
     }
     
-    func configureNavigationBar() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+    private func configureNavigationBar() {
+        //guard let user = self.user else { return }
+        //guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        //navigationItem.title = user?.name
+        //navigationController?.navigationBar.prefersLargeTitles = true
+
     }
     
     func configureRefreshControl() {

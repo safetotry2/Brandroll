@@ -332,10 +332,23 @@ extension UIViewController {
          let app = UIApplication.shared
          let statusBarHeight: CGFloat = app.statusBarFrame.size.height
          
+        //let height = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        
+        //let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        //let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
+            
+//            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+//            let statusBarFrame = window?.windowScene?.statusBarManager?.statusBarFrame
+//
+//            let statusBarView = UIView(frame: statusBarFrame!)
+//            self.view.addSubview(statusBarView)
+//            statusBarView.backgroundColor = .white
+            
+            
          let statusbarView = UIView()
          statusbarView.backgroundColor = UIColor.white
          view.addSubview(statusbarView)
-         
+
          statusbarView.translatesAutoresizingMaskIntoConstraints = false
          statusbarView.heightAnchor
          .constraint(equalToConstant: statusBarHeight).isActive = true
@@ -347,8 +360,8 @@ extension UIViewController {
          .constraint(equalTo: view.centerXAnchor).isActive = true
          
         } else {
-         let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
-         statusBar?.backgroundColor = UIColor.white
+            let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
+            statusBar?.backgroundColor = UIColor.white
         }
     }
 }

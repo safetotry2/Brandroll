@@ -38,15 +38,20 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .white
+        
+        configureNavigationBar()
+        
         collectionView.backgroundColor = .white
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 16, right: 0)
         collectionView?.alwaysBounceVertical = true
         collectionView.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView?.keyboardDismissMode = .interactive
         
-        configureNavigationBar()
         configureKeyboardObservers()
-        
         observeMessages()
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
