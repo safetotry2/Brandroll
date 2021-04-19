@@ -123,7 +123,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.layer.cornerRadius = 15
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.borderWidth = 0.5
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(handleFollowButtonTapped), for: .touchUpInside)
         return button
@@ -225,22 +225,9 @@ class UserProfileHeader: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [followButton, messageButton])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 20.0
+        stackView.spacing = 16.0
         addSubview(stackView)
         stackView.anchor(top: followersLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
-
-//        let stackView = UIStackView(arrangedSubviews: [followButton, messageButton])
-//        stackView.axis = .horizontal
-//        stackView.distribution = .fillEqually
-//        stackView.spacing = 20.0
-//        addSubview(stackView)
-//        stackView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
-//
-//        addSubview(followStackView)
-//        followStackView.anchor(top: stackView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
-//
-//        addSubview(editProfileButton)
-//        editProfileButton.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
         
         addSubview(editProfileButton)
         editProfileButton.anchor(top: followersLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)

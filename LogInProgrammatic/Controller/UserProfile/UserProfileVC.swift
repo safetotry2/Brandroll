@@ -21,6 +21,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var posts = [Post]()
     var currentKey: String?
     var fromTabBar = true
+    var messagesController: MessagesController?
     
     private var followingRefHandle: DatabaseHandle?
     private var followersRefHandle: DatabaseHandle?
@@ -201,7 +202,18 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func handleMessageTapped(for header: UserProfileHeader) {
-        print("Handle message tapped")
+        guard let user = header.user else { return }
+        
+        let chatController = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatController.user = user
+        
+        navigationController?.pushViewController(chatController, animated: true)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
     }
     
     func setUserStats(for header: UserProfileHeader) {
@@ -341,7 +353,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         followLikeVC.postID = postID
         navigationController?.pushViewController(followLikeVC, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(
-            title: "",
+            title: "Close",
             style: .plain,
             target: self,
             action: #selector(popToPrevious)
@@ -351,7 +363,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     // MARK: - Handlers
     
     @objc private func popToPrevious() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: false)
     }
     
     @objc func handleRefresh() {
