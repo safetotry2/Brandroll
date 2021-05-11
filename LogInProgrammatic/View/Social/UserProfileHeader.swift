@@ -18,6 +18,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     var user: User? {
         didSet {
+            
             // configure edit profile button
             configureEditProfileFollowButton()
             
@@ -26,8 +27,11 @@ class UserProfileHeader: UICollectionViewCell {
             
             let fullName = user?.name
             let occupation = user?.occupation
+            let bio = user?.bio
+            
             fullnameLabel.text = fullName
             occupationLabel.text = occupation
+            bioLabel.text = bio
 
             if let profileImageUrl = user?.profileImageUrl,
                let url = URL(string: profileImageUrl) {
@@ -48,7 +52,6 @@ class UserProfileHeader: UICollectionViewCell {
 
     let fullnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Clark Kent"
         label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
@@ -57,13 +60,19 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .darkGray
-        label.text = "Occupation"
+        return label
+    }()
+    
+    let bioLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = .black
+        label.numberOfLines = 4
         return label
     }()
 
     lazy var followersLabel: UILabel = {
         let label = UILabel()
-        //label.numberOfLines = 0
         label.textAlignment = .center
         
         let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 16)])
@@ -80,7 +89,6 @@ class UserProfileHeader: UICollectionViewCell {
 
     lazy var followingLabel: UILabel = {
         let label = UILabel()
-        //label.numberOfLines = 0
         label.textAlignment = .center
         
         let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 16)])
@@ -140,7 +148,6 @@ class UserProfileHeader: UICollectionViewCell {
         button.addTarget(self, action: #selector(handleMessageTapped), for: .touchUpInside)
         return button
     }()
-
     
     // MARK: - Handlers
     
@@ -208,16 +215,14 @@ class UserProfileHeader: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80/2
         
-        addSubview(fullnameLabel)
-        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(bioLabel)
+        bioLabel.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
         
-        addSubview(occupationLabel)
-        occupationLabel.anchor(top: fullnameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(followStackView)
         followStackView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
@@ -226,6 +231,7 @@ class UserProfileHeader: UICollectionViewCell {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 16.0
+        
         addSubview(stackView)
         stackView.anchor(top: followersLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
         

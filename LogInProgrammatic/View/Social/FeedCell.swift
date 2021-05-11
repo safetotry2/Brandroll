@@ -77,7 +77,6 @@ class FeedCell: UICollectionViewCell {
     
     lazy var fullnameButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Fullname", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.addTarget(self, action: #selector(handleFullnameTapped), for: .touchUpInside)
@@ -88,7 +87,6 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .darkGray
-        label.text = "Occupation"
         return label
     }()
     
@@ -128,7 +126,6 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .white
-        label.text = "3 likes"
         label.textAlignment = .right
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
@@ -144,7 +141,7 @@ class FeedCell: UICollectionViewCell {
     let captionLabel: UILabel = {
         let label = UILabel()
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .white
         return label
     }()
@@ -153,7 +150,6 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .lightGray
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.text = "2 DAYS AGO"
         return label
     }()
     
@@ -203,7 +199,7 @@ class FeedCell: UICollectionViewCell {
             left: postImageView.leftAnchor,
             bottom: nil,
             right: likeLabel.leftAnchor,
-            paddingTop: -24,
+            paddingTop: -28,
             paddingLeft: 8,
             paddingBottom: 0,
             paddingRight: 8,

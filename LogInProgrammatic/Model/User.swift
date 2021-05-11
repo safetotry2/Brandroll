@@ -13,6 +13,9 @@ class User {
     var username: String!
     var name: String!
     var occupation: String!
+    
+    var bio: String!
+    
     var profileImageUrl: String!
     var uid: String!
     var isFollowed = false
@@ -34,6 +37,12 @@ class User {
         if let occupation = dictionary["occupation"] as? String {
             self.occupation = occupation
         }
+        
+        
+        if let bio = dictionary["bio"] as? String {
+            self.bio = bio
+        }
+        
         
         if let profileImageUrl = dictionary["profileImageUrl"] as? String {
             self.profileImageUrl = profileImageUrl

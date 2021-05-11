@@ -13,7 +13,7 @@ import UIKit
 typealias ImageDataTuple = (data: Data, width: CGFloat, height: CGFloat)
 typealias UploadedPostImageTuple = (imageUrl: String, width: CGFloat, height: CGFloat, imagePosition: Int)
 
-class CreateTitleVC: BaseVC {
+class CreateTitleVC: BaseVC, UITextFieldDelegate {
     
     // MARK: - Properties
 
@@ -29,8 +29,7 @@ class CreateTitleVC: BaseVC {
     
     let textField: UITextField = {
         let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray,
-                                                                                    .font: UIFont.boldSystemFont(ofSize: 22.0)])
+        tf.attributedPlaceholder = NSAttributedString(string: "Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray, .font: UIFont.boldSystemFont(ofSize: 22.0)])
         tf.backgroundColor = UIColor.white.withAlphaComponent(0.0)
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.white.withAlphaComponent(0.8).cgColor
@@ -79,6 +78,7 @@ class CreateTitleVC: BaseVC {
         super.viewDidLoad()
         configureViewComponents()
         addOverlayBlurredBackgroundView()
+        textField.delegate = self
     }
     
     // MARK: - Handlers
@@ -127,6 +127,14 @@ class CreateTitleVC: BaseVC {
         blurView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0.0).isActive = true
         blurView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0.0).isActive = true
         blurView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0.0).isActive = true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 24
+        let currentString: NSString = (textField.text ?? "") as NSString
+        let newString: NSString =
+            currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= maxLength
     }
 }
 
@@ -281,6 +289,7 @@ extension CreateTitleVC {
 }
 
 extension UITextField {
+    
     func setLeftPaddingPoints(_ amount:CGFloat){
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
         self.leftView = paddingView

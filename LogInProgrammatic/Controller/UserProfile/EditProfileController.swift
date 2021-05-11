@@ -18,86 +18,93 @@ class EditProfileController: UIViewController {
     var imageChanged = false
     var fullnameChanged = false
     var occupationChanged = false
-    var usernameChanged = false
+    var bioChanged = false
     var userProfileController: UserProfileVC?
     var updatedFullname: String?
     var updatedOccupation: String?
-    var updatedUsername: String?
-    
-    let profileImageView: UIImageView = {
+    var updatedBio: String?
+        
+    lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
+        
+        // add gesture recognizer to image
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleChangeProfilePhoto))
+        profileTap.numberOfTouchesRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        
         return iv
     }()
     
     let changePhotoButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Change Profile Photo", for: .normal)
+        button.setTitle("Change Photo", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(handleChangeProfilePhoto), for: .touchUpInside)
         return button
     }()
     
-    let usernameTextField: UITextField = {
-        let tf = UITextField()
-        tf.textAlignment = .left
-        tf.borderStyle = .none
-        return tf
-    }()
-    
     let fullnameTextField: UITextField = {
         let tf = UITextField()
-        tf.textAlignment = .left
-        tf.borderStyle = .none
+        let borderColor = UIColor.lightGray
+        tf.textAlignment = .center
+        tf.layer.cornerRadius = 40 / 5
+        tf.layer.borderWidth = 0.5
+        tf.layer.borderColor = borderColor.cgColor
         return tf
     }()
     
     let occupationTextField: UITextField = {
         let tf = UITextField()
-        tf.textAlignment = .left
-        tf.borderStyle = .none
+        let borderColor = UIColor.lightGray
+        tf.textAlignment = .center
+        tf.layer.cornerRadius = 40 / 5
+        tf.layer.borderWidth = 0.5
+        tf.layer.borderColor = borderColor.cgColor
         return tf
+    }()
+    
+    let bioTextView: UITextView = {
+        let tv = UITextView()
+        let borderColor = UIColor.lightGray
+
+        tv.font = UIFont.systemFont(ofSize: 16)
+        tv.textAlignment = .left
+        tv.layer.cornerRadius = 8
+        tv.textContainer.maximumNumberOfLines = 6
+        tv.isScrollEnabled = false
+        let padding = tv.textContainer.lineFragmentPadding
+        tv.textContainerInset = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
+        tv.layer.borderColor = borderColor.cgColor
+        tv.layer.borderWidth = 0.5
+        return tv
     }()
     
     let fullnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Full Name"
+        label.text = "Name"
         label.font = UIFont.systemFont(ofSize: 16)
-        return label
-    }()
-    
-    let usernameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Username"
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .lightGray
         return label
     }()
     
     let occupationLabel: UILabel = {
         let label = UILabel()
-        label.text = "Occupation"
+        label.text = "Occupation/Industry"
         label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .lightGray
         return label
     }()
     
-    let fullnameSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }()
-    
-    let usernameSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }()
-    
-    let occupationSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
+    let bioLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Bio"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .lightGray
+        return label
     }()
     
     // MARK: - Init
@@ -106,14 +113,11 @@ class EditProfileController: UIViewController {
         super.viewDidLoad()
         
         configureNavigationBar()
-        
         configureViewComponents()
         
         fullnameTextField.delegate = self
-        
         occupationTextField.delegate = self
-        
-        usernameTextField.delegate = self
+        bioTextView.delegate = self
         
         loadUserData()
     }
@@ -143,9 +147,9 @@ class EditProfileController: UIViewController {
         if occupationChanged {
             updateOccupation()
         }
-        
-        if usernameChanged {
-            updateUsername()
+
+        if bioChanged {
+            updateBio()
         }
         
         if imageChanged {
@@ -165,7 +169,7 @@ class EditProfileController: UIViewController {
         
         fullnameTextField.text = user.name
         occupationTextField.text = user.occupation
-        usernameTextField.text = user.username
+        bioTextView.text = user.bio
     }
     
     func configureViewComponents() {
@@ -179,40 +183,33 @@ class EditProfileController: UIViewController {
         view.addSubview(containerView)
         
         containerView.addSubview(profileImageView)
-        profileImageView.anchor(top: containerView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        profileImageView.anchor(top: containerView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
         profileImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        profileImageView.layer.cornerRadius = 100 / 2
-        
-        containerView.addSubview(changePhotoButton)
-        changePhotoButton.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        changePhotoButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        profileImageView.layer.cornerRadius = 140 / 2
         
         view.addSubview(fullnameLabel)
-        fullnameLabel.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        view.addSubview(usernameLabel)
-        usernameLabel.anchor(top: fullnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        view.addSubview(occupationLabel)
-        occupationLabel.anchor(top: usernameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        fullnameLabel.anchor(top: containerView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        fullnameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(fullnameTextField)
-        fullnameTextField.anchor(top: containerView.bottomAnchor, left: fullnameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        fullnameTextField.anchor(top: fullnameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 1.2), height: 40)
+        fullnameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        view.addSubview(usernameTextField)
-        usernameTextField.anchor(top: fullnameTextField.bottomAnchor, left: usernameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        view.addSubview(occupationLabel)
+        occupationLabel.anchor(top: fullnameTextField.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        occupationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         view.addSubview(occupationTextField)
-        occupationTextField.anchor(top: usernameTextField.bottomAnchor, left: occupationLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        occupationTextField.anchor(top: occupationLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 1.2), height: 40)
+        occupationTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        view.addSubview(fullnameSeparatorView)
-        fullnameSeparatorView.anchor(top: nil, left: fullnameTextField.leftAnchor, bottom: fullnameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
+        view.addSubview(bioLabel)
+        bioLabel.anchor(top: occupationTextField.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        bioLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        view.addSubview(usernameSeparatorView)
-        usernameSeparatorView.anchor(top: nil, left: usernameTextField.leftAnchor, bottom: usernameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
-        
-        view.addSubview(occupationSeparatorView)
-        occupationSeparatorView.anchor(top: nil, left: occupationTextField.leftAnchor, bottom: occupationTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
+        view.addSubview(bioTextView)
+        bioTextView.anchor(top: bioLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 1.2), height: 140)
+        bioTextView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func configureNavigationBar() {
@@ -221,15 +218,20 @@ class EditProfileController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .white
         
         navigationItem.title = "Edit Profile"
-        
         navigationController?.navigationBar.tintColor = .black
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(handleDone))
-        
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                self.view.frame.origin.y = 0
+            }, completion: nil)
+        }
+    }
     
     // MARK: - API
     
@@ -261,20 +263,21 @@ class EditProfileController: UIViewController {
         }
     }
     
-    func updateUsername() {
-        guard let updatedUsername = self.updatedUsername else { return }
+    func updateBio() {
+        guard let updatedBio = self.updatedBio else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard usernameChanged == true else { return }
+        guard bioChanged == true else { return }
         
-        USER_REF.child(currentUid).child("username").setValue(updatedUsername) { (err, ref) in
+        USER_REF.child(currentUid).child("bio").setValue(updatedBio) { (err, ref) in
             
             guard let userProfileController = self.userProfileController else { return }
             userProfileController.fetchCurrentUserData()
             
             self.dismiss(animated: true, completion: nil)
         }
+        
     }
-    
+ 
     func updateProfileImage() {
         
         guard imageChanged == true else { return }
@@ -308,7 +311,6 @@ class EditProfileController: UIViewController {
             }
         }
     }
-
         
 }
 
@@ -328,14 +330,21 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
-extension EditProfileController: UITextFieldDelegate {
+extension EditProfileController: UITextFieldDelegate, UITextViewDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 23
+        let currentString: NSString = (textField.text ?? "") as NSString
+        let newString: NSString =
+            currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= maxLength
+    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         guard let user = self.user else { return }
         
         let fullnameTrimmedString = fullnameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let usernameTrimmedString = usernameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let occupationTrimmedString = occupationTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if user.name == fullnameTrimmedString {
@@ -351,31 +360,43 @@ extension EditProfileController: UITextFieldDelegate {
             occupationChanged = true
             updatedOccupation = occupationTrimmedString
         }
-        
-        if user.username == usernameTrimmedString {
-            usernameChanged = false
-        } else {
-            usernameChanged = true
-            updatedUsername = usernameTrimmedString?.lowercased()
-        }
-        
-//        guard user.name != fullnameTrimmedString else {
-//            print("ERROR: You did not change your full name")
-//            fullnameChanged = false
-//            return
-//        }
-//        guard user.username != usernameTrimmedString else {
-//            print("ERROR: You did not change your username")
-//            usernameChanged = false
-//            return
-//        }
-//
-//        updatedFullname = fullnameTrimmedString
-//        updatedUsername = usernameTrimmedString?.lowercased()
-//        fullnameChanged = true
-//        usernameChanged = true
     }
+    
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars <= 234
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+
+        if self.view.frame.origin.y == 0 {
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                self.view.frame.origin.y -= 120
+            }, completion: nil)
+        }
+    }
+    
+    func textViewDidEndEditing(_ textField: UITextView) {
+        
+        guard let user = self.user else { return }
+
+        let bioTrimmedString = bioTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if user.bio == bioTrimmedString {
+            bioChanged = false
+        } else {
+            bioChanged = true
+            updatedBio = bioTrimmedString
+        }
+    }
+    
 }
+
+
+
+
 
 
 
