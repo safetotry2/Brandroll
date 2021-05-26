@@ -26,6 +26,16 @@ class PreviewUploadVC: BaseVC {
     weak var delegate: ShowPickerDelegate?
     var cellDynamicHeights: [Int : CGFloat] = [:]
     
+    private lazy var closeButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "arrow"), for: .normal)
+        button.contentMode = .bottomLeft
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 8,left: 0,bottom: 0,right: 8)
+        button.addTarget(self, action: #selector(handleBackTapped), for: .touchUpInside)
+        return button
+    }()
+    
     deinit {
         print("PreviewUploadVC deallocated! ✅")
     }
@@ -75,7 +85,8 @@ class PreviewUploadVC: BaseVC {
     
     func setNavBarAndTableView() {
         if postImages != nil {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(handleBackTapped))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: closeButton)
+            
             navigationItem.rightBarButtonItem = nil
             self.navigationItem.title = nil
         } else {

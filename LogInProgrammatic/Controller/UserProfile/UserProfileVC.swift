@@ -26,11 +26,31 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     private var followingRefHandle: DatabaseHandle?
     private var followersRefHandle: DatabaseHandle?
     
+    private lazy var settingsButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "gear"), for: .normal)
+        button.contentMode = .center
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsets(top: 7,left: 7,bottom: 7,right: 7)
+        button.addTarget(self, action: #selector(handleShowSettings), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Init
 
     deinit {
         print("UserProfileVC deallocated! 🐶")
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        if fromTabBar {
+//            navigationController?.setNavigationBarHidden(true, animated: animated)
+//        } else {
+//            navigationController?.setNavigationBarHidden(false, animated: animated)
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +84,10 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         fetchPosts()
     }
     
-    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
+//    }
     
     /**
      Remove the observers. Called by tabBarController.
@@ -187,6 +210,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let navigationController = UINavigationController(rootViewController: editProfileController)
         navigationController.modalPresentationStyle = .automatic
 
+        present(navigationController, animated: true, completion: nil)
+    }
+    
+    func handleSettingsTapped(for header: UserProfileHeader) {
+        let settingsViewController = SettingsVC()
+        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        navigationController.modalPresentationStyle = .automatic
         present(navigationController, animated: true, completion: nil)
     }
     
@@ -374,6 +404,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         collectionView.reloadData()
     }
     
+    @objc func handleShowSettings() {
+        let settingsViewController = SettingsVC()
+        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        navigationController.modalPresentationStyle = .automatic
+        present(navigationController, animated: true, completion: nil)
+    }
+    
     @objc func handleLogout() {
         // declare alert controller
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -406,10 +443,28 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         //guard let user = self.user else { return }
         //guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        
         //navigationItem.title = user?.name
         //navigationController?.navigationBar.prefersLargeTitles = true
+        
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton)
 
+        //let actionBarWidth = self.navigationController?.navigationBar.frame.width as! CGFloat
+        //let actionBarHeight = self.navigationController?.navigationBar.frame.height as! CGFloat
+
+        //let actionBarView = UIView()
+        //actionBarView.frame = CGRect (x: 0, y: 0, width: actionBarWidth, height: actionBarHeight)
+
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        //navigationItem.largeTitleDisplayMode = .never
+
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        
     }
     
     func configureRefreshControl() {

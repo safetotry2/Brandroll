@@ -26,6 +26,8 @@ class SearchProfileCell: UICollectionViewCell {
                let url = URL(string: profileImageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
+            } else if user.profileImageUrl == nil {
+                profileImageView.image = #imageLiteral(resourceName: "circle")
             }
             
             if let fullname = user.name {
@@ -53,15 +55,16 @@ class SearchProfileCell: UICollectionViewCell {
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
         return iv
     }()
     
     let fullnameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 11)
+        label.textAlignment = .center
         return label
     }()
     
@@ -69,6 +72,7 @@ class SearchProfileCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 10)
         label.textColor = .darkGray
+        label.textAlignment = .center
         return label
     }()
     
@@ -126,11 +130,11 @@ class SearchProfileCell: UICollectionViewCell {
         profileImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         
         containerView.addSubview(fullnameLabel)
-        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        fullnameLabel.anchor(top: profileImageView.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
         fullnameLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         
         containerView.addSubview(occupationLabel)
-        occupationLabel.anchor(top: fullnameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        occupationLabel.anchor(top: fullnameLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 2, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
         occupationLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
         
         containerView.addSubview(followButton)

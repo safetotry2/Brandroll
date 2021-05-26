@@ -12,6 +12,9 @@
 		040446952579872C0029F738 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040446942579872C0029F738 /* Comment.swift */; };
 		04044697257A9A450029F738 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044696257A9A450029F738 /* NotificationCell.swift */; };
 		04044699257DA1B20029F738 /* AppNotif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04044698257DA1B10029F738 /* AppNotif.swift */; };
+		0420B02E2651A02A00938944 /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420B02D2651A02A00938944 /* WelcomeVC.swift */; };
+		0420B0302652C11C00938944 /* SelectPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420B02F2652C11C00938944 /* SelectPhotoVC.swift */; };
+		0420B0322653133900938944 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420B0312653133900938944 /* SettingsVC.swift */; };
 		0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0433327E25378C6C00C26BB6 /* Protocols.swift */; };
 		04333281253B499900C26BB6 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333280253B499900C26BB6 /* FollowLikeVC.swift */; };
 		04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04333282253B4AB800C26BB6 /* FollowLikeCell.swift */; };
@@ -72,6 +75,9 @@
 		040446942579872C0029F738 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		04044696257A9A450029F738 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		04044698257DA1B10029F738 /* AppNotif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotif.swift; sourceTree = "<group>"; };
+		0420B02D2651A02A00938944 /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
+		0420B02F2652C11C00938944 /* SelectPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoVC.swift; sourceTree = "<group>"; };
+		0420B0312653133900938944 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		0433327E25378C6C00C26BB6 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		04333280253B499900C26BB6 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
 		04333282253B4AB800C26BB6 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
@@ -291,6 +297,7 @@
 				045C64D6250FCF60002E8E1C /* UserProfileVC.swift */,
 				04333280253B499900C26BB6 /* FollowLikeVC.swift */,
 				043D3666259802290094CE4F /* EditProfileController.swift */,
+				0420B0312653133900938944 /* SettingsVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -412,8 +419,10 @@
 		45A6E19225E11BED00D79385 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				0420B02D2651A02A00938944 /* WelcomeVC.swift */,
 				045C64C325084D2C002E8E1C /* LoginVC.swift */,
 				045C64C82509C25C002E8E1C /* SignUpVC.swift */,
+				0420B02F2652C11C00938944 /* SelectPhotoVC.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -563,6 +572,7 @@
 				04FA75692581430200814F9E /* MessageCell.swift in Sources */,
 				045C64D7250FCF60002E8E1C /* UserProfileVC.swift in Sources */,
 				45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */,
+				0420B0322653133900938944 /* SettingsVC.swift in Sources */,
 				45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */,
 				456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */,
 				045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */,
@@ -601,8 +611,10 @@
 				454596782605B1520088D3A7 /* BaseNavCon.swift in Sources */,
 				043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */,
 				04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */,
+				0420B02E2651A02A00938944 /* WelcomeVC.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
+				0420B0302652C11C00938944 /* SelectPhotoVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

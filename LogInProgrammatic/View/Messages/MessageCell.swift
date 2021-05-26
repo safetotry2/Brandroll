@@ -37,8 +37,8 @@ class MessageCell: UITableViewCell {
                let url = URL(string: profileImageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
-            } else {
-                profileImageView.image = nil
+            } else if message?.user?.profileImageUrl == nil {
+                profileImageView.image = #imageLiteral(resourceName: "circle")
             }
             
             nameLabel.text = message?.user?.name ?? ""
@@ -47,9 +47,9 @@ class MessageCell: UITableViewCell {
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
         return iv
     }()
     

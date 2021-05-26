@@ -29,6 +29,8 @@ class NotificationCell: UITableViewCell {
                let url = URL(string: imageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
+            } else if user.profileImageUrl == nil {
+                profileImageView.image = #imageLiteral(resourceName: "circle")
             }
             
             if let imageUrl = notification?.post?.imageUrl {
@@ -45,10 +47,9 @@ class NotificationCell: UITableViewCell {
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
-        iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
     

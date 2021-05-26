@@ -26,9 +26,10 @@ class EditProfileController: UIViewController {
         
     lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
+        //iv.backgroundColor = .lightGray
         
         // add gesture recognizer to image
         let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleChangeProfilePhoto))
@@ -37,14 +38,6 @@ class EditProfileController: UIViewController {
         iv.addGestureRecognizer(profileTap)
         
         return iv
-    }()
-    
-    let changePhotoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Change Photo", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(handleChangeProfilePhoto), for: .touchUpInside)
-        return button
     }()
     
     let fullnameTextField: UITextField = {
@@ -85,7 +78,7 @@ class EditProfileController: UIViewController {
     
     let fullnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Name"
+        label.text = "Business Name"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
         return label
@@ -333,11 +326,20 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
 extension EditProfileController: UITextFieldDelegate, UITextViewDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength = 23
-        let currentString: NSString = (textField.text ?? "") as NSString
-        let newString: NSString =
-            currentString.replacingCharacters(in: range, with: string) as NSString
-        return newString.length <= maxLength
+//        let maxLength = 36
+//        let currentString: NSString = (textField.text ?? "") as NSString
+//        let newString: NSString =
+//            currentString.replacingCharacters(in: range, with: string) as NSString
+//        return newString.length <= maxLength
+        
+        if textField == fullnameTextField || textField == occupationTextField {
+            let maxLength = 36
+            let currentString: NSString = (textField.text ?? "") as NSString
+            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
+            return newString.length <= maxLength
+        }
+        // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
+        return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

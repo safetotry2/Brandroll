@@ -11,6 +11,7 @@ import Foundation
 protocol UserProfileHeaderDelegate: class {
     
     func handleEditProfileTapped(for header: UserProfileHeader)
+    func handleSettingsTapped(for header: UserProfileHeader)
     func handleFollowButtonTapped(for header: UserProfileHeader)
     func handleMessageTapped(for header: UserProfileHeader)
     func setUserStats(for header: UserProfileHeader)

@@ -24,6 +24,8 @@ class CommentCell: UICollectionViewCell {
                    let url = URL(string: imageUrl) {
                     let resource = ImageResource(downloadURL: url)
                     self.profileImageView.kf.setImage(with: resource)
+                } else if owner.profileImageUrl == nil {
+                    profileImageView.image = #imageLiteral(resourceName: "circle")
                 }
                 
                 self.fullnameButton.setTitle(owner.name ?? "", for: .normal)
@@ -35,9 +37,9 @@ class CommentCell: UICollectionViewCell {
     
     lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .lightGray
         
         // add gesture recognizer to image
         let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
