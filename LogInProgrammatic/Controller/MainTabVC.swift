@@ -338,6 +338,8 @@ extension MainTabVC: ShowPickerDelegate {
         pickerController.UIDelegate = uiDelegate
         pickerController.modalPresentationStyle = .fullScreen
         pickerController.navigationBar.tintColor = UIColor.black
+        pickerController.navigationBar.barTintColor = UIColor.white
+        pickerController.view.backgroundColor = .white
         
         present(pickerController, animated: true, completion: nil)
         
