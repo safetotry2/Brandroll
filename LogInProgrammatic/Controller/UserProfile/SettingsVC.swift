@@ -18,7 +18,7 @@ class SettingsVC: UIViewController {
         button.setTitle("Log out", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.setTitleColor(.black, for: .normal)
-        //button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
         return button
     }()
     
@@ -61,22 +61,7 @@ class SettingsVC: UIViewController {
         
         // add alert logout action
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
-            
-                do {
-                    // handle logout from tabController
-                    if let tabBarController = self.tabBarController as? MainTabVC {
-                        tabBarController.logout()
-                    }
-                    
-                    // attempt sign out
-                    try Auth.auth().signOut()
-                    print("Successfully logged out user")
-                    
-                } catch {
-                    // handle error
-                    print("Failed to sign out")
-                }
-            
+            self.proceedLogout()
         }))
         
         // add cancel action
@@ -85,7 +70,20 @@ class SettingsVC: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-
-
-
+    private func proceedLogout() {
+        do {
+            // attempt sign out
+            try Auth.auth().signOut()
+            print("Successfully logged out user")
+            
+            guard let tabBarController = presentingViewController as? MainTabVC else { return }
+            self.dismiss(animated: true) {
+                tabBarController.logout()
+            }
+        } catch {
+            // handle error
+            print("Failed to sign out")
+            alert(title: "Error \(error.localizedDescription)", okayButtonTitle: "OK", withBlock: nil)
+        }
+    }
 }
