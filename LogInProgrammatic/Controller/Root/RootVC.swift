@@ -76,11 +76,11 @@ class RootVC: BaseVC {
     // MARK: - Flow
     
     private func startAuthFlow() {
-        let loginVC = LoginVC()
+        let welcomeVC = WelcomeVC()
         
-        currentlyPresentedFlow = loginVC
+        currentlyPresentedFlow = welcomeVC
         
-        let navController = UINavigationController(rootViewController: loginVC)
+        let navController = UINavigationController(rootViewController: welcomeVC)
         navController.modalPresentationStyle = .fullScreen
         navController.modalTransitionStyle = .crossDissolve
         present(navController, animated: true, completion: nil)
