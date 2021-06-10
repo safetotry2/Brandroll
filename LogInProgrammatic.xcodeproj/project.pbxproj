@@ -63,6 +63,17 @@
 		454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596D42606681C0088D3A7 /* SearchUtils.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
+		4577B95F26716847008E261C /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B95E26716847008E261C /* TextField.swift */; };
+		4577B96F2671E70E008E261C /* VerticalAlignmentTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9612671E70E008E261C /* VerticalAlignmentTextLayer.swift */; };
+		4577B9702671E70E008E261C /* UIAnimatableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9622671E70E008E261C /* UIAnimatableLabel.swift */; };
+		4577B9712671E70E008E261C /* UnderLineTextFieldFocusStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9642671E70E008E261C /* UnderLineTextFieldFocusStatus.swift */; };
+		4577B9722671E70E008E261C /* UnderLineTextFieldStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9652671E70E008E261C /* UnderLineTextFieldStatus.swift */; };
+		4577B9732671E70E008E261C /* UnderLineTextFieldErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9662671E70E008E261C /* UnderLineTextFieldErrors.swift */; };
+		4577B9742671E70E008E261C /* UnderLineTextFieldContentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9672671E70E008E261C /* UnderLineTextFieldContentStatus.swift */; };
+		4577B9752671E70E008E261C /* UnderLineTextFieldValidateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B9682671E70E008E261C /* UnderLineTextFieldValidateType.swift */; };
+		4577B9762671E70E008E261C /* Extera.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4577B96A2671E70E008E261C /* Extera.xcassets */; };
+		4577B9772671E70E008E261C /* UnderLineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B96C2671E70E008E261C /* UnderLineTextField.swift */; };
+		4577B9782671E70E008E261C /* UnderLineTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B96E2671E70E008E261C /* UnderLineTextFieldDelegate.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
@@ -129,6 +140,18 @@
 		454596D42606681C0088D3A7 /* SearchUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtils.swift; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
+		4577B95E26716847008E261C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		4577B9612671E70E008E261C /* VerticalAlignmentTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalAlignmentTextLayer.swift; sourceTree = "<group>"; };
+		4577B9622671E70E008E261C /* UIAnimatableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAnimatableLabel.swift; sourceTree = "<group>"; };
+		4577B9642671E70E008E261C /* UnderLineTextFieldFocusStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldFocusStatus.swift; sourceTree = "<group>"; };
+		4577B9652671E70E008E261C /* UnderLineTextFieldStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldStatus.swift; sourceTree = "<group>"; };
+		4577B9662671E70E008E261C /* UnderLineTextFieldErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldErrors.swift; sourceTree = "<group>"; };
+		4577B9672671E70E008E261C /* UnderLineTextFieldContentStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldContentStatus.swift; sourceTree = "<group>"; };
+		4577B9682671E70E008E261C /* UnderLineTextFieldValidateType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldValidateType.swift; sourceTree = "<group>"; };
+		4577B96A2671E70E008E261C /* Extera.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Extera.xcassets; sourceTree = "<group>"; };
+		4577B96B2671E70E008E261C /* UnderLineTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnderLineTextField.h; sourceTree = "<group>"; };
+		4577B96C2671E70E008E261C /* UnderLineTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextField.swift; sourceTree = "<group>"; };
+		4577B96E2671E70E008E261C /* UnderLineTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnderLineTextFieldDelegate.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
@@ -219,8 +242,10 @@
 		045C64C125084CC5002E8E1C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4577B9602671E70E008E261C /* UnderLineTextField */,
 				04AE656B258BDA6800BDB4EE /* Social */,
 				04FA75672581429800814F9E /* Messages */,
+				4577B95E26716847008E261C /* TextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -359,6 +384,48 @@
 			isa = PBXGroup;
 			children = (
 				454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		4577B9602671E70E008E261C /* UnderLineTextField */ = {
+			isa = PBXGroup;
+			children = (
+				4577B9612671E70E008E261C /* VerticalAlignmentTextLayer.swift */,
+				4577B9622671E70E008E261C /* UIAnimatableLabel.swift */,
+				4577B9632671E70E008E261C /* Structs and Enums */,
+				4577B9692671E70E008E261C /* Supporting Files */,
+				4577B96C2671E70E008E261C /* UnderLineTextField.swift */,
+				4577B96D2671E70E008E261C /* Protocols */,
+			);
+			path = UnderLineTextField;
+			sourceTree = "<group>";
+		};
+		4577B9632671E70E008E261C /* Structs and Enums */ = {
+			isa = PBXGroup;
+			children = (
+				4577B9642671E70E008E261C /* UnderLineTextFieldFocusStatus.swift */,
+				4577B9652671E70E008E261C /* UnderLineTextFieldStatus.swift */,
+				4577B9662671E70E008E261C /* UnderLineTextFieldErrors.swift */,
+				4577B9672671E70E008E261C /* UnderLineTextFieldContentStatus.swift */,
+				4577B9682671E70E008E261C /* UnderLineTextFieldValidateType.swift */,
+			);
+			path = "Structs and Enums";
+			sourceTree = "<group>";
+		};
+		4577B9692671E70E008E261C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4577B96A2671E70E008E261C /* Extera.xcassets */,
+				4577B96B2671E70E008E261C /* UnderLineTextField.h */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4577B96D2671E70E008E261C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4577B96E2671E70E008E261C /* UnderLineTextFieldDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -504,6 +571,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4577B9762671E70E008E261C /* Extera.xcassets in Resources */,
 				045C64B9250844EF002E8E1C /* LaunchScreen.storyboard in Resources */,
 				045C64B6250844EF002E8E1C /* Assets.xcassets in Resources */,
 				045C64CB250ABDFF002E8E1C /* GoogleService-Info.plist in Resources */,
@@ -559,14 +627,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4577B9782671E70E008E261C /* UnderLineTextFieldDelegate.swift in Sources */,
 				045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */,
 				04FA75712583BB5100814F9E /* ChatController.swift in Sources */,
 				04FA75732583BC4500814F9E /* ChatCell.swift in Sources */,
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
+				4577B9702671E70E008E261C /* UIAnimatableLabel.swift in Sources */,
 				453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */,
 				454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */,
 				045C64D5250FCF35002E8E1C /* NotificationsVC.swift in Sources */,
+				4577B9712671E70E008E261C /* UnderLineTextFieldFocusStatus.swift in Sources */,
 				043D3667259802290094CE4F /* EditProfileController.swift in Sources */,
 				045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */,
 				04FA75692581430200814F9E /* MessageCell.swift in Sources */,
@@ -579,16 +650,20 @@
 				045C64E2251C2D99002E8E1C /* User.swift in Sources */,
 				045C64CF250FCED4002E8E1C /* FeedVC.swift in Sources */,
 				045C64CD250E9C6F002E8E1C /* MainTabVC.swift in Sources */,
+				4577B9772671E70E008E261C /* UnderLineTextField.swift in Sources */,
 				04044691257869920029F738 /* CommentVC.swift in Sources */,
 				045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */,
+				4577B9722671E70E008E261C /* UnderLineTextFieldStatus.swift in Sources */,
 				04FA756625813C2D00814F9E /* MessagesController.swift in Sources */,
 				043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */,
 				0404469325786C250029F738 /* CommentCell.swift in Sources */,
 				045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */,
+				4577B96F2671E70E008E261C /* VerticalAlignmentTextLayer.swift in Sources */,
 				043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */,
 				0433328D2544A9C700C26BB6 /* UserPostCell.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				04FA756F258295D700814F9E /* Message.swift in Sources */,
+				4577B95F26716847008E261C /* TextField.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
 				0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */,
 				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
@@ -602,14 +677,17 @@
 				454596722605AE9B0088D3A7 /* StatusBarToggleable.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				453EA7E525EE579300051ADC /* CreateTitleVC.swift in Sources */,
+				4577B9742671E70E008E261C /* UnderLineTextFieldContentStatus.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
 				04044699257DA1B20029F738 /* AppNotif.swift in Sources */,
 				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
 				453EA7E225EE570E00051ADC /* CustomUIDelegate.swift in Sources */,
 				04333283253B4AB900C26BB6 /* FollowLikeCell.swift in Sources */,
+				4577B9732671E70E008E261C /* UnderLineTextFieldErrors.swift in Sources */,
 				043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */,
 				454596782605B1520088D3A7 /* BaseNavCon.swift in Sources */,
 				043D366A2599927A0094CE4F /* CommentInputAccessoryView.swift in Sources */,
+				4577B9752671E70E008E261C /* UnderLineTextFieldValidateType.swift in Sources */,
 				04FA756D2581610B00814F9E /* NewMessageCell.swift in Sources */,
 				0420B02E2651A02A00938944 /* WelcomeVC.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,

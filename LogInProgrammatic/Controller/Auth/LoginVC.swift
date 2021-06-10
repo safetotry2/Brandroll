@@ -42,12 +42,11 @@ class LoginVC: UIViewController {
         return view
     }()
     
-    let emailTextField: UITextField = {
-        let tf = UITextField()
+    let emailTextField: TextField = {
+        let tf = TextField(errorMessage: "This field is required.")
         tf.placeholder = "Email address"
-        //tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
+        tf.backgroundColor = .blue
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.setLeftPaddingPoints(7)
         tf.autocapitalizationType = .none
@@ -209,7 +208,7 @@ class LoginVC: UIViewController {
         stackView.distribution = .fillEqually
         
         view.addSubview(stackView)
-        stackView.anchor(top: logoContainerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 180)
+        stackView.anchor(top: logoContainerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 240)
         
 //        view.addSubview(forgotPasswordButton)
 //        forgotPasswordButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
