@@ -6,21 +6,13 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import SnapKit
+import UIKit
 
 class LoginVC: UIViewController {
-
-    // MARK: - Properties
     
-//    let selectPhotoButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Select Photo VC", for: .normal)
-//        button.setTitleColor(.gray, for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
-//        return button
-//    }()
+    // MARK: - Properties
     
     let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
     
@@ -42,16 +34,18 @@ class LoginVC: UIViewController {
         return view
     }()
     
-    let emailTextField: TextField = {
-        let tf = TextField(errorMessage: "This field is required.")
+    let emailTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Email address"
-        tf.backgroundColor = .blue
         tf.backgroundColor = .white
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.keyboardType = .emailAddress
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        
         tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
@@ -79,25 +73,6 @@ class LoginVC: UIViewController {
         button.isEnabled = false
         return button
     }()
-    
-//    let forgotPasswordButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let attributedTitle = NSMutableAttributedString(string: "Forgot your password?", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray])
-//        button.setAttributedTitle(attributedTitle, for: .normal)
-//        button.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
-//        return button
-//    }()
-    
-//    let donthaveaccountButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let attributedTitle = NSMutableAttributedString(string: "Don't have an account?  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-//        attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)]))
-//        button.setAttributedTitle(attributedTitle, for: .normal)
-//
-//        button.addTarget(self, action: #selector(handleShowSignup), for: .touchUpInside)
-//
-//        return button
-//    }()
     
     // MARK: Overrides
     
@@ -129,35 +104,13 @@ class LoginVC: UIViewController {
         )
         
         configureViewComponents()
-        
-//        view.addSubview(donthaveaccountButton)
-//        donthaveaccountButton.anchor(
-//            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 0, height: 50
-//        )
-        
     }
     
     // MARK: - Functions
     
-//    @objc func handleSelectPhoto() {
-//        let selectPhoto = SelectPhotoVC()
-//        navigationController?.pushViewController(selectPhoto, animated: true)
-//    }
-    
-//    @objc func handleShowSignup() {
-//        let signUpVC = SignUpVC()
-//        navigationController?.pushViewController(signUpVC, animated: true)
-//    }
-    
-//    @objc func handleForgotPassword() {
-//        print("Handle Forgot Password")
-//    }
-    
     @objc func handlelogin() {
         guard let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
+              let password = passwordTextField.text else { return }
         
         // sign user in with email and password
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
@@ -186,15 +139,18 @@ class LoginVC: UIViewController {
     @objc func formValidation() {
         // ensures that email and password text fields have text
         guard
-        emailTextField.hasText,
-        passwordTextField.hasText
-            else {
-                // handle cases for above conditions not met
-                loginButton.isEnabled = false
-                loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-                loginButton.setTitleColor(.gray, for: .normal)
-                return
-            }
+            emailTextField.hasText,
+            passwordTextField.hasText
+        else {
+            // handle cases for above conditions not met
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            loginButton.setTitleColor(.gray, for: .normal)
+            return
+        }
+        
+        emailTextField.showError(message: "This field is required.")
+        
         // handle cases for conditions were met
         loginButton.isEnabled = true
         loginButton.backgroundColor = .black
@@ -202,25 +158,27 @@ class LoginVC: UIViewController {
     }
     
     func configureViewComponents() {
-        let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
+        view.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints {
+            $0.top.equalTo(logoContainerView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        view.addSubview(stackView)
-        stackView.anchor(top: logoContainerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 240)
+        view.addSubview(passwordTextField)
+        passwordTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(16)
+        }
         
-//        view.addSubview(forgotPasswordButton)
-//        forgotPasswordButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//        forgotPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//
-//        view.addSubview(selectPhotoButton)
-//        selectPhotoButton.anchor(top: forgotPasswordButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//        selectPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        view.addSubview(loginButton)
+        loginButton.snp.makeConstraints {
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
-
+    
 }
