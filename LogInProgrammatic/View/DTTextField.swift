@@ -17,6 +17,7 @@ public extension String {
 }
 
 public class DTTextField: UITextField {
+    public var hasEdited: Bool = false
     
     public enum FloatingDisplayStatus{
         case always
@@ -34,6 +35,22 @@ public class DTTextField: UITextField {
         case right
     }
     
+    public var hasValidValue: Bool {
+        let text = self.text ?? ""
+        let whitespaceSet = CharacterSet.whitespaces
+        
+        if text == "" || text == " " {
+            return false
+        }
+        
+        if text.trimmingCharacters(in: whitespaceSet).isEmpty
+            || text.trimmingCharacters(in: whitespaceSet).isEmpty {
+            return false
+        }
+        
+        return true
+    }
+ 
     fileprivate var lblFloatPlaceholder:UILabel             = UILabel()
     fileprivate var lblError:UILabel                        = UILabel()
     

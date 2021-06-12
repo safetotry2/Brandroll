@@ -34,7 +34,7 @@ class LoginVC: UIViewController {
         return view
     }()
     
-    let emailTextField: DTTextField = {
+    lazy var emailTextField: DTTextField = {
         let tf = DTTextField()
         tf.placeholder = "Email address"
         tf.backgroundColor = .white
@@ -46,20 +46,31 @@ class LoginVC: UIViewController {
         tf.floatingDisplayStatus = .never
         tf.dtborderStyle = .rounded
         
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let passwordTextField: UITextField = {
-        let tf = UITextField()
+    lazy var passwordTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
+    }()
+    
+    lazy var textFields: [DTTextField] = {
+        return [emailTextField, passwordTextField]
     }()
     
     let loginButton: UIButton = {
@@ -136,27 +147,6 @@ class LoginVC: UIViewController {
         }
     }
     
-    @objc func formValidation() {
-        // ensures that email and password text fields have text
-        guard
-            emailTextField.hasText,
-            passwordTextField.hasText
-        else {
-            // handle cases for above conditions not met
-            loginButton.isEnabled = false
-            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            loginButton.setTitleColor(.gray, for: .normal)
-            return
-        }
-        
-        emailTextField.showError(message: "This field is required.")
-        
-        // handle cases for conditions were met
-        loginButton.isEnabled = true
-        loginButton.backgroundColor = .black
-        loginButton.setTitleColor(.white, for: .normal)
-    }
-    
     func configureViewComponents() {
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints {
@@ -172,6 +162,7 @@ class LoginVC: UIViewController {
         
         view.addSubview(loginButton)
         loginButton.snp.makeConstraints {
+            $0.height.equalTo(50)
             $0.leading.trailing.equalTo(emailTextField)
             $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
         }
@@ -180,5 +171,76 @@ class LoginVC: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension LoginVC: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
     
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
+            dtTxtField.showError(message: "This field is required.")
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited {
+            dtTxtField.showError(message: "This field is required.")
+        }
+        
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        dtTxtField.hasEdited = true
+        
+        return true
+    }
+    
+    
+    @objc func formValidation(_ textField: DTTextField) {
+        checkContents()
+        
+        if textField.hasEdited {
+            if !textField.hasText {
+                textField.showError(message: "This field is required.")
+            }
+        }
+    }
+    
+    private func checkContents() {
+        // ensures that email and password text fields have text
+        guard
+            emailTextField.hasText,
+            passwordTextField.hasText
+        else {
+            // handle cases for above conditions not met
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            loginButton.setTitleColor(.gray, for: .normal)
+            return
+        }
+            
+        // handle cases for conditions were met
+        loginButton.isEnabled = true
+        loginButton.backgroundColor = .black
+        loginButton.setTitleColor(.white, for: .normal)
+    }
 }

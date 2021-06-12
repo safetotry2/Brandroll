@@ -63,7 +63,7 @@
 		454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596D42606681C0088D3A7 /* SearchUtils.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
-		4577B95F26716847008E261C /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B95E26716847008E261C /* TextField.swift */; };
+		4577B95F26716847008E261C /* DTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B95E26716847008E261C /* DTTextField.swift */; };
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
@@ -130,7 +130,7 @@
 		454596D42606681C0088D3A7 /* SearchUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtils.swift; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
-		4577B95E26716847008E261C /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		4577B95E26716847008E261C /* DTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTTextField.swift; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 			children = (
 				04AE656B258BDA6800BDB4EE /* Social */,
 				04FA75672581429800814F9E /* Messages */,
-				4577B95E26716847008E261C /* TextField.swift */,
+				4577B95E26716847008E261C /* DTTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -592,7 +592,7 @@
 				0433328D2544A9C700C26BB6 /* UserPostCell.swift in Sources */,
 				045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */,
 				04FA756F258295D700814F9E /* Message.swift in Sources */,
-				4577B95F26716847008E261C /* TextField.swift in Sources */,
+				4577B95F26716847008E261C /* DTTextField.swift in Sources */,
 				043332892540FE2D00C26BB6 /* SelectPhotoHeader.swift in Sources */,
 				0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */,
 				04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */,
