@@ -38,12 +38,17 @@ class Toast: UIView {
         }
     }
     
-    func showAndAttachTo(upperReferenceView v: UIView) {
+    func showAndAttachTo(upperReferenceView v: UIView, shouldUseSuperViewLeadingTrailing: Bool = false) {
         v.superview?.addSubview(self)
         
         self.snp.makeConstraints {
             $0.top.equalTo(v.snp.bottom)
-            $0.leading.trailing.equalTo(v)
+            
+            if shouldUseSuperViewLeadingTrailing {
+                $0.leading.trailing.equalTo(v.superview!)
+            } else {
+                $0.leading.trailing.equalTo(v)
+            }
         }
     }
     

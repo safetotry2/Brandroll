@@ -21,16 +21,17 @@ extension AuthToastable where Self: UIViewController {
     /// Show the error toast with text.
     /// - parameter text: The message string.
     /// - parameter upperReferenceView: the view that is located at the top of the toast.
-    func showErrorToast(_ text: String, upperReferenceView: UIView) {
+    /// - parameter shouldUseSuperViewLeadingTrailing: a bool value to determine if the `upperReferenceView` has insets in its leading and trailing.
+    func showErrorToast(_ text: String, upperReferenceView: UIView, shouldUseSuperViewLeadingTrailing: Bool = false) {
         if Thread.isMainThread {
             UIView.animate(withDuration: 0.3) {
                 self.constraint_FirstTextField?.update(offset: 100)
             }
             toast = Toast(text: text)
-            toast?.showAndAttachTo(upperReferenceView: upperReferenceView)
+            toast?.showAndAttachTo(upperReferenceView: upperReferenceView, shouldUseSuperViewLeadingTrailing: shouldUseSuperViewLeadingTrailing)
         } else {
             DispatchQueue.main.async {
-                self.showErrorToast(text, upperReferenceView: upperReferenceView)
+                self.showErrorToast(text, upperReferenceView: upperReferenceView, shouldUseSuperViewLeadingTrailing: shouldUseSuperViewLeadingTrailing)
             }
         }
     }

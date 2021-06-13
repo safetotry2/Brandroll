@@ -8,11 +8,15 @@
 
 import Firebase
 import SVProgressHUD
+import SnapKit
 import UIKit
 
-class SignUpVC: UIViewController {
+class SignUpVC: UIViewController, AuthToastable {
     
     // MARK: - Properties
+    
+    var toast: Toast?
+    var constraint_FirstTextField: Constraint?
     
     var imageChanged = false
     
@@ -159,17 +163,36 @@ class SignUpVC: UIViewController {
     }
     
     func configureViewComponents() {
-        let stackView = UIStackView(arrangedSubviews: [fullNameTextField, occupationTextField, emailTextField,  passwordTextField, signupButton])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
+        view.addSubview(fullNameTextField)
+        fullNameTextField.snp.makeConstraints {
+            constraint_FirstTextField = $0.top.equalTo(signUpLabel.snp.bottom).offset(20).constraint
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        view.addSubview(stackView)
-        stackView.anchor(
-            top: signUpLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,
-            paddingTop: 24, paddingLeft: 20, paddingBottom: 0, paddingRight: 20,
-            width: 0, height: 310
-        )
+        view.addSubview(occupationTextField)
+        occupationTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(fullNameTextField)
+            $0.top.equalTo(fullNameTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(occupationTextField)
+            $0.top.equalTo(occupationTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(passwordTextField)
+        passwordTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(signupButton)
+        signupButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.leading.trailing.equalTo(passwordTextField)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
+        }
     }
     
     // MARK: - Selectors
@@ -188,12 +211,16 @@ class SignUpVC: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
+        hideToast()
+        
         SVProgressHUD.show()
         
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-            guard error == nil else {
-                SVProgressHUD.showError(withStatus: "Error signing up")
-                print("Failed to create user with error", error!.localizedDescription)
+        Auth.auth().createUser(withEmail: email, password: password) { [unowned self] (result, error) in
+            SVProgressHUD.dismiss()
+            
+            if let error = error {
+                self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true)
+                print("Failed to create user with error", error.localizedDescription)
                 return
             }
             
@@ -209,7 +236,8 @@ class SignUpVC: UIViewController {
         //guard let username = usernameTextField.text?.lowercased() else { return }
         
         guard let uid = result?.user.uid else {
-            SVProgressHUD.showError(withStatus: "User Id not found!")
+            self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true)
+            print("User Id not found!")
             return
         }
         
@@ -379,6 +407,8 @@ extension SignUpVC: UITextFieldDelegate {
             signupButton.setTitleColor(.gray, for: .normal)
             return
         }
+        
+        hideToast()
         signupButton.isEnabled = true
         signupButton.backgroundColor = .black
         signupButton.setTitleColor(.white, for: .normal)
