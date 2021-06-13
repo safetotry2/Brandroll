@@ -11,7 +11,7 @@ import SVProgressHUD
 import UIKit
 
 class SignUpVC: UIViewController {
-
+    
     // MARK: - Properties
     
     var imageChanged = false
@@ -30,8 +30,8 @@ class SignUpVC: UIViewController {
         return button
     }()
     
-    let emailTextField: UITextField = {
-        let tf = UITextField()
+    lazy var emailTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Email"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
@@ -39,60 +39,68 @@ class SignUpVC: UIViewController {
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.keyboardType = .emailAddress
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let passwordTextField: UITextField = {
-        let tf = UITextField()
+    lazy var passwordTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let fullNameTextField: UITextField = {
-        let tf = UITextField()
+    lazy var fullNameTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Business name"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let occupationTextField: UITextField = {
-        let tf = UITextField()
+    lazy var occupationTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Occupation/Industry"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-//    let usernameTextField: UITextField = {
-//        let tf = UITextField()
-//        tf.placeholder = "Username"
-//        tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
-//        tf.borderStyle = .roundedRect
-//        tf.font = UIFont.systemFont(ofSize: 14)
-//        tf.autocapitalizationType = .none
-//        tf.autocorrectionType = .no
-//        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
-//        return tf
-//    }()
+    lazy var textFields: [DTTextField] = {
+        return [fullNameTextField, occupationTextField, emailTextField, passwordTextField]
+    }()
     
     let signupButton: UIButton = {
         let button = UIButton(type: .system)
@@ -105,18 +113,7 @@ class SignUpVC: UIViewController {
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()
-    
-//    let alreadyhaveaccountButton: UIButton = {
-//           let button = UIButton(type: .system)
-//           let attributedTitle = NSMutableAttributedString(string: "Already have an account?  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-//           attributedTitle.append(NSAttributedString(string: "Sign In", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)]))
-//           button.setAttributedTitle(attributedTitle, for: .normal)
-//           
-//           button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
-//           
-//           return button
-//       }()
-    
+
     // MARK: - Overrides
     
     override func viewDidLoad() {
@@ -133,32 +130,32 @@ class SignUpVC: UIViewController {
     }
     
     // MARK: Functions
-
+    
     deinit {
         print("SignUp flow deallocated! ✅")
     }
-        
+    
     private func setupUI() {
         view.backgroundColor = .white
         
         view.addSubview(signUpLabel)
         signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-//        view.addSubview(plusPhotoButton)
-//        plusPhotoButton.anchor(
-//            top: signUpLabel.bottomAnchor, left: nil, bottom: nil, right: nil,
-//            paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 140, height: 140
-//        )
+        //        view.addSubview(plusPhotoButton)
+        //        plusPhotoButton.anchor(
+        //            top: signUpLabel.bottomAnchor, left: nil, bottom: nil, right: nil,
+        //            paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+        //            width: 140, height: 140
+        //        )
         //plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         configureViewComponents()
-//        view.addSubview(alreadyhaveaccountButton)
-//        alreadyhaveaccountButton.anchor(
-//            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 0, height: 50
-//        )
+        //        view.addSubview(alreadyhaveaccountButton)
+        //        alreadyhaveaccountButton.anchor(
+        //            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
+        //            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+        //            width: 0, height: 50
+        //        )
     }
     
     func configureViewComponents() {
@@ -177,35 +174,15 @@ class SignUpVC: UIViewController {
     
     // MARK: - Selectors
     
-    @objc func formValidation() {
-        guard emailTextField.hasText,
-        passwordTextField.hasText,
-        fullNameTextField.hasText,
-        occupationTextField.hasText
-            else {
-            signupButton.isEnabled = false
-            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            signupButton.setTitleColor(.gray, for: .normal)
-            return
-            }
-        signupButton.isEnabled = true
-        signupButton.backgroundColor = .black
-        signupButton.setTitleColor(.white, for: .normal)
-    }
-    
     @objc func handleSelectProfilePhoto() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
-
+        
         //present ImagePicker
         imagePicker.modalPresentationStyle = .fullScreen
         present(imagePicker, animated: true, completion: nil)
     }
-    
-//    @objc func handleShowLogin() {
-//        _ = navigationController?.popViewController(animated: true)
-//    }
     
     @objc func handleSignUp() {
         guard let email = emailTextField.text else { return }
@@ -237,8 +214,8 @@ class SignUpVC: UIViewController {
         }
         
         if imageChanged,
-            let profileImage = self.plusPhotoButton.imageView?.image,
-            let uploadData = profileImage.jpegData(compressionQuality: 0.3) {
+           let profileImage = self.plusPhotoButton.imageView?.image,
+           let uploadData = profileImage.jpegData(compressionQuality: 0.3) {
             let filename = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_images").child(filename)
             
@@ -318,8 +295,42 @@ extension SignUpVC: UIImagePickerControllerDelegate, UINavigationControllerDeleg
 // MARK: - UITextFieldDelegate
 
 extension SignUpVC: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
+            dtTxtField.showError(message: "This field is required.")
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited {
+            dtTxtField.showError(message: "This field is required.")
+            hideToast()
+        }
+        
+        return true
+    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        dtTxtField.hasEdited = true
+        
         // check the textfield
         if textField == fullNameTextField || textField == occupationTextField {
             let maxLength = 36
@@ -327,7 +338,49 @@ extension SignUpVC: UITextFieldDelegate {
             let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             return newString.length <= maxLength
         }
+        
         // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
+        
         return true
+    }
+
+    @objc func formValidation(_ textField: DTTextField) {
+        checkContentsAndToggleButtonState()
+        
+        if textField.hasEdited {
+            if !textField.hasText {
+                textField.showError(message: "This field is required.")
+            }
+        }
+        
+        guard emailTextField.hasText,
+              passwordTextField.hasText,
+              fullNameTextField.hasText,
+              occupationTextField.hasText
+        else {
+            signupButton.isEnabled = false
+            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            signupButton.setTitleColor(.gray, for: .normal)
+            return
+        }
+        signupButton.isEnabled = true
+        signupButton.backgroundColor = .black
+        signupButton.setTitleColor(.white, for: .normal)
+    }
+    
+    private func checkContentsAndToggleButtonState() {
+        guard emailTextField.hasText,
+              passwordTextField.hasText,
+              fullNameTextField.hasText,
+              occupationTextField.hasText
+        else {
+            signupButton.isEnabled = false
+            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            signupButton.setTitleColor(.gray, for: .normal)
+            return
+        }
+        signupButton.isEnabled = true
+        signupButton.backgroundColor = .black
+        signupButton.setTitleColor(.white, for: .normal)
     }
 }

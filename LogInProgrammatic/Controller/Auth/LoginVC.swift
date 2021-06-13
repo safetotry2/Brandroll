@@ -45,7 +45,6 @@ class LoginVC: UIViewController {
         
         tf.floatingDisplayStatus = .never
         tf.dtborderStyle = .rounded
-        
         tf.delegate = self
         
         tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
@@ -62,7 +61,6 @@ class LoginVC: UIViewController {
         
         tf.floatingDisplayStatus = .never
         tf.dtborderStyle = .rounded
-        
         tf.delegate = self
         
         tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
@@ -86,7 +84,7 @@ class LoginVC: UIViewController {
     }()
     
     private var toast: Toast?
-    private var constraint_EmailTextFieldTop: Constraint?
+    private var constraint_FirstTextField: Constraint?
     
     // MARK: Overrides
     
@@ -125,7 +123,7 @@ class LoginVC: UIViewController {
     private func showErrorToast(_ text: String) {
         if Thread.isMainThread {
             UIView.animate(withDuration: 0.3) {
-                self.constraint_EmailTextFieldTop?.update(offset: 100)
+                self.constraint_FirstTextField?.update(offset: 100)
             }
             toast = Toast(text: text)
             toast?.showAndAttachTo(topToTheBottomLeadingTrailingOfTheReferenceView: logoContainerView)
@@ -142,7 +140,7 @@ class LoginVC: UIViewController {
             toast = nil
             
             UIView.animate(withDuration: 0.3) {
-                self.constraint_EmailTextFieldTop?.update(offset: 20)
+                self.constraint_FirstTextField?.update(offset: 20)
             }
         } else {
             DispatchQueue.main.async {
@@ -180,7 +178,7 @@ class LoginVC: UIViewController {
     func configureViewComponents() {
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints {
-            constraint_EmailTextFieldTop = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
+            constraint_FirstTextField = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -245,9 +243,8 @@ extension LoginVC: UITextFieldDelegate {
         return true
     }
     
-    
     @objc func formValidation(_ textField: DTTextField) {
-        checkContents()
+        checkContentsAndToggleButtonState()
         
         if textField.hasEdited {
             if !textField.hasText {
@@ -256,7 +253,7 @@ extension LoginVC: UITextFieldDelegate {
         }
     }
     
-    private func checkContents() {
+    private func checkContentsAndToggleButtonState() {
         // ensures that email and password text fields have text
         guard
             emailTextField.hasText,

@@ -69,6 +69,7 @@
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
 		45CA02A926762B0D005CD83A /* Error+PresentableMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02A826762B0D005CD83A /* Error+PresentableMessage.swift */; };
+		45CA02AB26764F32005CD83A /* AuthToastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AA26764F32005CD83A /* AuthToastable.swift */; };
 		C83407FD33C721738FB1401D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55387172398E82CC7C24B6CF /* Pods_LogInProgrammatic.framework */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +139,7 @@
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		45CA02A826762B0D005CD83A /* Error+PresentableMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+PresentableMessage.swift"; sourceTree = "<group>"; };
+		45CA02AA26764F32005CD83A /* AuthToastable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthToastable.swift; sourceTree = "<group>"; };
 		55387172398E82CC7C24B6CF /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
 		DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				454596712605AE9B0088D3A7 /* StatusBarToggleable.swift */,
+				45CA02AA26764F32005CD83A /* AuthToastable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 				045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */,
 				04FA75712583BB5100814F9E /* ChatController.swift in Sources */,
 				04FA75732583BC4500814F9E /* ChatCell.swift in Sources */,
+				45CA02AB26764F32005CD83A /* AuthToastable.swift in Sources */,
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
 				453EA7E825EE58F500051ADC /* PreviewTableViewCell.swift in Sources */,
