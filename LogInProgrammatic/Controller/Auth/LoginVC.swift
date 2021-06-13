@@ -85,6 +85,9 @@ class LoginVC: UIViewController {
         return button
     }()
     
+    private var toast: Toast?
+    private var constraint_EmailTextFieldTop: Constraint?
+    
     // MARK: Overrides
     
     deinit {
@@ -119,21 +122,48 @@ class LoginVC: UIViewController {
     
     // MARK: - Functions
     
+    private func showErrorToast(_ text: String) {
+        if Thread.isMainThread {
+            UIView.animate(withDuration: 0.3) {
+                self.constraint_EmailTextFieldTop?.update(offset: 100)
+            }
+            toast = Toast(text: text)
+            toast?.showAndAttachTo(topToTheBottomLeadingTrailingOfTheReferenceView: logoContainerView)
+        } else {
+            DispatchQueue.main.async {
+                self.showErrorToast(text)
+            }
+        }
+    }
+    
+    private func hideToast() {
+        if Thread.isMainThread {
+            toast?.remove()
+            toast = nil
+            
+            UIView.animate(withDuration: 0.3) {
+                self.constraint_EmailTextFieldTop?.update(offset: 20)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.hideToast()
+            }
+        }
+    }
+    
     @objc func handlelogin() {
-        guard let email = emailTextField.text,
+        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: ""),
               let password = passwordTextField.text else { return }
         
+        hideToast()
+        
         // sign user in with email and password
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (user, error) in
             // handle error
             if let error = error {
+                self.showErrorToast(error.presentableMessage)
                 print("Unable to sign user in with error", error.localizedDescription)
-                self.alert(
-                    title: "Error",
-                    message: "Unable to sign user in with error: \(error.localizedDescription)",
-                    okayButtonTitle: "OK",
-                    withBlock: nil
-                )
+                
                 return
             }
             
@@ -150,7 +180,7 @@ class LoginVC: UIViewController {
     func configureViewComponents() {
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints {
-            $0.top.equalTo(logoContainerView.snp.bottom).offset(20)
+            constraint_EmailTextFieldTop = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -199,6 +229,7 @@ extension LoginVC: UITextFieldDelegate {
         
         if dtTxtField.hasEdited {
             dtTxtField.showError(message: "This field is required.")
+            hideToast()
         }
         
         return true
