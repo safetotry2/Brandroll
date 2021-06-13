@@ -145,21 +145,7 @@ class SignUpVC: UIViewController, AuthToastable {
         view.addSubview(signUpLabel)
         signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        //        view.addSubview(plusPhotoButton)
-        //        plusPhotoButton.anchor(
-        //            top: signUpLabel.bottomAnchor, left: nil, bottom: nil, right: nil,
-        //            paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-        //            width: 140, height: 140
-        //        )
-        //plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
         configureViewComponents()
-        //        view.addSubview(alreadyhaveaccountButton)
-        //        alreadyhaveaccountButton.anchor(
-        //            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-        //            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-        //            width: 0, height: 50
-        //        )
     }
     
     func configureViewComponents() {
@@ -225,7 +211,7 @@ class SignUpVC: UIViewController, AuthToastable {
             SVProgressHUD.dismiss()
             
             if let error = error {
-                self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true)
+                self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
                 print("Failed to create user with error", error.localizedDescription)
                 return
             }
@@ -242,7 +228,7 @@ class SignUpVC: UIViewController, AuthToastable {
         //guard let username = usernameTextField.text?.lowercased() else { return }
         
         guard let uid = result?.user.uid else {
-            self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true)
+            self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self)
             print("User Id not found!")
             return
         }
@@ -412,5 +398,34 @@ extension SignUpVC: UITextFieldDelegate {
             signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
             signupButton.setTitleColor(.gray, for: .normal)
         }
+    }
+}
+
+// MARK: - ToastDelegate
+
+extension SignUpVC: ToastDelegate {
+    func userdidTapToast(_ toast: Toast, withData data: Any?) {
+        if let error = data as? Error {
+            if error.emailAlreadyInUse {
+                showLogin()
+            }
+        }
+    }
+    
+    func showLogin() {
+        let loginVC = LoginVC()
+        
+        navigationController?.pushViewController(loginVC, animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+    }
+    
+    @objc
+    private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
     }
 }

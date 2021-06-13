@@ -9,19 +9,34 @@
 import SnapKit
 import UIKit
 
+protocol ToastDelegate: AnyObject {
+    func userdidTapToast(_ toast: Toast, withData data: Any?)
+}
+
 class Toast: UIView {
     
     // MARK: - Properties
     
     private(set) var label: UILabel!
+    private(set) var tapGesture: UITapGestureRecognizer!
+    private(set) var data: Any?
+    
+    weak var delegate: ToastDelegate?
     
     // MARK: - Functions
     // MARK: Overrides
     
     init(bgColor: UIColor = .red,
          text: String,
-         textColor: UIColor = .white) {
+         textColor: UIColor = .white,
+         delegate: ToastDelegate? = nil,
+         data: Any? = nil) {
         super.init(frame: .zero)
+        
+        isUserInteractionEnabled = true
+        
+        self.data = data
+        self.delegate = delegate
         
         backgroundColor = bgColor
         
@@ -36,6 +51,16 @@ class Toast: UIView {
             $0.top.bottom.equalToSuperview().inset(16)
             $0.leading.trailing.equalToSuperview().inset(25)
         }
+        
+        tapGesture = UITapGestureRecognizer(target: self,
+                                            action: #selector(didTapSelf))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func didTapSelf() {
+        print("Tap Toast!")
+        delegate?.userdidTapToast(self, withData: data)
     }
     
     func showAndAttachTo(upperReferenceView v: UIView, shouldUseSuperViewLeadingTrailing: Bool = false) {
