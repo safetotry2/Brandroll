@@ -6,11 +6,18 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
+import Firebase
+import FirebaseStorage
+import SVProgressHUD
 import UIKit
 
 class SelectPhotoVC: UIViewController {
 
     // MARK: - Properties
+    
+    var uid: String!
+    var fullName: String!
+    var occupation: String!
     
     let selectPhotoLabel: UILabel = {
         let label = UILabel()
@@ -70,6 +77,12 @@ class SelectPhotoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        assignValues()
+    }
+    
+    private func assignValues() {
+        nameLabel.text = fullName
+        occupationLabel.text = occupation
     }
     
     // MARK: Functions
@@ -85,7 +98,58 @@ class SelectPhotoVC: UIViewController {
     }
     
     @objc func handleDone() {
-        print("Handle done.")
+        if imageChanged,
+           let profileImage = self.selectPhotoButton.imageView?.image,
+           let uploadData = profileImage.jpegData(compressionQuality: 0.3) {
+            let filename = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("profile_images").child(filename)
+            
+            SVProgressHUD.show()
+            
+            storageRef.putData(uploadData, metadata: nil) { [unowned self] (metadata, error) in
+                SVProgressHUD.dismiss()
+                
+                guard error == nil else {
+                    print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
+                    alert(title: "Error uploading profile image",
+                          okayButtonTitle: "OK") { _ in
+                        gotoHome()
+                    }
+                    return
+                }
+                
+                storageRef.downloadURL(completion: { [unowned self] (downloadURL, error) in
+                    let profileImageUrl = downloadURL?.absoluteString ?? ""
+                    let imagedic = ["profileImageUrl": profileImageUrl]
+                    let dic = [uid! : imagedic]
+                    updateUserValues(dic)
+                })
+            }
+        } else {
+            gotoHome()
+        }
+    }
+    
+    private func updateUserValues(_ values: [String : Any]) {
+        USER_REF.updateChildValues(values) { [unowned self] (error, ref) in
+            if error != nil {
+                SVProgressHUD.showError(withStatus: "Profile update failed!")
+            } else {
+                SVProgressHUD.showSuccess(withStatus: "")
+            }
+            
+            gotoHome()
+        }
+    }
+    
+    private func gotoHome() {
+        dismiss(animated: true) {
+            // Inform RootVC.
+            NotificationCenter.default.post(
+                name: RootVC.didLoginNotification,
+                object: nil
+            )
+        }
     }
     
     private func setupUI() {

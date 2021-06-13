@@ -17,21 +17,12 @@ class SignUpVC: UIViewController, AuthToastable {
     
     var toast: Toast?
     var constraint_FirstTextField: Constraint?
-    
-    var imageChanged = false
-    
+        
     let signUpLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 35)
         label.text = "Sign up"
         return label
-    }()
-    
-    let plusPhotoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleSelectProfilePhoto), for: .touchUpInside)
-        return button
     }()
     
     lazy var emailTextField: DTTextField = {
@@ -183,16 +174,6 @@ class SignUpVC: UIViewController, AuthToastable {
     
     // MARK: - Selectors
     
-    @objc func handleSelectProfilePhoto() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-        
-        //present ImagePicker
-        imagePicker.modalPresentationStyle = .fullScreen
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
     @objc func handleSignUp() {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
@@ -225,7 +206,6 @@ class SignUpVC: UIViewController, AuthToastable {
     private func handleResult(_ result: AuthDataResult?) {
         guard let fullName = fullNameTextField.text else { return }
         guard let occupation = occupationTextField.text else { return }
-        //guard let username = usernameTextField.text?.lowercased() else { return }
         
         guard let uid = result?.user.uid else {
             self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self)
@@ -233,82 +213,35 @@ class SignUpVC: UIViewController, AuthToastable {
             return
         }
         
-        if imageChanged,
-           let profileImage = self.plusPhotoButton.imageView?.image,
-           let uploadData = profileImage.jpegData(compressionQuality: 0.3) {
-            let filename = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child(filename)
-            
-            storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-                var dictionaryValues = [
-                    "name": fullName,
-                    "occupation": occupation
-                    //"username": username
-                ]
-                var values = [uid: dictionaryValues]
-                
-                guard error == nil else {
-                    print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
-                    self.updateUserValues(values)
-                    return
-                }
-                
-                storageRef.downloadURL(completion: { (downloadURL, error) in
-                    let profileImageUrl = downloadURL?.absoluteString ?? ""
-                    dictionaryValues["profileImageUrl"] = profileImageUrl
-                    values = [uid: dictionaryValues]
-                    
-                    self.updateUserValues(values)
-                })
-            }
-        } else {
-            // Create user without uploading a profile image.
-            let dictionaryValues = [
-                "name": fullName,
-                "occupation": occupation
-                //"username": username,
-            ]
-            let values = [uid: dictionaryValues]
-            
-            updateUserValues(values)
-        }
+        // Create user without uploading a profile image.
+        let dictionaryValues = [
+            "name": fullName,
+            "occupation": occupation
+        ]
+        let values = [uid: dictionaryValues]
+        
+        updateUserValues(values, uid: uid)
     }
     
-    private func updateUserValues(_ values: [String : Any]) {
-        USER_REF.updateChildValues(values) { (error, ref) in
+    private func updateUserValues(_ values: [String : Any], uid: String) {
+        USER_REF.updateChildValues(values) { [unowned self] (error, ref) in
             if error != nil {
                 SVProgressHUD.showError(withStatus: "Profile update failed!")
             } else {
                 SVProgressHUD.showSuccess(withStatus: "")
             }
             
-            // Inform RootVC.
-            NotificationCenter.default.post(
-                name: RootVC.didLoginNotification,
-                object: nil
-            )
+            self.presentSelectPhoto(uid: uid)
         }
     }
-}
-
-// MARK: - UIImagePickerControllerDelegate
-
-extension SignUpVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // selected image
-        guard let profileImage = info[.editedImage] as? UIImage else { return }
-        
-        // configure plusPhotoButton with selected image
-        plusPhotoButton.layer.cornerRadius = plusPhotoButton.frame.width / 2
-        plusPhotoButton.layer.masksToBounds = true
-        plusPhotoButton.layer.borderColor = UIColor.black.cgColor
-        plusPhotoButton.layer.borderWidth = 2
-        plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        // upload profile image to Firebase at SignUp
-        imageChanged = true
-        
-        dismiss(animated: true, completion: nil)
+    
+    private func presentSelectPhoto(uid: String) {
+        let vc = SelectPhotoVC()
+        vc.uid = uid
+        vc.fullName = fullNameTextField.text ?? ""
+        vc.occupation = occupationTextField.text ?? ""
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 
