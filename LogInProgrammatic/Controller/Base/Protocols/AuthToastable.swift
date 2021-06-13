@@ -7,11 +7,46 @@
 //
 
 import Foundation
+import SnapKit
 
 /**
  Auth controllers conform to this protocol for toastability.
  */
-protocol AuthToastable {
-//    private var toast: Toast?
-//    private var constraint_FirstTextField: Constraint?
+protocol AuthToastable: AnyObject {
+    var toast: Toast? { get set }
+    var constraint_FirstTextField: Constraint? { get set }
+}
+
+extension AuthToastable where Self: UIViewController {
+    /// Show the error toast with text.
+    /// - parameter text: The message string.
+    /// - parameter upperReferenceView: the view that is located at the top of the toast.
+    func showErrorToast(_ text: String, upperReferenceView: UIView) {
+        if Thread.isMainThread {
+            UIView.animate(withDuration: 0.3) {
+                self.constraint_FirstTextField?.update(offset: 100)
+            }
+            toast = Toast(text: text)
+            toast?.showAndAttachTo(upperReferenceView: upperReferenceView)
+        } else {
+            DispatchQueue.main.async {
+                self.showErrorToast(text, upperReferenceView: upperReferenceView)
+            }
+        }
+    }
+    
+    func hideToast() {
+        if Thread.isMainThread {
+            toast?.remove()
+            toast = nil
+            
+            UIView.animate(withDuration: 0.3) {
+                self.constraint_FirstTextField?.update(offset: 20)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.hideToast()
+            }
+        }
+    }
 }

@@ -10,9 +10,12 @@ import Firebase
 import SnapKit
 import UIKit
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, AuthToastable {
     
     // MARK: - Properties
+    
+    var toast: Toast?
+    var constraint_FirstTextField: Constraint?
     
     let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
     
@@ -83,9 +86,6 @@ class LoginVC: UIViewController {
         return button
     }()
     
-    private var toast: Toast?
-    private var constraint_FirstTextField: Constraint?
-    
     // MARK: Overrides
     
     deinit {
@@ -120,35 +120,6 @@ class LoginVC: UIViewController {
     
     // MARK: - Functions
     
-    private func showErrorToast(_ text: String) {
-        if Thread.isMainThread {
-            UIView.animate(withDuration: 0.3) {
-                self.constraint_FirstTextField?.update(offset: 100)
-            }
-            toast = Toast(text: text)
-            toast?.showAndAttachTo(topToTheBottomLeadingTrailingOfTheReferenceView: logoContainerView)
-        } else {
-            DispatchQueue.main.async {
-                self.showErrorToast(text)
-            }
-        }
-    }
-    
-    private func hideToast() {
-        if Thread.isMainThread {
-            toast?.remove()
-            toast = nil
-            
-            UIView.animate(withDuration: 0.3) {
-                self.constraint_FirstTextField?.update(offset: 20)
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.hideToast()
-            }
-        }
-    }
-    
     @objc func handlelogin() {
         guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: ""),
               let password = passwordTextField.text else { return }
@@ -159,7 +130,7 @@ class LoginVC: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (user, error) in
             // handle error
             if let error = error {
-                self.showErrorToast(error.presentableMessage)
+                self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
                 print("Unable to sign user in with error", error.localizedDescription)
                 
                 return
@@ -267,6 +238,7 @@ extension LoginVC: UITextFieldDelegate {
         }
             
         // handle cases for conditions were met
+        hideToast()
         loginButton.isEnabled = true
         loginButton.backgroundColor = .black
         loginButton.setTitleColor(.white, for: .normal)
