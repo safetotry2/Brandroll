@@ -97,10 +97,7 @@ class LoginVC: UIViewController, AuthToastable {
         
         //background color
         view.backgroundColor = .white
-        
-        //hide nav bar
-        navigationController?.navigationBar.isHidden = true
-        
+                
         view.addSubview(logoContainerView)
         logoContainerView.anchor(
             top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,

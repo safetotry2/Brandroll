@@ -22,7 +22,7 @@ class SignUpVC: UIViewController, AuthToastable {
     
     let signUpLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 40)
+        label.font = UIFont.boldSystemFont(ofSize: 35)
         label.text = "Sign up"
         return label
     }()
@@ -143,7 +143,7 @@ class SignUpVC: UIViewController, AuthToastable {
         view.backgroundColor = .white
         
         view.addSubview(signUpLabel)
-        signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureViewComponents()
     }
@@ -407,21 +407,10 @@ extension SignUpVC: ToastDelegate {
     func userdidTapToast(_ toast: Toast, withData data: Any?) {
         if let error = data as? Error {
             if error.emailAlreadyInUse {
-                showLogin()
+                WelcomeVC.shouldShowLoginVC = true
+                popToPrevious()
             }
         }
-    }
-    
-    func showLogin() {
-        let loginVC = LoginVC()
-        
-        navigationController?.pushViewController(loginVC, animated: true)
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            title: "",
-            style: .plain,
-            target: self,
-            action: #selector(popToPrevious)
-        )
     }
     
     @objc
