@@ -213,6 +213,12 @@ class SignUpVC: UIViewController, AuthToastable {
         
         hideToast()
         
+        if !emailTextField.hasValidEmailValue {
+            emailTextField.showError(message: "Please check your email address for misspellings.")
+            toggleSignupButtonState(enabled: false)
+            return
+        }
+        
         SVProgressHUD.show()
         
         Auth.auth().createUser(withEmail: email, password: password) { [unowned self] (result, error) in
@@ -380,20 +386,6 @@ extension SignUpVC: UITextFieldDelegate {
                 textField.showError(message: "This field is required.")
             }
         }
-        
-        guard emailTextField.hasText,
-              passwordTextField.hasText,
-              fullNameTextField.hasText,
-              occupationTextField.hasText
-        else {
-            signupButton.isEnabled = false
-            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            signupButton.setTitleColor(.gray, for: .normal)
-            return
-        }
-        signupButton.isEnabled = true
-        signupButton.backgroundColor = .black
-        signupButton.setTitleColor(.white, for: .normal)
     }
     
     private func checkContentsAndToggleButtonState() {
@@ -402,15 +394,23 @@ extension SignUpVC: UITextFieldDelegate {
               fullNameTextField.hasText,
               occupationTextField.hasText
         else {
-            signupButton.isEnabled = false
-            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            signupButton.setTitleColor(.gray, for: .normal)
+            toggleSignupButtonState(enabled: false)
             return
         }
         
         hideToast()
-        signupButton.isEnabled = true
-        signupButton.backgroundColor = .black
-        signupButton.setTitleColor(.white, for: .normal)
+        toggleSignupButtonState(enabled: true)
+    }
+    
+    private func toggleSignupButtonState(enabled: Bool) {
+        if enabled {
+            signupButton.isEnabled = true
+            signupButton.backgroundColor = .black
+            signupButton.setTitleColor(.white, for: .normal)
+        } else {
+            signupButton.isEnabled = false
+            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            signupButton.setTitleColor(.gray, for: .normal)
+        }
     }
 }
