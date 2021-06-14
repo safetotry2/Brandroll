@@ -81,8 +81,8 @@ class SelectPhotoVC: UIViewController {
     }
     
     private func assignValues() {
-        nameLabel.text = fullName
-        occupationLabel.text = occupation
+        nameLabel.text = fullName.condensedWhitespace
+        occupationLabel.text = occupation.condensedWhitespace
     }
     
     // MARK: Functions
