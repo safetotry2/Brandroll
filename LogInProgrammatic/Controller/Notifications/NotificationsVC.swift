@@ -60,6 +60,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         checkSeenMessages()
     }
     
@@ -227,11 +228,6 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     }
     
     private func configureNavigationBar() {
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .white
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sendBarButton)
         navigationItem.title = "Notifications"
         
