@@ -42,23 +42,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         print("UserProfileVC deallocated! 🐶")
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        if fromTabBar {
-//            navigationController?.setNavigationBarHidden(true, animated: animated)
-//        } else {
-//            navigationController?.setNavigationBarHidden(false, animated: animated)
-//        }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = user?.name
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         self.collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
@@ -84,10 +76,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         fetchPosts()
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        title = ""
+    }
     
     /**
      Remove the observers. Called by tabBarController.

@@ -175,12 +175,12 @@ class SignUpVC: UIViewController, AuthToastable {
     // MARK: - Selectors
     
     @objc func handleSignUp() {
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
         guard let password = passwordTextField.text else { return }
-        
+                
         hideToast()
         
-        if !emailTextField.hasValidEmailValue {
+        if !email.isValidEmail {
             emailTextField.showError(message: "Please check your email address for misspellings.")
             toggleSignupButtonState(enabled: false)
             return
