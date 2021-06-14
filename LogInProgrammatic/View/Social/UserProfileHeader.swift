@@ -37,7 +37,6 @@ class UserProfileHeader: UICollectionViewCell {
                let url = URL(string: profileImageUrl) {
                 let resource = ImageResource(downloadURL: url)
                 profileImageView.kf.setImage(with: resource)
-                
             }
         }
     }

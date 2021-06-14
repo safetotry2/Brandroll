@@ -120,7 +120,22 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 160)
+        var height: CGFloat = 180
+        let normalHeight: CGFloat = 120
+        
+        if user?.bio == nil || user?.bio.isValidValue == false {
+            height = normalHeight
+        } else {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 13)
+            label.textColor = .black
+            label.numberOfLines = 4
+            label.text = user?.bio
+            let computedHeight = label.getSize(constrainedWidth: view.frame.width - (16 + 20)).height
+            height = computedHeight + normalHeight
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -153,7 +168,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         header.delegate = self
 
         // set the user in header
-        header.user = self.user
+        header.user = user
+        
         navigationItem.title = user?.name
 
         // return header

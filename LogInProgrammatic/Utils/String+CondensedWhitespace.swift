@@ -22,4 +22,20 @@ extension String {
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
         return emailPredicate.evaluate(with: self)
     }
+    
+    var isValidValue: Bool {
+        let text = self
+        let whitespaceSet = CharacterSet.whitespaces
+        
+        if text == "" || text == " " {
+            return false
+        }
+        
+        if text.trimmingCharacters(in: whitespaceSet).isEmpty
+            || text.trimmingCharacters(in: whitespaceSet).isEmpty {
+            return false
+        }
+        
+        return true
+    }
 }
