@@ -24,6 +24,14 @@ class SignUpVC: UIViewController, AuthToastable {
         label.text = "Sign up"
         return label
     }()
+  
+    /// A quick hack for fixing the iOS 13 or earlier issue in `DTTextField` wherein the first textField becomes smaller.
+    lazy var dummyTextField: DTTextField = {
+        let tf = DTTextField()
+        tf.placeholder = "Dummy TextField"
+        tf.isHidden = true
+        return tf
+    }()
     
     lazy var emailTextField: DTTextField = {
         let tf = DTTextField()
@@ -140,6 +148,12 @@ class SignUpVC: UIViewController, AuthToastable {
     }
     
     func configureViewComponents() {
+        view.addSubview(dummyTextField)
+        dummyTextField.snp.makeConstraints {
+            constraint_FirstTextField = $0.top.equalTo(signUpLabel.snp.bottom).offset(20).constraint
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+      
         view.addSubview(fullNameTextField)
         fullNameTextField.snp.makeConstraints {
             constraint_FirstTextField = $0.top.equalTo(signUpLabel.snp.bottom).offset(20).constraint
