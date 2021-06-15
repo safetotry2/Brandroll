@@ -8,30 +8,25 @@
 
 import Firebase
 import SVProgressHUD
+import SnapKit
 import UIKit
 
-class SignUpVC: UIViewController {
-
+class SignUpVC: UIViewController, AuthToastable {
+    
     // MARK: - Properties
     
-    var imageChanged = false
-    
+    var toast: Toast?
+    var constraint_FirstTextField: Constraint?
+        
     let signUpLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 40)
+        label.font = UIFont.boldSystemFont(ofSize: 35)
         label.text = "Sign up"
         return label
     }()
     
-    let plusPhotoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleSelectProfilePhoto), for: .touchUpInside)
-        return button
-    }()
-    
-    let emailTextField: UITextField = {
-        let tf = UITextField()
+    lazy var emailTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Email"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
@@ -39,60 +34,68 @@ class SignUpVC: UIViewController {
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.keyboardType = .emailAddress
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let passwordTextField: UITextField = {
-        let tf = UITextField()
+    lazy var passwordTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let fullNameTextField: UITextField = {
-        let tf = UITextField()
+    lazy var fullNameTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Business name"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let occupationTextField: UITextField = {
-        let tf = UITextField()
+    lazy var occupationTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Occupation/Industry"
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-//    let usernameTextField: UITextField = {
-//        let tf = UITextField()
-//        tf.placeholder = "Username"
-//        tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
-//        tf.borderStyle = .roundedRect
-//        tf.font = UIFont.systemFont(ofSize: 14)
-//        tf.autocapitalizationType = .none
-//        tf.autocorrectionType = .no
-//        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
-//        return tf
-//    }()
+    lazy var textFields: [DTTextField] = {
+        return [fullNameTextField, occupationTextField, emailTextField, passwordTextField]
+    }()
     
     let signupButton: UIButton = {
         let button = UIButton(type: .system)
@@ -105,18 +108,7 @@ class SignUpVC: UIViewController {
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()
-    
-//    let alreadyhaveaccountButton: UIButton = {
-//           let button = UIButton(type: .system)
-//           let attributedTitle = NSMutableAttributedString(string: "Already have an account?  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-//           attributedTitle.append(NSAttributedString(string: "Sign In", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)]))
-//           button.setAttributedTitle(attributedTitle, for: .normal)
-//           
-//           button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
-//           
-//           return button
-//       }()
-    
+
     // MARK: - Overrides
     
     override func viewDidLoad() {
@@ -133,90 +125,75 @@ class SignUpVC: UIViewController {
     }
     
     // MARK: Functions
-
+    
     deinit {
         print("SignUp flow deallocated! ✅")
     }
-        
+    
     private func setupUI() {
         view.backgroundColor = .white
         
         view.addSubview(signUpLabel)
-        signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-//        view.addSubview(plusPhotoButton)
-//        plusPhotoButton.anchor(
-//            top: signUpLabel.bottomAnchor, left: nil, bottom: nil, right: nil,
-//            paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 140, height: 140
-//        )
-        //plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        signUpLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureViewComponents()
-//        view.addSubview(alreadyhaveaccountButton)
-//        alreadyhaveaccountButton.anchor(
-//            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 0, height: 50
-//        )
     }
     
     func configureViewComponents() {
-        let stackView = UIStackView(arrangedSubviews: [fullNameTextField, occupationTextField, emailTextField,  passwordTextField, signupButton])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
+        view.addSubview(fullNameTextField)
+        fullNameTextField.snp.makeConstraints {
+            constraint_FirstTextField = $0.top.equalTo(signUpLabel.snp.bottom).offset(20).constraint
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        view.addSubview(stackView)
-        stackView.anchor(
-            top: signUpLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,
-            paddingTop: 24, paddingLeft: 20, paddingBottom: 0, paddingRight: 20,
-            width: 0, height: 310
-        )
+        view.addSubview(occupationTextField)
+        occupationTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(fullNameTextField)
+            $0.top.equalTo(fullNameTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(occupationTextField)
+            $0.top.equalTo(occupationTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(passwordTextField)
+        passwordTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(16)
+        }
+        
+        view.addSubview(signupButton)
+        signupButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.leading.trailing.equalTo(passwordTextField)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
+        }
     }
     
     // MARK: - Selectors
     
-    @objc func formValidation() {
-        guard emailTextField.hasText,
-        passwordTextField.hasText,
-        fullNameTextField.hasText,
-        occupationTextField.hasText
-            else {
-            signupButton.isEnabled = false
-            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            signupButton.setTitleColor(.gray, for: .normal)
-            return
-            }
-        signupButton.isEnabled = true
-        signupButton.backgroundColor = .black
-        signupButton.setTitleColor(.white, for: .normal)
-    }
-    
-    @objc func handleSelectProfilePhoto() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-
-        //present ImagePicker
-        imagePicker.modalPresentationStyle = .fullScreen
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-//    @objc func handleShowLogin() {
-//        _ = navigationController?.popViewController(animated: true)
-//    }
-    
     @objc func handleSignUp() {
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
         guard let password = passwordTextField.text else { return }
+                
+        hideToast()
+        
+        if !email.isValidEmail {
+            emailTextField.showError(message: "Please check your email address for misspellings.")
+            toggleSignupButtonState(enabled: false)
+            return
+        }
         
         SVProgressHUD.show()
         
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-            guard error == nil else {
-                SVProgressHUD.showError(withStatus: "Error signing up")
-                print("Failed to create user with error", error!.localizedDescription)
+        Auth.auth().createUser(withEmail: email, password: password) { [unowned self] (result, error) in
+            SVProgressHUD.dismiss()
+            
+            if let error = error {
+                self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
+                print("Failed to create user with error", error.localizedDescription)
                 return
             }
             
@@ -229,97 +206,84 @@ class SignUpVC: UIViewController {
     private func handleResult(_ result: AuthDataResult?) {
         guard let fullName = fullNameTextField.text else { return }
         guard let occupation = occupationTextField.text else { return }
-        //guard let username = usernameTextField.text?.lowercased() else { return }
         
         guard let uid = result?.user.uid else {
-            SVProgressHUD.showError(withStatus: "User Id not found!")
+            self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self)
+            print("User Id not found!")
             return
         }
         
-        if imageChanged,
-            let profileImage = self.plusPhotoButton.imageView?.image,
-            let uploadData = profileImage.jpegData(compressionQuality: 0.3) {
-            let filename = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child(filename)
-            
-            storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
-                var dictionaryValues = [
-                    "name": fullName,
-                    "occupation": occupation
-                    //"username": username
-                ]
-                var values = [uid: dictionaryValues]
-                
-                guard error == nil else {
-                    print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
-                    self.updateUserValues(values)
-                    return
-                }
-                
-                storageRef.downloadURL(completion: { (downloadURL, error) in
-                    let profileImageUrl = downloadURL?.absoluteString ?? ""
-                    dictionaryValues["profileImageUrl"] = profileImageUrl
-                    values = [uid: dictionaryValues]
-                    
-                    self.updateUserValues(values)
-                })
-            }
-        } else {
-            // Create user without uploading a profile image.
-            let dictionaryValues = [
-                "name": fullName,
-                "occupation": occupation
-                //"username": username,
-            ]
-            let values = [uid: dictionaryValues]
-            
-            updateUserValues(values)
-        }
+        // Create user without uploading a profile image.
+        let dictionaryValues = [
+            "name": fullName,
+            "occupation": occupation
+        ]
+        let values = [uid: dictionaryValues]
+        
+        updateUserValues(values, uid: uid)
     }
     
-    private func updateUserValues(_ values: [String : Any]) {
-        USER_REF.updateChildValues(values) { (error, ref) in
+    private func updateUserValues(_ values: [String : Any], uid: String) {
+        USER_REF.updateChildValues(values) { [unowned self] (error, ref) in
             if error != nil {
                 SVProgressHUD.showError(withStatus: "Profile update failed!")
             } else {
                 SVProgressHUD.showSuccess(withStatus: "")
             }
             
-            // Inform RootVC.
-            NotificationCenter.default.post(
-                name: RootVC.didLoginNotification,
-                object: nil
-            )
+            self.presentSelectPhoto(uid: uid)
         }
     }
-}
-
-// MARK: - UIImagePickerControllerDelegate
-
-extension SignUpVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // selected image
-        guard let profileImage = info[.editedImage] as? UIImage else { return }
-        
-        // configure plusPhotoButton with selected image
-        plusPhotoButton.layer.cornerRadius = plusPhotoButton.frame.width / 2
-        plusPhotoButton.layer.masksToBounds = true
-        plusPhotoButton.layer.borderColor = UIColor.black.cgColor
-        plusPhotoButton.layer.borderWidth = 2
-        plusPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        // upload profile image to Firebase at SignUp
-        imageChanged = true
-        
-        dismiss(animated: true, completion: nil)
+    
+    private func presentSelectPhoto(uid: String) {
+        let vc = SelectPhotoVC()
+        vc.uid = uid
+        vc.fullName = fullNameTextField.text ?? ""
+        vc.occupation = occupationTextField.text ?? ""
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension SignUpVC: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
+            dtTxtField.showError(message: "This field is required.")
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited {
+            dtTxtField.showError(message: "This field is required.")
+            hideToast()
+        }
+        
+        return true
+    }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        dtTxtField.hasEdited = true
+        
         // check the textfield
         if textField == fullNameTextField || textField == occupationTextField {
             let maxLength = 36
@@ -327,7 +291,63 @@ extension SignUpVC: UITextFieldDelegate {
             let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             return newString.length <= maxLength
         }
+        
         // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
+        
         return true
+    }
+
+    @objc func formValidation(_ textField: DTTextField) {
+        checkContentsAndToggleButtonState()
+        
+        if textField.hasEdited {
+            if !textField.hasText {
+                textField.showError(message: "This field is required.")
+            }
+        }
+    }
+    
+    private func checkContentsAndToggleButtonState() {
+        guard emailTextField.hasText,
+              passwordTextField.hasText,
+              fullNameTextField.hasText,
+              occupationTextField.hasText
+        else {
+            toggleSignupButtonState(enabled: false)
+            return
+        }
+        
+        hideToast()
+        toggleSignupButtonState(enabled: true)
+    }
+    
+    private func toggleSignupButtonState(enabled: Bool) {
+        if enabled {
+            signupButton.isEnabled = true
+            signupButton.backgroundColor = .black
+            signupButton.setTitleColor(.white, for: .normal)
+        } else {
+            signupButton.isEnabled = false
+            signupButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            signupButton.setTitleColor(.gray, for: .normal)
+        }
+    }
+}
+
+// MARK: - ToastDelegate
+
+extension SignUpVC: ToastDelegate {
+    func userdidTapToast(_ toast: Toast, withData data: Any?) {
+        if let error = data as? Error {
+            if error.emailAlreadyInUse {
+                WelcomeVC.shouldShowLoginVC = true
+                popToPrevious()
+            }
+        }
+    }
+    
+    @objc
+    private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
     }
 }

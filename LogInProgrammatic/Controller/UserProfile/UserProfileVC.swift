@@ -42,23 +42,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         print("UserProfileVC deallocated! 🐶")
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        if fromTabBar {
-//            navigationController?.setNavigationBarHidden(true, animated: animated)
-//        } else {
-//            navigationController?.setNavigationBarHidden(false, animated: animated)
-//        }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = user?.name
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         self.collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
@@ -84,10 +76,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         fetchPosts()
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        title = ""
+    }
     
     /**
      Remove the observers. Called by tabBarController.
@@ -127,7 +120,22 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 160)
+        var height: CGFloat = 180
+        let normalHeight: CGFloat = 120
+        
+        if user?.bio == nil || user?.bio.isValidValue == false {
+            height = normalHeight
+        } else {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 13)
+            label.textColor = .black
+            label.numberOfLines = 4
+            label.text = user?.bio
+            let computedHeight = label.getSize(constrainedWidth: view.frame.width - (16 + 20)).height
+            height = computedHeight + normalHeight
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -160,7 +168,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         header.delegate = self
 
         // set the user in header
-        header.user = self.user
+        header.user = user
+        
         navigationItem.title = user?.name
 
         // return header

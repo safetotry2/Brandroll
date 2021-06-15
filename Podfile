@@ -14,6 +14,7 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Database'
   pod 'Kingfisher'
   pod 'SVProgressHUD'
+  pod 'SnapKit'
 end
 
 post_install do |installer|

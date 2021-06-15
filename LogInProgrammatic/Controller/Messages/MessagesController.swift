@@ -49,6 +49,8 @@ class MessagesController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        
         messagesUtils = MessagesUtils()
         MessagesController.messages.removeAll()
         MessagesController.messagesDictionary.removeAll()
@@ -170,9 +172,6 @@ class MessagesController: UITableViewController {
     }
     
     func configureNavigationBar() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .white
         navigationItem.title = "Messages"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleNewMessage))
     }

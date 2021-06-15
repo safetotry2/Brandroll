@@ -6,21 +6,16 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import SnapKit
+import UIKit
 
-class LoginVC: UIViewController {
-
+class LoginVC: UIViewController, AuthToastable {
+    
     // MARK: - Properties
     
-//    let selectPhotoButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("Select Photo VC", for: .normal)
-//        button.setTitleColor(.gray, for: .normal)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
-//        return button
-//    }()
+    var toast: Toast?
+    var constraint_FirstTextField: Constraint?
     
     let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
     
@@ -42,31 +37,41 @@ class LoginVC: UIViewController {
         return view
     }()
     
-    let emailTextField: UITextField = {
-        let tf = UITextField()
+    lazy var emailTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Email address"
-        //tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
         tf.keyboardType = .emailAddress
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
     }()
     
-    let passwordTextField: UITextField = {
-        let tf = UITextField()
+    lazy var passwordTextField: DTTextField = {
+        let tf = DTTextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
         tf.backgroundColor = .white
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.setLeftPaddingPoints(7)
-        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        
+        tf.floatingDisplayStatus = .never
+        tf.dtborderStyle = .rounded
+        tf.delegate = self
+        
+        tf.addTarget(self, action: #selector(formValidation(_:)), for: .editingChanged)
         return tf
+    }()
+    
+    lazy var textFields: [DTTextField] = {
+        return [emailTextField, passwordTextField]
     }()
     
     let loginButton: UIButton = {
@@ -81,25 +86,6 @@ class LoginVC: UIViewController {
         return button
     }()
     
-//    let forgotPasswordButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let attributedTitle = NSMutableAttributedString(string: "Forgot your password?", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray])
-//        button.setAttributedTitle(attributedTitle, for: .normal)
-//        button.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
-//        return button
-//    }()
-    
-//    let donthaveaccountButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let attributedTitle = NSMutableAttributedString(string: "Don't have an account?  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-//        attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)]))
-//        button.setAttributedTitle(attributedTitle, for: .normal)
-//
-//        button.addTarget(self, action: #selector(handleShowSignup), for: .touchUpInside)
-//
-//        return button
-//    }()
-    
     // MARK: Overrides
     
     deinit {
@@ -111,10 +97,7 @@ class LoginVC: UIViewController {
         
         //background color
         view.backgroundColor = .white
-        
-        //hide nav bar
-        navigationController?.navigationBar.isHidden = true
-        
+                
         view.addSubview(logoContainerView)
         logoContainerView.anchor(
             top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,
@@ -130,47 +113,23 @@ class LoginVC: UIViewController {
         )
         
         configureViewComponents()
-        
-//        view.addSubview(donthaveaccountButton)
-//        donthaveaccountButton.anchor(
-//            top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-//            width: 0, height: 50
-//        )
-        
     }
     
     // MARK: - Functions
     
-//    @objc func handleSelectPhoto() {
-//        let selectPhoto = SelectPhotoVC()
-//        navigationController?.pushViewController(selectPhoto, animated: true)
-//    }
-    
-//    @objc func handleShowSignup() {
-//        let signUpVC = SignUpVC()
-//        navigationController?.pushViewController(signUpVC, animated: true)
-//    }
-    
-//    @objc func handleForgotPassword() {
-//        print("Handle Forgot Password")
-//    }
-    
     @objc func handlelogin() {
-        guard let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: ""),
+              let password = passwordTextField.text else { return }
+        
+        hideToast()
         
         // sign user in with email and password
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (user, error) in
             // handle error
             if let error = error {
+                self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
                 print("Unable to sign user in with error", error.localizedDescription)
-                self.alert(
-                    title: "Error",
-                    message: "Unable to sign user in with error: \(error.localizedDescription)",
-                    okayButtonTitle: "OK",
-                    withBlock: nil
-                )
+                
                 return
             }
             
@@ -184,44 +143,101 @@ class LoginVC: UIViewController {
         }
     }
     
-    @objc func formValidation() {
-        // ensures that email and password text fields have text
-        guard
-        emailTextField.hasText,
-        passwordTextField.hasText
-            else {
-                // handle cases for above conditions not met
-                loginButton.isEnabled = false
-                loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-                loginButton.setTitleColor(.gray, for: .normal)
-                return
-            }
-        // handle cases for conditions were met
-        loginButton.isEnabled = true
-        loginButton.backgroundColor = .black
-        loginButton.setTitleColor(.white, for: .normal)
-    }
-    
     func configureViewComponents() {
-        let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fillEqually
+        view.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints {
+            constraint_FirstTextField = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        view.addSubview(stackView)
-        stackView.anchor(top: logoContainerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 180)
+        view.addSubview(passwordTextField)
+        passwordTextField.snp.makeConstraints {
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(emailTextField.snp.bottom).offset(16)
+        }
         
-//        view.addSubview(forgotPasswordButton)
-//        forgotPasswordButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//        forgotPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//
-//        view.addSubview(selectPhotoButton)
-//        selectPhotoButton.anchor(top: forgotPasswordButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//        selectPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        view.addSubview(loginButton)
+        loginButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.leading.trailing.equalTo(emailTextField)
+            $0.top.equalTo(passwordTextField.snp.bottom).offset(16)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+}
 
+// MARK: - UITextFieldDelegate
+
+extension LoginVC: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
+            dtTxtField.showError(message: "This field is required.")
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        if dtTxtField.hasEdited {
+            dtTxtField.showError(message: "This field is required.")
+            hideToast()
+        }
+        
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let dtTxtField = textField as? DTTextField else {
+            return true
+        }
+        
+        dtTxtField.hasEdited = true
+        
+        return true
+    }
+    
+    @objc func formValidation(_ textField: DTTextField) {
+        checkContentsAndToggleButtonState()
+        
+        if textField.hasEdited {
+            if !textField.hasText {
+                textField.showError(message: "This field is required.")
+            }
+        }
+    }
+    
+    private func checkContentsAndToggleButtonState() {
+        // ensures that email and password text fields have text
+        guard
+            emailTextField.hasText,
+            passwordTextField.hasText
+        else {
+            // handle cases for above conditions not met
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            loginButton.setTitleColor(.gray, for: .normal)
+            return
+        }
+            
+        // handle cases for conditions were met
+        hideToast()
+        loginButton.isEnabled = true
+        loginButton.backgroundColor = .black
+        loginButton.setTitleColor(.white, for: .normal)
+    }
 }

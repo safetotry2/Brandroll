@@ -12,6 +12,8 @@ class WelcomeVC: UIViewController {
 
     // MARK: - Properties
     
+    static var shouldShowLoginVC = false
+    
     let getStartedButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Get started", for: .normal)
@@ -37,6 +39,15 @@ class WelcomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if WelcomeVC.shouldShowLoginVC {
+            handleAlreadyHaveAccount()
+            WelcomeVC.shouldShowLoginVC = false
+        }
     }
     
     // MARK: - Functions

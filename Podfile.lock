@@ -423,6 +423,7 @@ PODS:
   - SDWebImage (5.10.4):
     - SDWebImage/Core (= 5.10.4)
   - SDWebImage/Core (5.10.4)
+  - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
   - SwiftyGif (5.4.0)
 
@@ -435,6 +436,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Firebase/Storage
   - Kingfisher
+  - SnapKit
   - SVProgressHUD
 
 SPEC REPOS:
@@ -445,6 +447,7 @@ SPEC REPOS:
     - DKPhotoGallery
     - Kingfisher
     - SDWebImage
+    - SnapKit
     - SVProgressHUD
     - SwiftyGif
   trunk:
@@ -510,9 +513,10 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
 
-PODFILE CHECKSUM: 4204d09a10d6ddc9adfb472c3955e31f339e0821
+PODFILE CHECKSUM: 856a50ce6e87d4bd5673ca255e1e0e824b2eadc4
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1
