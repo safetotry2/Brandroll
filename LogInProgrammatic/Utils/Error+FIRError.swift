@@ -10,11 +10,15 @@ import Firebase
 import Foundation
 
 extension Error {
-    var presentableMessage: String {
+    var firAuthErrorCode: AuthErrorCode? {
         let nsError = self as NSError
         let code = nsError.code
         
-        if let firAuthErrorCode = AuthErrorCode(rawValue: code) {
+        return AuthErrorCode(rawValue: code)
+    }
+    
+    var presentableMessage: String {
+        if let firAuthErrorCode = firAuthErrorCode {
             switch firAuthErrorCode {
             case .userNotFound, .wrongPassword:
                 return "The password or email address you entered is incorrect. Contact us if you are having trouble logging in."
@@ -28,12 +32,11 @@ extension Error {
         return "Unable to sign user in with error \(localizedDescription)"
     }
     
+    var userNotFoundOrWrongPassword: Bool {
+        firAuthErrorCode == .wrongPassword || firAuthErrorCode == .userNotFound
+    }
+    
     var emailAlreadyInUse: Bool {
-        let nsError = self as NSError
-        let code = nsError.code
-        
-        let firAuthErrorCode = AuthErrorCode(rawValue: code)
-        
-        return firAuthErrorCode == .emailAlreadyInUse
+        firAuthErrorCode == .emailAlreadyInUse
     }
 }

@@ -138,6 +138,10 @@ class LoginVC: UIViewController, AuthToastable {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
                 print("Unable to sign user in with error", error.localizedDescription)
                 
+                if error.userNotFoundOrWrongPassword {
+                    toggleLoginButtonState(enabled: false)
+                }
+                
                 return
             }
             
@@ -244,16 +248,24 @@ extension LoginVC: UITextFieldDelegate {
             passwordTextField.hasValidValue
         else {
             // handle cases for above conditions not met
-            loginButton.isEnabled = false
-            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            loginButton.setTitleColor(.gray, for: .normal)
+            toggleLoginButtonState(enabled: false)
             return
         }
             
         // handle cases for conditions were met
         hideToast()
-        loginButton.isEnabled = true
-        loginButton.backgroundColor = .black
-        loginButton.setTitleColor(.white, for: .normal)
+        toggleLoginButtonState(enabled: true)
+    }
+    
+    private func toggleLoginButtonState(enabled: Bool) {
+        if enabled {
+            loginButton.isEnabled = true
+            loginButton.backgroundColor = .black
+            loginButton.setTitleColor(.white, for: .normal)
+        } else {
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            loginButton.setTitleColor(.gray, for: .normal)
+        }
     }
 }
