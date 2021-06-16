@@ -208,6 +208,11 @@ class SignUpVC: UIViewController, AuthToastable {
             if let error = error {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
                 print("Failed to create user with error", error.localizedDescription)
+                
+                if error.emailAlreadyInUse {
+                    toggleSignupButtonState(enabled: false)
+                }
+                
                 return
             }
             
@@ -325,7 +330,11 @@ extension SignUpVC: UITextFieldDelegate {
         guard emailTextField.hasText,
               passwordTextField.hasText,
               fullNameTextField.hasText,
-              occupationTextField.hasText
+              occupationTextField.hasText,
+              emailTextField.hasValidValue,
+              passwordTextField.hasValidValue,
+              fullNameTextField.hasValidValue,
+              occupationTextField.hasValidValue
         else {
             toggleSignupButtonState(enabled: false)
             return
