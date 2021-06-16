@@ -198,10 +198,6 @@ extension LoginVC: UITextFieldDelegate {
             return true
         }
         
-        if textField == passwordTextField {
-            textField.font = UIFont.systemFont(ofSize: 16)
-        }
-        
         if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
             dtTxtField.showError(message: "This field is required.")
         }
