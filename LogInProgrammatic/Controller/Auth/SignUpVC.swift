@@ -297,6 +297,18 @@ extension SignUpVC: UITextFieldDelegate {
             return true
         }
         
+        dtTxtField.hasEdited = true
+        
+        // check the textfield
+        if textField == fullNameTextField || textField == occupationTextField {
+            let maxLength = 36
+            let currentString: NSString = (textField.text ?? "") as NSString
+            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
+            return newString.length <= maxLength
+        }
+        
+        // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
+        
         if textField == passwordTextField {
             var hashPassword = String()
             let newChar = string.first
@@ -310,20 +322,9 @@ extension SignUpVC: UITextFieldDelegate {
 
             for _ in 0..<passwordText.count {  hashPassword += "•" }
             textField.text = hashPassword
+            formValidation(passwordTextField)
             return false
         }
-        
-        dtTxtField.hasEdited = true
-        
-        // check the textfield
-        if textField == fullNameTextField || textField == occupationTextField {
-            let maxLength = 36
-            let currentString: NSString = (textField.text ?? "") as NSString
-            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-            return newString.length <= maxLength
-        }
-        
-        // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
         
         return true
     }
@@ -340,11 +341,10 @@ extension SignUpVC: UITextFieldDelegate {
     
     private func checkContentsAndToggleButtonState() {
         guard emailTextField.hasText,
-              passwordTextField.hasText,
               fullNameTextField.hasText,
               occupationTextField.hasText,
               emailTextField.hasValidValue,
-              passwordTextField.hasValidValue,
+              passwordText.isValidValue,
               fullNameTextField.hasValidValue,
               occupationTextField.hasValidValue
         else {

@@ -223,6 +223,8 @@ extension LoginVC: UITextFieldDelegate {
             return true
         }
         
+        dtTxtField.hasEdited = true
+        
         if textField == passwordTextField {
             var hashPassword = String()
             let newChar = string.first
@@ -236,10 +238,9 @@ extension LoginVC: UITextFieldDelegate {
 
             for _ in 0..<passwordText.count {  hashPassword += "•" }
             textField.text = hashPassword
+            formValidation(passwordTextField)
             return false
         }
-        
-        dtTxtField.hasEdited = true
         
         return true
     }
@@ -258,9 +259,8 @@ extension LoginVC: UITextFieldDelegate {
         // ensures that email and password text fields have text
         guard
             emailTextField.hasText,
-            passwordTextField.hasText,
             emailTextField.hasValidValue,
-            passwordTextField.hasValidValue
+            passwordText.isValidValue
         else {
             // handle cases for above conditions not met
             toggleLoginButtonState(enabled: false)
