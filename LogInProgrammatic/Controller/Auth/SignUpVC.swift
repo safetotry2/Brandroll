@@ -37,7 +37,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Email"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
@@ -51,12 +50,11 @@ class SignUpVC: UIViewController, AuthToastable {
         return tf
     }()
     
+    var passwordText = ""
     lazy var passwordTextField: DTTextField = {
         let tf = DTTextField()
         tf.placeholder = "Password"
-        tf.isSecureTextEntry = true
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         
         tf.floatingDisplayStatus = .never
@@ -71,7 +69,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Business name"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
@@ -88,7 +85,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Occupation/Industry"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
@@ -299,6 +295,22 @@ extension SignUpVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let dtTxtField = textField as? DTTextField else {
             return true
+        }
+        
+        if textField == passwordTextField {
+            var hashPassword = String()
+            let newChar = string.first
+            let offsetToUpdate = passwordText.index(passwordText.startIndex, offsetBy: range.location)
+
+            if string == "" {
+                passwordText.remove(at: offsetToUpdate)
+                return true
+            }
+            else { passwordText.insert(newChar!, at: offsetToUpdate) }
+
+            for _ in 0..<passwordText.count {  hashPassword += "•" }
+            textField.text = hashPassword
+            return false
         }
         
         dtTxtField.hasEdited = true
