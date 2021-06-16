@@ -304,6 +304,7 @@ public class DTTextField: UITextField {
         lblError.frame = CGRect(x: paddingX, y: 0, width: boundWithPadding.width, height: boundWithPadding.height)
         lblError.sizeToFit()
         
+        
         invalidateIntrinsicContentSize()
     }
     
@@ -351,6 +352,7 @@ public class DTTextField: UITextField {
         lblError.isHidden = true
         lblError.frame = CGRect.zero
         invalidateIntrinsicContentSize()
+        borderColor = UIColor.lightGray
     }
     
     fileprivate func showFloatingLabel(_ animated:Bool) {
