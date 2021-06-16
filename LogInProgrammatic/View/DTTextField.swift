@@ -260,10 +260,12 @@ public class DTTextField: UITextField {
     public func showError(message:String? = nil) {
         if let msg = message { errorMessage = msg }
         showErrorLabel = true
+        borderColor = UIColor.red
     }
     
     public func hideError()  {
         showErrorLabel = false
+        borderColor = UIColor.lightGray
     }
     
 
@@ -435,7 +437,7 @@ public class DTTextField: UITextField {
     
     @objc fileprivate func textFieldTextChanged(){
         guard hideErrorWhenEditing && showErrorLabel else { return }
-        showErrorLabel = false
+        hideError()
     }
     
     override public var intrinsicContentSize: CGSize{
