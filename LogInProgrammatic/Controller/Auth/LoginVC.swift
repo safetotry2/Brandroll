@@ -239,7 +239,9 @@ extension LoginVC: UITextFieldDelegate {
         // ensures that email and password text fields have text
         guard
             emailTextField.hasText,
-            passwordTextField.hasText
+            passwordTextField.hasText,
+            emailTextField.hasValidValue,
+            passwordTextField.hasValidValue
         else {
             // handle cases for above conditions not met
             loginButton.isEnabled = false
