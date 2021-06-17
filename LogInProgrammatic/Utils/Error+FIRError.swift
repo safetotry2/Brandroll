@@ -20,7 +20,7 @@ extension Error {
     var presentableMessage: String {
         if let firAuthErrorCode = firAuthErrorCode {
             switch firAuthErrorCode {
-            case .userNotFound, .wrongPassword:
+            case .userNotFound, .wrongPassword, .invalidEmail:
                 return "The password or email address you entered is incorrect. Contact us if you are having trouble logging in."
             case .emailAlreadyInUse:
                 return "There’s already an account with this email address. Tap here to log in."
