@@ -231,8 +231,8 @@ class SignUpVC: UIViewController, AuthToastable {
         
         // Create user without uploading a profile image.
         let dictionaryValues = [
-            "name": fullName,
-            "occupation": occupation
+            "name": fullName.condensedWhitespace,
+            "occupation": occupation.condensedWhitespace
         ]
         let values = [uid: dictionaryValues]
         
@@ -275,6 +275,10 @@ extension SignUpVC: UITextFieldDelegate {
         
         if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
             dtTxtField.showError(message: "This field is required.")
+        }
+        
+        if (dtTxtField.hasEdited && dtTxtField == passwordTextField) && !passwordText.isValidValue {
+            passwordTextField.showError(message: "This field is required.")
         }
         
         return true

@@ -36,6 +36,10 @@ extension Error {
         firAuthErrorCode == .wrongPassword || firAuthErrorCode == .userNotFound
     }
     
+    var badEmail: Bool {
+        firAuthErrorCode == .invalidEmail
+    }
+    
     var emailAlreadyInUse: Bool {
         firAuthErrorCode == .emailAlreadyInUse
     }

@@ -137,7 +137,7 @@ class LoginVC: UIViewController, AuthToastable {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
                 print("Unable to sign user in with error", error.localizedDescription)
                 
-                if error.userNotFoundOrWrongPassword {
+                if error.userNotFoundOrWrongPassword || error.badEmail {
                     toggleLoginButtonState(enabled: false)
                 }
                 
@@ -197,9 +197,13 @@ extension LoginVC: UITextFieldDelegate {
         guard let dtTxtField = textField as? DTTextField else {
             return true
         }
-        
+                
         if dtTxtField.hasEdited && !dtTxtField.hasValidValue {
             dtTxtField.showError(message: "This field is required.")
+        }
+        
+        if (dtTxtField.hasEdited && dtTxtField == passwordTextField) && !passwordText.isValidValue {
+            passwordTextField.showError(message: "This field is required.")
         }
         
         return true
