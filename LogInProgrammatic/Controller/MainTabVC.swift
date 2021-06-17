@@ -140,6 +140,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let navController = BaseNavCon(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage
         navController.tabBarItem.selectedImage = selectedImage
+        navController.tabBarItem.title = ""
         navController.navigationBar.tintColor = .black
         
         // return nav controller
@@ -191,6 +192,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             dot.isHidden = true
             return true
         }
+        
+        viewController.tabBarItem.title = ""
+        
         return true
     }
     
