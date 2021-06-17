@@ -277,7 +277,9 @@ class EditProfileController: UIViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let user = self.user else { return }
         
-        Storage.storage().reference(forURL: user.profileImageUrl).delete(completion: nil)
+        if let profileImageURL = user.profileImageUrl {
+            Storage.storage().reference(forURL: profileImageURL).delete(completion: nil)
+        }
         
         let filename = NSUUID().uuidString
         guard let updatedProfileImage = profileImageView.image else { return }
