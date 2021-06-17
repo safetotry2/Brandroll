@@ -55,6 +55,8 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Password"
         tf.backgroundColor = .white
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
         tf.font = UIFont.systemFont(ofSize: 16)
         
         tf.floatingDisplayStatus = .never
@@ -186,7 +188,6 @@ class SignUpVC: UIViewController, AuthToastable {
     
     @objc func handleSignUp() {
         guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
-        guard let password = passwordTextField.text else { return }
                 
         hideToast()
         
@@ -198,7 +199,7 @@ class SignUpVC: UIViewController, AuthToastable {
         
         SVProgressHUD.show()
         
-        Auth.auth().createUser(withEmail: email, password: password) { [unowned self] (result, error) in
+        Auth.auth().createUser(withEmail: email, password: passwordText) { [unowned self] (result, error) in
             SVProgressHUD.dismiss()
             
             if let error = error {

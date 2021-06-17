@@ -67,6 +67,8 @@ class LoginVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Password"
         tf.backgroundColor = .white
+        tf.autocapitalizationType = .none
+        tf.autocorrectionType = .no
         tf.font = UIFont.systemFont(ofSize: 16)
         
         tf.floatingDisplayStatus = .never
@@ -125,13 +127,11 @@ class LoginVC: UIViewController, AuthToastable {
     // MARK: - Functions
     
     @objc func handlelogin() {
-        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: ""),
-              let password = passwordTextField.text else { return }
-        
+        guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
         hideToast()
         
         // sign user in with email and password
-        Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (user, error) in
+        Auth.auth().signIn(withEmail: email, password: passwordText) { [unowned self] (user, error) in
             // handle error
             if let error = error {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
