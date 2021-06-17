@@ -60,7 +60,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         checkSeenMessages()
     }
     

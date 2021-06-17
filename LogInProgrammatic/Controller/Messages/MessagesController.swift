@@ -49,7 +49,7 @@ class MessagesController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         
         messagesUtils = MessagesUtils()
         MessagesController.messages.removeAll()
