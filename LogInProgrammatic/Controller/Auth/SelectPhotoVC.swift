@@ -121,8 +121,7 @@ class SelectPhotoVC: UIViewController {
                 storageRef.downloadURL(completion: { [unowned self] (downloadURL, error) in
                     let profileImageUrl = downloadURL?.absoluteString ?? ""
                     let imagedic = ["profileImageUrl": profileImageUrl]
-                    let dic = [uid! : imagedic]
-                    updateUserValues(dic)
+                    updateUserValues(imagedic)
                 })
             }
         } else {
@@ -131,7 +130,9 @@ class SelectPhotoVC: UIViewController {
     }
     
     private func updateUserValues(_ values: [String : Any]) {
-        USER_REF.updateChildValues(values) { [unowned self] (error, ref) in
+        USER_REF
+            .child(uid!)
+            .updateChildValues(values) { [unowned self] (error, ref) in
             if error != nil {
                 SVProgressHUD.showError(withStatus: "Profile update failed!")
             } else {

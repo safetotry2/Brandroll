@@ -39,11 +39,6 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationController?.navigationBar.prefersLargeTitles = false
-        
         configureNavigationBar()
         
         collectionView.backgroundColor = .white

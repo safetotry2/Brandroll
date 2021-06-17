@@ -260,10 +260,12 @@ public class DTTextField: UITextField {
     public func showError(message:String? = nil) {
         if let msg = message { errorMessage = msg }
         showErrorLabel = true
+        borderColor = UIColor.red
     }
     
     public func hideError()  {
         showErrorLabel = false
+        borderColor = UIColor.lightGray
     }
     
 
@@ -301,6 +303,7 @@ public class DTTextField: UITextField {
         let boundWithPadding = CGSize(width: bounds.width - (paddingX * 2), height: bounds.height)
         lblError.frame = CGRect(x: paddingX, y: 0, width: boundWithPadding.width, height: boundWithPadding.height)
         lblError.sizeToFit()
+        
         
         invalidateIntrinsicContentSize()
     }
@@ -349,6 +352,7 @@ public class DTTextField: UITextField {
         lblError.isHidden = true
         lblError.frame = CGRect.zero
         invalidateIntrinsicContentSize()
+        borderColor = UIColor.lightGray
     }
     
     fileprivate func showFloatingLabel(_ animated:Bool) {
@@ -435,7 +439,7 @@ public class DTTextField: UITextField {
     
     @objc fileprivate func textFieldTextChanged(){
         guard hideErrorWhenEditing && showErrorLabel else { return }
-        showErrorLabel = false
+        hideError()
     }
     
     override public var intrinsicContentSize: CGSize{

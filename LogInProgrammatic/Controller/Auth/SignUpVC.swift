@@ -37,7 +37,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Email"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .none
         tf.autocorrectionType = .no
@@ -51,12 +50,11 @@ class SignUpVC: UIViewController, AuthToastable {
         return tf
     }()
     
+    var passwordText = ""
     lazy var passwordTextField: DTTextField = {
         let tf = DTTextField()
         tf.placeholder = "Password"
-        tf.isSecureTextEntry = true
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         
         tf.floatingDisplayStatus = .never
@@ -71,7 +69,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Business name"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
@@ -88,7 +85,6 @@ class SignUpVC: UIViewController, AuthToastable {
         let tf = DTTextField()
         tf.placeholder = "Occupation/Industry"
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.autocapitalizationType = .words
         tf.autocorrectionType = .no
@@ -208,6 +204,11 @@ class SignUpVC: UIViewController, AuthToastable {
             if let error = error {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
                 print("Failed to create user with error", error.localizedDescription)
+                
+                if error.emailAlreadyInUse {
+                    toggleSignupButtonState(enabled: false)
+                }
+                
                 return
             }
             
@@ -308,6 +309,23 @@ extension SignUpVC: UITextFieldDelegate {
         
         // don't limit characters if textField is NOT `fullNameTextField` or `occupationTextField`
         
+        if textField == passwordTextField {
+            var hashPassword = String()
+            let newChar = string.first
+            let offsetToUpdate = passwordText.index(passwordText.startIndex, offsetBy: range.location)
+
+            if string == "" {
+                passwordText.remove(at: offsetToUpdate)
+                return true
+            }
+            else { passwordText.insert(newChar!, at: offsetToUpdate) }
+
+            for _ in 0..<passwordText.count {  hashPassword += "•" }
+            textField.text = hashPassword
+            formValidation(passwordTextField)
+            return false
+        }
+        
         return true
     }
 
@@ -323,9 +341,12 @@ extension SignUpVC: UITextFieldDelegate {
     
     private func checkContentsAndToggleButtonState() {
         guard emailTextField.hasText,
-              passwordTextField.hasText,
               fullNameTextField.hasText,
-              occupationTextField.hasText
+              occupationTextField.hasText,
+              emailTextField.hasValidValue,
+              passwordText.isValidValue,
+              fullNameTextField.hasValidValue,
+              occupationTextField.hasValidValue
         else {
             toggleSignupButtonState(enabled: false)
             return

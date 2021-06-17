@@ -62,12 +62,11 @@ class LoginVC: UIViewController, AuthToastable {
         return tf
     }()
     
+    var passwordText = ""
     lazy var passwordTextField: DTTextField = {
         let tf = DTTextField()
         tf.placeholder = "Password"
-        tf.isSecureTextEntry = true
         tf.backgroundColor = .white
-        tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 16)
         
         tf.floatingDisplayStatus = .never
@@ -137,6 +136,10 @@ class LoginVC: UIViewController, AuthToastable {
             if let error = error {
                 self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
                 print("Unable to sign user in with error", error.localizedDescription)
+                
+                if error.userNotFoundOrWrongPassword {
+                    toggleLoginButtonState(enabled: false)
+                }
                 
                 return
             }
@@ -222,9 +225,26 @@ extension LoginVC: UITextFieldDelegate {
         
         dtTxtField.hasEdited = true
         
+        if textField == passwordTextField {
+            var hashPassword = String()
+            let newChar = string.first
+            let offsetToUpdate = passwordText.index(passwordText.startIndex, offsetBy: range.location)
+
+            if string == "" {
+                passwordText.remove(at: offsetToUpdate)
+                return true
+            }
+            else { passwordText.insert(newChar!, at: offsetToUpdate) }
+
+            for _ in 0..<passwordText.count {  hashPassword += "•" }
+            textField.text = hashPassword
+            formValidation(passwordTextField)
+            return false
+        }
+        
         return true
     }
-    
+
     @objc func formValidation(_ textField: DTTextField) {
         checkContentsAndToggleButtonState()
         
@@ -239,19 +259,28 @@ extension LoginVC: UITextFieldDelegate {
         // ensures that email and password text fields have text
         guard
             emailTextField.hasText,
-            passwordTextField.hasText
+            emailTextField.hasValidValue,
+            passwordText.isValidValue
         else {
             // handle cases for above conditions not met
-            loginButton.isEnabled = false
-            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
-            loginButton.setTitleColor(.gray, for: .normal)
+            toggleLoginButtonState(enabled: false)
             return
         }
             
         // handle cases for conditions were met
         hideToast()
-        loginButton.isEnabled = true
-        loginButton.backgroundColor = .black
-        loginButton.setTitleColor(.white, for: .normal)
+        toggleLoginButtonState(enabled: true)
+    }
+    
+    private func toggleLoginButtonState(enabled: Bool) {
+        if enabled {
+            loginButton.isEnabled = true
+            loginButton.backgroundColor = .black
+            loginButton.setTitleColor(.white, for: .normal)
+        } else {
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = UIColor(white: 0, alpha: 0.08)
+            loginButton.setTitleColor(.gray, for: .normal)
+        }
     }
 }
