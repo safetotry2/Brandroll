@@ -54,9 +54,9 @@ public class DTTextField: UITextField {
     fileprivate var lblFloatPlaceholder:UILabel             = UILabel()
     fileprivate var lblError:UILabel                        = UILabel()
     
-    fileprivate let paddingX:CGFloat                        = 5.0
+    fileprivate let paddingX:CGFloat                        = 10.0
     
-    fileprivate let paddingHeight:CGFloat                   = 10.0
+    fileprivate let paddingHeight:CGFloat                   = 14.0
     fileprivate var borderLayer:CALayer                     = CALayer()
     public var dtLayer:CALayer                              = CALayer()
     public var floatPlaceholderColor:UIColor                = UIColor.black
@@ -260,7 +260,7 @@ public class DTTextField: UITextField {
     public func showError(message:String? = nil) {
         if let msg = message { errorMessage = msg }
         showErrorLabel = true
-        borderColor = UIColor.red
+        borderColor = UIColor(red: 187/255, green: 55/255, blue: 26/255, alpha: 1)
     }
     
     public func hideError()  {
@@ -284,8 +284,8 @@ public class DTTextField: UITextField {
         addSubview(lblFloatPlaceholder)
         
         lblError.frame              = CGRect.zero
-        lblError.font               = errorFont
-        lblError.textColor          = UIColor.red
+        lblError.font               = UIFont.systemFont(ofSize: 12)
+        lblError.textColor          = UIColor(red: 187/255, green: 55/255, blue: 26/255, alpha: 1)
         lblError.numberOfLines      = 0
         lblError.isHidden           = true
         
@@ -301,7 +301,8 @@ public class DTTextField: UITextField {
         lblError.text = errorMessage
         lblError.isHidden = false
         let boundWithPadding = CGSize(width: bounds.width - (paddingX * 2), height: bounds.height)
-        lblError.frame = CGRect(x: paddingX, y: 0, width: boundWithPadding.width, height: boundWithPadding.height)
+        lblError.frame = CGRect(x: 0, y: 0, width: boundWithPadding.width, height: boundWithPadding.height)
+        paddingYErrorLabel = 8
         lblError.sizeToFit()
         
         

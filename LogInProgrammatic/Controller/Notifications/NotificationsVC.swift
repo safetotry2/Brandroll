@@ -24,9 +24,15 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     private var messagesUtils: MessagesUtils?
     
     private let sendBarButtonDot = UIView()
+    
     private lazy var sendBarButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "message"), for: .normal)
+        //button.contentMode = .bottomRight
+        //button.contentMode = .topRight
+        button.imageView?.contentMode = .scaleAspectFit
+        //button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 4,bottom: 3,right: -2)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 8,bottom: 0,right: -8)
         button.addTarget(self, action: #selector(handleShowMessages), for: .touchUpInside)
         return button
     }()
@@ -59,7 +65,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
         self.navigationController?.navigationBar.prefersLargeTitles = false
         checkSeenMessages()
     }
@@ -238,8 +244,9 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         
         sendBarButton.addSubview(sendBarButtonDot)
         NSLayoutConstraint.activate([
-            sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
-            sendBarButtonDot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: 4),
+            //sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor),
+            sendBarButtonDot.trailingAnchor.constraint(equalTo: sendBarButton.trailingAnchor, constant: -2),
+            sendBarButtonDot.bottomAnchor.constraint(equalTo: sendBarButton.bottomAnchor, constant: -5),
             sendBarButtonDot.widthAnchor.constraint(equalToConstant: 6),
             sendBarButtonDot.heightAnchor.constraint(equalToConstant: 6)
         ])

@@ -132,19 +132,19 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-    lazy var settingsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.backgroundColor = .clear
-        button.contentMode = .center
-        button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 7,left: 7,bottom: 7,right: 7)
-        button.layer.cornerRadius = 15
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.layer.borderWidth = 0.5
-        button.addTarget(self, action: #selector(handleSettingsTapped), for: .touchUpInside)
-        return button
-    }()
+//    lazy var settingsButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setImage(#imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), for: .normal)
+//        button.backgroundColor = .clear
+//        button.contentMode = .center
+//        button.imageView?.contentMode = .scaleAspectFit
+//        button.imageEdgeInsets = UIEdgeInsets(top: 7,left: 7,bottom: 7,right: 7)
+//        button.layer.cornerRadius = 15
+//        button.layer.borderColor = UIColor.lightGray.cgColor
+//        button.layer.borderWidth = 0.5
+//        button.addTarget(self, action: #selector(handleSettingsTapped), for: .touchUpInside)
+//        return button
+//    }()
     
     lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
@@ -162,8 +162,9 @@ class UserProfileHeader: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setTitle("Message", for: .normal)
         button.layer.cornerRadius = 15
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.layer.borderWidth = 0.5
+        //button.layer.borderColor = UIColor.lightGray.cgColor
+        //button.layer.borderWidth = 0.5
+        button.backgroundColor = UIColor(red: 253/255, green: 180/255, blue: 75/255, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(handleMessageTapped), for: .touchUpInside)
@@ -218,13 +219,13 @@ class UserProfileHeader: UICollectionViewCell {
         if currentUid == user.uid {
             //nameHeaderLabel.isHidden = false
             editProfileButton.isHidden = false
-            settingsButton.isHidden = false
+            //settingsButton.isHidden = false
             followButton.isHidden = true
             messageButton.isHidden = true
         } else {
             //nameHeaderLabel.isHidden = true
             editProfileButton.isHidden = true
-            settingsButton.isHidden = true
+            //settingsButton.isHidden = true
             followButton.isHidden = false
             messageButton.isHidden = false
             user.checkIfUserIsFollowed(completion: { (followed) in
@@ -233,7 +234,7 @@ class UserProfileHeader: UICollectionViewCell {
                 } else {
                     self.followButton.setTitle("Follow", for: .normal)
                     self.followButton.setTitleColor(.white, for: .normal)
-                    self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+                    self.followButton.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
                 }
             })
         }

@@ -94,7 +94,9 @@ class FeedCell: UICollectionViewCell {
     
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "heart_unfilled"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentMode = .center
         button.tintColor = .black
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
@@ -102,16 +104,10 @@ class FeedCell: UICollectionViewCell {
     
     lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "comment"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "quote"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = .black
         button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    let messageButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "send2"), for: .normal)
-        button.tintColor = .black
         return button
     }()
     

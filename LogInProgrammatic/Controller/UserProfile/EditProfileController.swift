@@ -328,11 +328,6 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
 extension EditProfileController: UITextFieldDelegate, UITextViewDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        let maxLength = 36
-//        let currentString: NSString = (textField.text ?? "") as NSString
-//        let newString: NSString =
-//            currentString.replacingCharacters(in: range, with: string) as NSString
-//        return newString.length <= maxLength
         
         if textField == fullnameTextField || textField == occupationTextField {
             let maxLength = 36
@@ -373,14 +368,14 @@ extension EditProfileController: UITextFieldDelegate, UITextViewDelegate {
         return numberOfChars <= 234
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-
-        if self.view.frame.origin.y == 0 {
-            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions.curveEaseOut, animations: {
-                self.view.frame.origin.y -= 120
-            }, completion: nil)
-        }
-    }
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//
+//        if self.view.frame.origin.y == 0 {
+//            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions.curveEaseOut, animations: {
+//                self.view.frame.origin.y -= 120
+//            }, completion: nil)
+//        }
+//    }
     
     func textViewDidEndEditing(_ textField: UITextView) {
         

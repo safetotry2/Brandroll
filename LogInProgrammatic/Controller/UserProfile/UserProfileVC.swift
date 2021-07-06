@@ -28,10 +28,10 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "gear"), for: .normal)
-        button.contentMode = .center
+        button.setImage(#imageLiteral(resourceName: "wheel"), for: .normal)
+        //button.contentMode = .topRight
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 7,left: 7,bottom: 7,right: 7)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 8,bottom: 0,right: -8)
         button.addTarget(self, action: #selector(handleShowSettings), for: .touchUpInside)
         return button
     }()
@@ -44,7 +44,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
         self.navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = user?.name
     }
@@ -333,7 +333,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 } else {
                     cell.likeLabel.text = "\(likes) likes"
                 }
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_unfilled"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
         } else {
@@ -345,7 +345,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 } else {
                     cell.likeLabel.text = "\(likes) likes"
                 }
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_filled"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
         }
@@ -375,10 +375,10 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             // check if post id exists in user like structure
             if snapshot.hasChild(postId) {
                 post.didLike = true
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_filled"), for: .normal)
             } else {
                 post.didLike = false
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected-1"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_unfilled"), for: .normal)
             }
         }
     }
@@ -449,31 +449,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     private func configureNavigationBar() {
-        //guard let user = self.user else { return }
-        //guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
-        //navigationItem.title = user?.name
-        //navigationController?.navigationBar.prefersLargeTitles = true
-        
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton)
-
-        //let actionBarWidth = self.navigationController?.navigationBar.frame.width as! CGFloat
-        //let actionBarHeight = self.navigationController?.navigationBar.frame.height as! CGFloat
-
-        //let actionBarView = UIView()
-        //actionBarView.frame = CGRect (x: 0, y: 0, width: actionBarWidth, height: actionBarHeight)
-
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(customView: settingsButton)
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        //navigationItem.largeTitleDisplayMode = .never
-
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
     }
     
     func configureRefreshControl() {

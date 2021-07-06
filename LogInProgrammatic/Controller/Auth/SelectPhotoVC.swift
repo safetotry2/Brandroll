@@ -61,7 +61,7 @@ class SelectPhotoVC: UIViewController {
     let doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Done", for: .normal)
-        button.backgroundColor = .black
+        button.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 5
@@ -111,9 +111,9 @@ class SelectPhotoVC: UIViewController {
                 
                 guard error == nil else {
                     print("Failed to upload image to Firebase Storage with error", error!.localizedDescription)
-                    alert(title: "Error uploading profile image",
+                    self.alert(title: "Error uploading profile image",
                           okayButtonTitle: "OK") { _ in
-                        gotoHome()
+                            self.gotoHome()
                     }
                     return
                 }
@@ -121,7 +121,7 @@ class SelectPhotoVC: UIViewController {
                 storageRef.downloadURL(completion: { [unowned self] (downloadURL, error) in
                     let profileImageUrl = downloadURL?.absoluteString ?? ""
                     let imagedic = ["profileImageUrl": profileImageUrl]
-                    updateUserValues(imagedic)
+                    self.updateUserValues(imagedic)
                 })
             }
         } else {
@@ -139,7 +139,7 @@ class SelectPhotoVC: UIViewController {
                 SVProgressHUD.showSuccess(withStatus: "")
             }
             
-            gotoHome()
+                self.gotoHome()
         }
     }
     

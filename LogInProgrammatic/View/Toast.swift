@@ -26,7 +26,7 @@ class Toast: UIView {
     // MARK: - Functions
     // MARK: Overrides
     
-    init(bgColor: UIColor = .red,
+    init(bgColor: UIColor = UIColor(red: 187/255, green: 55/255, blue: 26/255, alpha: 1),
          text: String,
          textColor: UIColor = .white,
          delegate: ToastDelegate? = nil,

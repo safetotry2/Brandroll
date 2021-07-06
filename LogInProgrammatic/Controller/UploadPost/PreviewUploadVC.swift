@@ -56,6 +56,11 @@ class PreviewUploadVC: BaseVC {
         registerTable()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.reloadData()
@@ -96,9 +101,6 @@ class PreviewUploadVC: BaseVC {
         }
 
         navigationItem.leftBarButtonItem?.tintColor = UIColor.black
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         self.view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false

@@ -117,6 +117,11 @@ class SignUpVC: UIViewController, AuthToastable {
 
     // MARK: - Overrides
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -137,6 +142,9 @@ class SignUpVC: UIViewController, AuthToastable {
     }
     
     private func setupUI() {
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.black
+        
         view.backgroundColor = .white
         
         view.addSubview(signUpLabel)
@@ -203,11 +211,11 @@ class SignUpVC: UIViewController, AuthToastable {
             SVProgressHUD.dismiss()
             
             if let error = error {
-                self.showErrorToast(error.presentableMessage, upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
+                self.showErrorToast(error.presentableMessage, upperReferenceView: self.signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: error)
                 print("Failed to create user with error", error.localizedDescription)
                 
                 if error.emailAlreadyInUse {
-                    toggleSignupButtonState(enabled: false)
+                    self.toggleSignupButtonState(enabled: false)
                 }
                 
                 return
@@ -364,7 +372,7 @@ extension SignUpVC: UITextFieldDelegate {
     private func toggleSignupButtonState(enabled: Bool) {
         if enabled {
             signupButton.isEnabled = true
-            signupButton.backgroundColor = .black
+            signupButton.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
             signupButton.setTitleColor(.white, for: .normal)
         } else {
             signupButton.isEnabled = false

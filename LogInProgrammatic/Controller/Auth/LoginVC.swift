@@ -10,31 +10,38 @@ import Firebase
 import SnapKit
 import UIKit
 
-class LoginVC: UIViewController, AuthToastable {
+class LoginVC: UIViewController, AuthToastable, ToastDelegate {
     
     // MARK: - Properties
     
     var toast: Toast?
     var constraint_FirstTextField: Constraint?
     
-    let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
+//    let logoContainerBGColor = UIColor(red: 0/255, green: 120/255, blue: 175/255, alpha: 1)
     
-    lazy var extraSafeAreaTopView: UIView = {
-        let view = UIView()
-        view.backgroundColor = logoContainerBGColor
-        return view
-    }()
+//    lazy var extraSafeAreaTopView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = logoContainerBGColor
+//        return view
+//    }()
+//
+//    lazy var logoContainerView: UIView = {
+//        let view = UIView()
+//        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Instagram_logo_white"))
+//        logoImageView.contentMode = .scaleAspectFill
+//        view.addSubview(logoImageView)
+//        logoImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 200, height: 50)
+//        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        view.backgroundColor = logoContainerBGColor
+//        return view
+//    }()
     
-    lazy var logoContainerView: UIView = {
-        let view = UIView()
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Instagram_logo_white"))
-        logoImageView.contentMode = .scaleAspectFill
-        view.addSubview(logoImageView)
-        logoImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 200, height: 50)
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        view.backgroundColor = logoContainerBGColor
-        return view
+    let logInLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 35)
+        label.text = "Log in"
+        return label
     }()
   
     /// A quick hack for fixing the iOS 13 or earlier issue in `DTTextField` wherein the first textField becomes smaller.
@@ -101,30 +108,42 @@ class LoginVC: UIViewController, AuthToastable {
         print("Login flow deallocated! ✅")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //background color
-        view.backgroundColor = .white
-                
-        view.addSubview(logoContainerView)
-        logoContainerView.anchor(
-            top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,
-            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-            width: 0, height: 150
-        )
-        
-        view.addSubview(extraSafeAreaTopView)
-        extraSafeAreaTopView.anchor(
-            top: view.topAnchor, left: view.leftAnchor, bottom: logoContainerView.topAnchor, right: view.rightAnchor,
-            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-            width: 0, height: 150
-        )
-        
-        configureViewComponents()
+        setupUI()
     }
     
     // MARK: - Functions
+    
+    private func setupUI() {
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.black
+        view.backgroundColor = .white
+        
+//        view.addSubview(logoContainerView)
+//        logoContainerView.anchor(
+//            top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor,
+//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+//            width: 0, height: 150
+//        )
+//
+//        view.addSubview(extraSafeAreaTopView)
+//        extraSafeAreaTopView.anchor(
+//            top: view.topAnchor, left: view.leftAnchor, bottom: logoContainerView.topAnchor, right: view.rightAnchor,
+//            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+//            width: 0, height: 150
+//        )
+        
+        view.addSubview(logInLabel)
+        logInLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        configureViewComponents()
+    }
     
     @objc func handlelogin() {
         guard let email = emailTextField.text?.replacingOccurrences(of: " ", with: "") else { return }
@@ -134,11 +153,14 @@ class LoginVC: UIViewController, AuthToastable {
         Auth.auth().signIn(withEmail: email, password: passwordText) { [unowned self] (user, error) in
             // handle error
             if let error = error {
-                self.showErrorToast(error.presentableMessage, upperReferenceView: logoContainerView)
+                //self.showErrorToast(error.presentableMessage, upperReferenceView: self.logoContainerView)
+                //self.showErrorToast(error.presentableMessage, upperReferenceView: self.logInLabel)
+                self.showErrorToast(error.presentableMessage, upperReferenceView: self.logInLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self, data: nil)
+
                 print("Unable to sign user in with error", error.localizedDescription)
                 
                 if error.userNotFoundOrWrongPassword || error.badEmail {
-                    toggleLoginButtonState(enabled: false)
+                    self.toggleLoginButtonState(enabled: false)
                 }
                 
                 return
@@ -157,13 +179,13 @@ class LoginVC: UIViewController, AuthToastable {
     func configureViewComponents() {
         view.addSubview(dummyTextField)
         dummyTextField.snp.makeConstraints {
-            constraint_FirstTextField = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
+            constraint_FirstTextField = $0.top.equalTo(logInLabel.snp.bottom).offset(20).constraint
             $0.leading.trailing.equalToSuperview().inset(20)
         }
       
         view.addSubview(emailTextField)
         emailTextField.snp.makeConstraints {
-            constraint_FirstTextField = $0.top.equalTo(logoContainerView.snp.bottom).offset(20).constraint
+            constraint_FirstTextField = $0.top.equalTo(logInLabel.snp.bottom).offset(20).constraint
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -183,6 +205,10 @@ class LoginVC: UIViewController, AuthToastable {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    func userdidTapToast(_ toast: Toast, withData data: Any?) {
+        //empty ToastDelegate Protocol Stub
     }
 }
 
@@ -279,7 +305,7 @@ extension LoginVC: UITextFieldDelegate {
     private func toggleLoginButtonState(enabled: Bool) {
         if enabled {
             loginButton.isEnabled = true
-            loginButton.backgroundColor = .black
+            loginButton.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
             loginButton.setTitleColor(.white, for: .normal)
         } else {
             loginButton.isEnabled = false

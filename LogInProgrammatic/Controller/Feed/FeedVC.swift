@@ -72,7 +72,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -216,7 +215,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 } else {
                     cell.likeLabel.text = "\(likes) likes"
                 }
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_unfilled"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
         } else {
@@ -228,7 +227,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 } else {
                     cell.likeLabel.text = "\(likes) likes"
                 }
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_filled"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
         }
@@ -264,10 +263,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // check if post id exists in user like structure
             if snapshot.hasChild(postId) {
                 post.didLike = true
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_filled"), for: .normal)
             } else {
                 post.didLike = false
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected-1"), for: .normal)
+                //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_unfilled"), for: .normal)
             }
         }
     }

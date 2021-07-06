@@ -40,6 +40,12 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
     var uid: String?
     var users = [User]()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -117,7 +123,7 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
             cell.followButton.setTitle("Follow", for: .normal)
             cell.followButton.setTitleColor(.white, for: .normal)
             cell.followButton.layer.borderWidth = 0
-            cell.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            cell.followButton.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         } else {
             
             user.follow()

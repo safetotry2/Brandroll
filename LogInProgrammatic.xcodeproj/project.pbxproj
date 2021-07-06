@@ -100,7 +100,7 @@
 		043D3670259A3FE20094CE4F /* ChatInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputTextView.swift; sourceTree = "<group>"; };
 		043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogInProgrammatic.entitlements; sourceTree = "<group>"; };
 		0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProfileCell.swift; sourceTree = "<group>"; };
-		045C64A9250844DC002E8E1C /* LogInProgrammatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogInProgrammatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		045C64A9250844DC002E8E1C /* Brandroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brandroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045C64AE250844DC002E8E1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		045C64B5250844EF002E8E1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 		045C64AA250844DC002E8E1C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				045C64A9250844DC002E8E1C /* LogInProgrammatic.app */,
+				045C64A9250844DC002E8E1C /* Brandroll.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -484,7 +484,7 @@
 			);
 			name = LogInProgrammatic;
 			productName = LogInProgrammatic;
-			productReference = 045C64A9250844DC002E8E1C /* LogInProgrammatic.app */;
+			productReference = 045C64A9250844DC002E8E1C /* Brandroll.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -791,7 +791,7 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Brandroll;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -815,7 +815,7 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Brandroll;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -19,7 +19,8 @@ class WelcomeVC: UIViewController {
         button.setTitle("Get started", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.backgroundColor = .black
+        //button.backgroundColor = .black
+        button.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         button.layer.cornerRadius = 5
         button.isEnabled = true
         button.addTarget(self, action: #selector(handleGetStarted), for: .touchUpInside)
@@ -36,6 +37,11 @@ class WelcomeVC: UIViewController {
     
     // MARK: - Overrides
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -48,6 +54,11 @@ class WelcomeVC: UIViewController {
             handleAlreadyHaveAccount()
             WelcomeVC.shouldShowLoginVC = false
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // MARK: - Functions

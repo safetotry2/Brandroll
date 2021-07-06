@@ -41,7 +41,7 @@ extension UIButton {
             self.setTitle("Follow", for: .normal)
             self.setTitleColor(.white, for: .normal)
             self.layer.borderWidth = 0
-            self.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            self.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         }
     }
 }

@@ -102,24 +102,24 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         // home feed controller
         feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        let feedNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "home_unselected"), selectedImage: #imageLiteral(resourceName: "home_selected"), rootViewController: feedVC)
+        let feedNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "house_unselected"), selectedImage: #imageLiteral(resourceName: "house_selected"), rootViewController: feedVC)
         
         // search feed controller
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         searchVC = SearchVC(collectionViewLayout: layout)
-        let searchNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "search_unselected"), selectedImage: #imageLiteral(resourceName: "search_selected"), rootViewController: searchVC)
+        let searchNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "magnifier_unselected"), selectedImage: #imageLiteral(resourceName: "magnifier_selected"), rootViewController: searchVC)
         
         // select image controller
-        let selectImageVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"))
+        let selectImageVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "add_button_unselected"), selectedImage: #imageLiteral(resourceName: "add_button_unselected"))
         
         // notification controller
         notificationsVC = NotificationsVC()
-        let notificationsNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "like_unselected"), selectedImage: #imageLiteral(resourceName: "like_selected"), rootViewController: notificationsVC)
+        let notificationsNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "bell_unselected"), selectedImage: #imageLiteral(resourceName: "bell_selected"), rootViewController: notificationsVC)
         
         // profile controller
         userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        let userProfileNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "profile_unselected"), selectedImage: #imageLiteral(resourceName: "profile_selected"), rootViewController: userProfileVC)
+        let userProfileNavCon = constructNavController(unselectedImage: #imageLiteral(resourceName: "person_unselected"), selectedImage: #imageLiteral(resourceName: "person_selected"), rootViewController: userProfileVC)
         
         // view controller to be added to tab controller
         viewControllers = [
@@ -156,16 +156,16 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             // This is the actual height of the iPhone 10 screen
             if UIScreen.main.nativeBounds.height == 2436 {
                 // configure dot for iPhone X, iPhone XS, iPhone 11 Pro
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 5, width: 6, height: 6)
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
             } else if UIScreen.main.nativeBounds.height == 1792 {
                 // configure dot for iPhone XR and iPhone 11
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 5, width: 6, height: 6)
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
             } else if UIScreen.main.nativeBounds.height == 2688 {
                 // configure dot for iPhone XS Max and iPhone 11 Pro Max
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 5, width: 6, height: 6)
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
             } else {
                 // configure dot for other phone models
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16  + 5, width: 6, height: 6)
+                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16  + 6, width: 6, height: 6)
             }
             
             // create dot
@@ -343,6 +343,7 @@ extension MainTabVC: ShowPickerDelegate {
         pickerController.modalPresentationStyle = .fullScreen
         pickerController.navigationBar.tintColor = UIColor.black
         pickerController.navigationBar.barTintColor = UIColor.white
+        pickerController.navigationBar.setValue(true, forKey: "hidesShadow")
         pickerController.view.backgroundColor = .white
         
         present(pickerController, animated: true, completion: nil)

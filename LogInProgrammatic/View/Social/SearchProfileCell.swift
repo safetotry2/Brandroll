@@ -80,7 +80,7 @@ class SearchProfileCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setTitle("", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        button.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         button.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
         return button
     }()
@@ -157,7 +157,7 @@ class SearchProfileCell: UICollectionViewCell {
             self.followButton.setTitleColor(.white, for: .normal)
             self.followButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
             self.followButton.layer.borderWidth = 0
-            self.followButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            self.followButton.backgroundColor = UIColor(red: 10/255, green: 25/255, blue: 49/255, alpha: 1)
         }
         
         followButton.isHidden = false
