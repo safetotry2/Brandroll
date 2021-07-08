@@ -4,7 +4,7 @@ platform :ios, '13.2'
 use_frameworks!
 inhibit_all_warnings!
 
-target 'LogInProgrammatic' do
+target 'Brandroll' do
   pod 'DKImagePickerController'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
@@ -12,7 +12,7 @@ target 'LogInProgrammatic' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
-  pod 'Kingfisher'
+  pod 'Kingfisher', '6.0.1'
   pod 'SVProgressHUD'
   pod 'SnapKit'
 end

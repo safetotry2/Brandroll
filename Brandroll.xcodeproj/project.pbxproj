@@ -28,6 +28,8 @@
 		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
 		043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */; };
 		043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3670259A3FE20094CE4F /* ChatInputTextView.swift */; };
+		0452620E2695276300CA8EA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0452620D2695276300CA8EA4 /* GoogleService-Info.plist */; };
+		04526210269737D500CA8EA4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045C64BA250844EF002E8E1C /* Info.plist */; };
 		0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
@@ -36,7 +38,6 @@
 		045C64C425084D2C002E8E1C /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64C325084D2C002E8E1C /* LoginVC.swift */; };
 		045C64C7250857AD002E8E1C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64C6250857AD002E8E1C /* Extensions.swift */; };
 		045C64C92509C25C002E8E1C /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64C82509C25C002E8E1C /* SignUpVC.swift */; };
-		045C64CB250ABDFF002E8E1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045C64CA250ABDFF002E8E1C /* GoogleService-Info.plist */; };
 		045C64CD250E9C6F002E8E1C /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64CC250E9C6F002E8E1C /* MainTabVC.swift */; };
 		045C64CF250FCED4002E8E1C /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64CE250FCED4002E8E1C /* FeedVC.swift */; };
 		045C64D1250FCEEE002E8E1C /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64D0250FCEEE002E8E1C /* SearchVC.swift */; };
@@ -73,7 +74,7 @@
 		45CA02AD26771876005CD83A /* String+CondensedWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */; };
 		45CA02AF26772244005CD83A /* UIViewController+NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */; };
 		45CA02B126773773005CD83A /* UILabel+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02B026773773005CD83A /* UILabel+Size.swift */; };
-		C83407FD33C721738FB1401D /* Pods_LogInProgrammatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55387172398E82CC7C24B6CF /* Pods_LogInProgrammatic.framework */; };
+		96751E175C3434835CE160ED /* Pods_Brandroll.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 		043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		043D3670259A3FE20094CE4F /* ChatInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputTextView.swift; sourceTree = "<group>"; };
 		043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogInProgrammatic.entitlements; sourceTree = "<group>"; };
+		0452620D2695276300CA8EA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProfileCell.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* Brandroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brandroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,7 +111,6 @@
 		045C64C325084D2C002E8E1C /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		045C64C6250857AD002E8E1C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		045C64C82509C25C002E8E1C /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
-		045C64CA250ABDFF002E8E1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		045C64CC250E9C6F002E8E1C /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
 		045C64CE250FCED4002E8E1C /* FeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		045C64D0250FCEEE002E8E1C /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -146,8 +147,10 @@
 		45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CondensedWhitespace.swift"; sourceTree = "<group>"; };
 		45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NavigationBar.swift"; sourceTree = "<group>"; };
 		45CA02B026773773005CD83A /* UILabel+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Size.swift"; sourceTree = "<group>"; };
-		55387172398E82CC7C24B6CF /* Pods_LogInProgrammatic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LogInProgrammatic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.release.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.release.xcconfig"; sourceTree = "<group>"; };
+		811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.debug.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.debug.xcconfig"; sourceTree = "<group>"; };
 		9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
+		D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Brandroll.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,7 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C83407FD33C721738FB1401D /* Pods_LogInProgrammatic.framework in Frameworks */,
+				96751E175C3434835CE160ED /* Pods_Brandroll.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +189,7 @@
 		045C64A0250844DC002E8E1C = {
 			isa = PBXGroup;
 			children = (
-				045C64AB250844DC002E8E1C /* LogInProgrammatic */,
+				045C64AB250844DC002E8E1C /* Brandroll */,
 				045C64AA250844DC002E8E1C /* Products */,
 				9E61F1BE2E3ED4335CD61D1D /* Pods */,
 				E6A552F702FDBC1D69DD499C /* Frameworks */,
@@ -201,7 +204,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		045C64AB250844DC002E8E1C /* LogInProgrammatic */ = {
+		045C64AB250844DC002E8E1C /* Brandroll */ = {
 			isa = PBXGroup;
 			children = (
 				459B2F8B25BE005F00402599 /* App */,
@@ -213,7 +216,7 @@
 				459B2F8D25BE007E00402599 /* Plists */,
 				459B2F8E25BE009100402599 /* Resources */,
 			);
-			path = LogInProgrammatic;
+			path = Brandroll;
 			sourceTree = "<group>";
 		};
 		045C64C025084CBB002E8E1C /* Model */ = {
@@ -405,7 +408,7 @@
 		459B2F8D25BE007E00402599 /* Plists */ = {
 			isa = PBXGroup;
 			children = (
-				045C64CA250ABDFF002E8E1C /* GoogleService-Info.plist */,
+				0452620D2695276300CA8EA4 /* GoogleService-Info.plist */,
 				045C64BA250844EF002E8E1C /* Info.plist */,
 			);
 			path = Plists;
@@ -453,6 +456,8 @@
 			children = (
 				DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */,
 				9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */,
+				811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */,
+				66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -460,7 +465,7 @@
 		E6A552F702FDBC1D69DD499C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				55387172398E82CC7C24B6CF /* Pods_LogInProgrammatic.framework */,
+				D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -468,9 +473,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		045C64A8250844DC002E8E1C /* LogInProgrammatic */ = {
+		045C64A8250844DC002E8E1C /* Brandroll */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "LogInProgrammatic" */;
+			buildConfigurationList = 045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "Brandroll" */;
 			buildPhases = (
 				0CB81F900F4CFC5D5B0F4CED /* [CP] Check Pods Manifest.lock */,
 				045C64A5250844DC002E8E1C /* Sources */,
@@ -482,7 +487,7 @@
 			);
 			dependencies = (
 			);
-			name = LogInProgrammatic;
+			name = Brandroll;
 			productName = LogInProgrammatic;
 			productReference = 045C64A9250844DC002E8E1C /* Brandroll.app */;
 			productType = "com.apple.product-type.application";
@@ -502,7 +507,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 045C64A4250844DC002E8E1C /* Build configuration list for PBXProject "LogInProgrammatic" */;
+			buildConfigurationList = 045C64A4250844DC002E8E1C /* Build configuration list for PBXProject "Brandroll" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -515,7 +520,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				045C64A8250844DC002E8E1C /* LogInProgrammatic */,
+				045C64A8250844DC002E8E1C /* Brandroll */,
 			);
 		};
 /* End PBXProject section */
@@ -527,7 +532,8 @@
 			files = (
 				045C64B9250844EF002E8E1C /* LaunchScreen.storyboard in Resources */,
 				045C64B6250844EF002E8E1C /* Assets.xcassets in Resources */,
-				045C64CB250ABDFF002E8E1C /* GoogleService-Info.plist in Resources */,
+				0452620E2695276300CA8EA4 /* GoogleService-Info.plist in Resources */,
+				04526210269737D500CA8EA4 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,7 +555,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LogInProgrammatic-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Brandroll-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -562,15 +568,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -776,21 +782,21 @@
 		};
 		045C64BE250844EF002E8E1C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */;
+			baseConfigurationReference = 811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LogInProgrammatic/LogInProgrammatic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UD757S5387;
-				INFOPLIST_FILE = LogInProgrammatic/Plists/Info.plist;
+				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brandroll;
 				PRODUCT_NAME = Brandroll;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -800,21 +806,21 @@
 		};
 		045C64BF250844EF002E8E1C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */;
+			baseConfigurationReference = 66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LogInProgrammatic/LogInProgrammatic.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UD757S5387;
-				INFOPLIST_FILE = LogInProgrammatic/Plists/Info.plist;
+				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ehp349.LoginProgrammatic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brandroll;
 				PRODUCT_NAME = Brandroll;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -825,7 +831,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		045C64A4250844DC002E8E1C /* Build configuration list for PBXProject "LogInProgrammatic" */ = {
+		045C64A4250844DC002E8E1C /* Build configuration list for PBXProject "Brandroll" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				045C64BB250844EF002E8E1C /* Debug */,
@@ -834,7 +840,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "LogInProgrammatic" */ = {
+		045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "Brandroll" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				045C64BE250844EF002E8E1C /* Debug */,
