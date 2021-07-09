@@ -435,7 +435,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Messaging
   - Firebase/Storage
-  - Kingfisher (= 6.0.1)
+  - Kingfisher
   - SnapKit
   - SVProgressHUD
 
@@ -517,6 +517,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
 
-PODFILE CHECKSUM: 1518b79e3d24ab352d91d155dd11b91c2e45848c
+PODFILE CHECKSUM: b09b4c62f2ef5e56d17b54acce7f5386a6dc1acb
 
 COCOAPODS: 1.9.1

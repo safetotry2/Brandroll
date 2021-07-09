@@ -28,7 +28,6 @@
 		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
 		043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */; };
 		043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3670259A3FE20094CE4F /* ChatInputTextView.swift */; };
-		0452620E2695276300CA8EA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0452620D2695276300CA8EA4 /* GoogleService-Info.plist */; };
 		04526210269737D500CA8EA4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045C64BA250844EF002E8E1C /* Info.plist */; };
 		0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
@@ -46,6 +45,7 @@
 		045C64DE25150AED002E8E1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DD25150AED002E8E1C /* Constants.swift */; };
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
+		04AC01BB26989DB20058300C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04AC01BA26989DB20058300C /* GoogleService-Info.plist */; };
 		04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75622580325E00814F9E /* SearchPostCell.swift */; };
 		04FA756625813C2D00814F9E /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756525813C2D00814F9E /* MessagesController.swift */; };
 		04FA75692581430200814F9E /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75682581430100814F9E /* MessageCell.swift */; };
@@ -100,7 +100,6 @@
 		043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		043D3670259A3FE20094CE4F /* ChatInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputTextView.swift; sourceTree = "<group>"; };
 		043D3672259EA7590094CE4F /* LogInProgrammatic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogInProgrammatic.entitlements; sourceTree = "<group>"; };
-		0452620D2695276300CA8EA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProfileCell.swift; sourceTree = "<group>"; };
 		045C64A9250844DC002E8E1C /* Brandroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brandroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045C64AC250844DC002E8E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +118,7 @@
 		045C64DD25150AED002E8E1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		04AC01BA26989DB20058300C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04FA75622580325E00814F9E /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		04FA756525813C2D00814F9E /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		04FA75682581430100814F9E /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
@@ -149,9 +149,7 @@
 		45CA02B026773773005CD83A /* UILabel+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Size.swift"; sourceTree = "<group>"; };
 		66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.release.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.release.xcconfig"; sourceTree = "<group>"; };
 		811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.debug.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.debug.xcconfig"; sourceTree = "<group>"; };
-		9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.release.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.release.xcconfig"; sourceTree = "<group>"; };
 		D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Brandroll.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LogInProgrammatic.debug.xcconfig"; path = "Target Support Files/Pods-LogInProgrammatic/Pods-LogInProgrammatic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,7 +406,7 @@
 		459B2F8D25BE007E00402599 /* Plists */ = {
 			isa = PBXGroup;
 			children = (
-				0452620D2695276300CA8EA4 /* GoogleService-Info.plist */,
+				04AC01BA26989DB20058300C /* GoogleService-Info.plist */,
 				045C64BA250844EF002E8E1C /* Info.plist */,
 			);
 			path = Plists;
@@ -454,8 +452,6 @@
 		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DBC1425D4A9C9C782F4E3675 /* Pods-LogInProgrammatic.debug.xcconfig */,
-				9CC8197CF95CB8E8672BF169 /* Pods-LogInProgrammatic.release.xcconfig */,
 				811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */,
 				66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */,
 			);
@@ -531,8 +527,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				045C64B9250844EF002E8E1C /* LaunchScreen.storyboard in Resources */,
+				04AC01BB26989DB20058300C /* GoogleService-Info.plist in Resources */,
 				045C64B6250844EF002E8E1C /* Assets.xcassets in Resources */,
-				0452620E2695276300CA8EA4 /* GoogleService-Info.plist in Resources */,
 				04526210269737D500CA8EA4 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,7 +12,7 @@ target 'Brandroll' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
-  pod 'Kingfisher', '6.0.1'
+  pod 'Kingfisher'
   pod 'SVProgressHUD'
   pod 'SnapKit'
 end
