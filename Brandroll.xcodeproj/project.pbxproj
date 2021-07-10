@@ -118,6 +118,7 @@
 		045C64DD25150AED002E8E1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		045C64E1251C2D99002E8E1C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		048984322699D7510059966F /* Brandroll.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Brandroll.entitlements; sourceTree = "<group>"; };
 		04AC01BA26989DB20058300C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04FA75622580325E00814F9E /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		04FA756525813C2D00814F9E /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -205,6 +206,7 @@
 		045C64AB250844DC002E8E1C /* Brandroll */ = {
 			isa = PBXGroup;
 			children = (
+				048984322699D7510059966F /* Brandroll.entitlements */,
 				459B2F8B25BE005F00402599 /* App */,
 				045C64C525085795002E8E1C /* Utils */,
 				045C64C025084CBB002E8E1C /* Model */,
@@ -781,10 +783,10 @@
 			baseConfigurationReference = 811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 4ZU4XP9CDX;
 				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -806,10 +808,10 @@
 			baseConfigurationReference = 66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 4ZU4XP9CDX;
 				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
