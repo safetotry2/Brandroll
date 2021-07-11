@@ -19,16 +19,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>brandroll-9bb37.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:630409015777:ios:77f7f4609c8da1234862a0</string>
+	<key>DATABASE_URL</key>
+	<string>https://brandroll-9bb37-default-rtdb.firebaseio.com/</string>
 </dict>
 </plist>
