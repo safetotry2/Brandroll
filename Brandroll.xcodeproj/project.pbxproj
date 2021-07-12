@@ -28,7 +28,6 @@
 		043D366C259992A90094CE4F /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366B259992A90094CE4F /* CommentInputTextView.swift */; };
 		043D366F259A3FAF0094CE4F /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D366E259A3FAF0094CE4F /* ChatInputAccessoryView.swift */; };
 		043D3671259A3FE20094CE4F /* ChatInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D3670259A3FE20094CE4F /* ChatInputTextView.swift */; };
-		04526210269737D500CA8EA4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045C64BA250844EF002E8E1C /* Info.plist */; };
 		0455D81625BE4E5E009DFD56 /* SearchProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455D81525BE4E5D009DFD56 /* SearchProfileCell.swift */; };
 		045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AC250844DC002E8E1C /* AppDelegate.swift */; };
 		045C64AF250844DC002E8E1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64AE250844DC002E8E1C /* SceneDelegate.swift */; };
@@ -556,7 +555,6 @@
 			files = (
 				045C64B9250844EF002E8E1C /* LaunchScreen.storyboard in Resources */,
 				045C64B6250844EF002E8E1C /* Assets.xcassets in Resources */,
-				04526210269737D500CA8EA4 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
