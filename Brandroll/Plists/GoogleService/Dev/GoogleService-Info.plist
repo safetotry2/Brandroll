@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1074483738438-a1onqhivlv7j7n38e1att75ovlv90nlo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1074483738438-a1onqhivlv7j7n38e1att75ovlv90nlo</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA_QwDxHFmnXKDS6vMzMzceJDV8QkkdasE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1074483738438</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.brandroll.brandroll</string>
+	<key>PROJECT_ID</key>
+	<string>brandroll-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>brandroll-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1074483738438:ios:68a25d6345bda968555747</string>
+	<key>DATABASE_URL</key>
+	<string>https://brandroll-dev-default-rtdb.firebaseio.com/</string>
+</dict>
+</plist>

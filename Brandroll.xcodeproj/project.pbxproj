@@ -45,7 +45,6 @@
 		045C64DE25150AED002E8E1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DD25150AED002E8E1C /* Constants.swift */; };
 		045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64DF2518FD92002E8E1C /* UserProfileHeader.swift */; };
 		045C64E2251C2D99002E8E1C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045C64E1251C2D99002E8E1C /* User.swift */; };
-		04AC01BB26989DB20058300C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04AC01BA26989DB20058300C /* GoogleService-Info.plist */; };
 		04FA75632580325E00814F9E /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75622580325E00814F9E /* SearchPostCell.swift */; };
 		04FA756625813C2D00814F9E /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA756525813C2D00814F9E /* MessagesController.swift */; };
 		04FA75692581430200814F9E /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FA75682581430100814F9E /* MessageCell.swift */; };
@@ -140,6 +139,7 @@
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		4577B95E26716847008E261C /* DTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTTextField.swift; sourceTree = "<group>"; };
+		4578A2C8269C96B700227946 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
@@ -387,6 +387,31 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		4578A2C5269C968900227946 /* GoogleService */ = {
+			isa = PBXGroup;
+			children = (
+				4578A2C6269C969000227946 /* Dev */,
+				4578A2C7269C969600227946 /* Prod */,
+			);
+			path = GoogleService;
+			sourceTree = "<group>";
+		};
+		4578A2C6269C969000227946 /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+				4578A2C8269C96B700227946 /* GoogleService-Info.plist */,
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		4578A2C7269C969600227946 /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+				04AC01BA26989DB20058300C /* GoogleService-Info.plist */,
+			);
+			path = Prod;
+			sourceTree = "<group>";
+		};
 		459B2F8B25BE005F00402599 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -408,7 +433,7 @@
 		459B2F8D25BE007E00402599 /* Plists */ = {
 			isa = PBXGroup;
 			children = (
-				04AC01BA26989DB20058300C /* GoogleService-Info.plist */,
+				4578A2C5269C968900227946 /* GoogleService */,
 				045C64BA250844EF002E8E1C /* Info.plist */,
 			);
 			path = Plists;
@@ -479,6 +504,7 @@
 				045C64A5250844DC002E8E1C /* Sources */,
 				045C64A6250844DC002E8E1C /* Frameworks */,
 				045C64A7250844DC002E8E1C /* Resources */,
+				4578A2C4269C967300227946 /* Firebase */,
 				A975B9EAECDE0759A86B79F2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -529,7 +555,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				045C64B9250844EF002E8E1C /* LaunchScreen.storyboard in Resources */,
-				04AC01BB26989DB20058300C /* GoogleService-Info.plist in Resources */,
 				045C64B6250844EF002E8E1C /* Assets.xcassets in Resources */,
 				04526210269737D500CA8EA4 /* Info.plist in Resources */,
 			);
@@ -559,6 +584,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		4578A2C4269C967300227946 /* Firebase */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Firebase;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/${TARGET_NAME}/Plists/GoogleService/Dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/${TARGET_NAME}/Plists/GoogleService/Prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\necho \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\necho \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the prod GoogleService-Info.plist for Release builds\nif [ \"${CONFIGURATION}\" == \"Release\" ]\nthen\necho \"Using ${GOOGLESERVICE_INFO_PROD}\"\ncp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nelse\necho \"Using ${GOOGLESERVICE_INFO_DEV}\"\ncp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nfi\n";
 		};
 		A975B9EAECDE0759A86B79F2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -786,7 +829,7 @@
 				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 4ZU4XP9CDX;
 				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -811,7 +854,7 @@
 				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 4ZU4XP9CDX;
 				INFOPLIST_FILE = Brandroll/Plists/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
