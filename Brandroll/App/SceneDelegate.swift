@@ -31,6 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.rootViewController = RootVC()
         window?.makeKeyAndVisible()
+        window?.overrideUserInterfaceStyle = .light
     }
 }
 
