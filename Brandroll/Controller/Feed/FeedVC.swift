@@ -57,6 +57,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset.bottom = 60
         
         // register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)

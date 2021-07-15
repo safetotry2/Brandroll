@@ -69,12 +69,20 @@ class FeedCell: UICollectionViewCell {
         return gesture
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "circle")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileImageTap)
         return iv
+    }()
+    
+    lazy var profileImageTap: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleFullnameTapped))
+        gesture.numberOfTapsRequired = 1
+        return gesture
     }()
     
     lazy var fullnameButton: UIButton = {

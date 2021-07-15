@@ -29,7 +29,7 @@ class PreviewUploadVC: BaseVC {
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "arrow"), for: .normal)
-        button.contentMode = .bottomLeft
+        button.contentMode = .topLeft
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 8,left: 0,bottom: 0,right: 8)
         button.addTarget(self, action: #selector(handleBackTapped), for: .touchUpInside)
@@ -58,7 +58,11 @@ class PreviewUploadVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+        //navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
     }
     
     override func viewDidAppear(_ animated: Bool) {

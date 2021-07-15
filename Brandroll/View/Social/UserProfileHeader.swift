@@ -41,14 +41,6 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
-    let nameHeaderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Test Name"
-        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
-        //label.font = UIFont.boldSystemFont(ofSize: 12)
-        return label
-    }()
-    
     let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "circle")
@@ -132,20 +124,6 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-//    lazy var settingsButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setImage(#imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.backgroundColor = .clear
-//        button.contentMode = .center
-//        button.imageView?.contentMode = .scaleAspectFit
-//        button.imageEdgeInsets = UIEdgeInsets(top: 7,left: 7,bottom: 7,right: 7)
-//        button.layer.cornerRadius = 15
-//        button.layer.borderColor = UIColor.lightGray.cgColor
-//        button.layer.borderWidth = 0.5
-//        button.addTarget(self, action: #selector(handleSettingsTapped), for: .touchUpInside)
-//        return button
-//    }()
-    
     lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Loading", for: .normal)
@@ -162,8 +140,6 @@ class UserProfileHeader: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setTitle("Message", for: .normal)
         button.layer.cornerRadius = 15
-        //button.layer.borderColor = UIColor.lightGray.cgColor
-        //button.layer.borderWidth = 0.5
         button.backgroundColor = UIColor(red: 253/255, green: 180/255, blue: 75/255, alpha: 1)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.black, for: .normal)
@@ -217,15 +193,11 @@ class UserProfileHeader: UICollectionViewCell {
         guard let user = self.user else { return }
         
         if currentUid == user.uid {
-            //nameHeaderLabel.isHidden = false
             editProfileButton.isHidden = false
-            //settingsButton.isHidden = false
             followButton.isHidden = true
             messageButton.isHidden = true
         } else {
-            //nameHeaderLabel.isHidden = true
             editProfileButton.isHidden = true
-            //settingsButton.isHidden = true
             followButton.isHidden = false
             messageButton.isHidden = false
             user.checkIfUserIsFollowed(completion: { (followed) in
@@ -245,13 +217,6 @@ class UserProfileHeader: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-//        addSubview(nameHeaderLabel)
-//        nameHeaderLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        
-//        addSubview(profileImageView)
-//        profileImageView.anchor(top: nameHeaderLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 90, height: 90)
-//        profileImageView.layer.cornerRadius = 90/2
         
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 90, height: 90)
@@ -273,12 +238,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         addSubview(editProfileButton)
         editProfileButton.anchor(top: followersLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
-        
-//        addSubview(editProfileButton)
-//        editProfileButton.anchor(top: followersLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 30)
-        
-//        addSubview(settingsButton)
-//        settingsButton.anchor(top: followersLabel.bottomAnchor, left: editProfileButton.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 12, paddingBottom: 0, paddingRight: 20, width: 60, height: 30)
+
     }
     
     required init?(coder: NSCoder) {

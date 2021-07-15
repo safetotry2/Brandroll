@@ -458,6 +458,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         collectionView.refreshControl = refreshControl
     }
     
+    
     // MARK: - API
     
     func fetchPosts() {
