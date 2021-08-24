@@ -441,18 +441,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - abseil
+    - BoringSSL-GRPC
     - CropViewController
     - DKCamera
     - DKImagePickerController
     - DKPhotoGallery
-    - Kingfisher
-    - SDWebImage
-    - SnapKit
-    - SVProgressHUD
-    - SwiftyGif
-  trunk:
-    - abseil
-    - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -474,10 +468,15 @@ SPEC REPOS:
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
+    - Kingfisher
     - leveldb-library
     - nanopb
     - PromisesObjC
     - Protobuf
+    - SDWebImage
+    - SnapKit
+    - SVProgressHUD
+    - SwiftyGif
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -519,4 +518,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b09b4c62f2ef5e56d17b54acce7f5386a6dc1acb
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.2
