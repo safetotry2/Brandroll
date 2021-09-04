@@ -74,12 +74,15 @@
 		45A6E18C25E11BC600D79385 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E18B25E11BC600D79385 /* BaseVC.swift */; };
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
+		45AB23CE26E411BB00338D70 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23CD26E411BB00338D70 /* SVProgressHUD */; };
+		45AB23D126E411FC00338D70 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D026E411FC00338D70 /* Kingfisher */; };
+		45AB23D426E4121B00338D70 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D326E4121B00338D70 /* SnapKit */; };
+		45AB23D726E4126100338D70 /* DKImagePickerController in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D626E4126100338D70 /* DKImagePickerController */; };
 		45CA02A926762B0D005CD83A /* Error+FIRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02A826762B0D005CD83A /* Error+FIRError.swift */; };
 		45CA02AB26764F32005CD83A /* AuthToastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AA26764F32005CD83A /* AuthToastable.swift */; };
 		45CA02AD26771876005CD83A /* String+CondensedWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */; };
 		45CA02AF26772244005CD83A /* UIViewController+NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */; };
 		45CA02B126773773005CD83A /* UILabel+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02B026773773005CD83A /* UILabel+Size.swift */; };
-		96751E175C3434835CE160ED /* Pods_Brandroll.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,9 +157,6 @@
 		45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CondensedWhitespace.swift"; sourceTree = "<group>"; };
 		45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NavigationBar.swift"; sourceTree = "<group>"; };
 		45CA02B026773773005CD83A /* UILabel+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Size.swift"; sourceTree = "<group>"; };
-		66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.release.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.release.xcconfig"; sourceTree = "<group>"; };
-		811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Brandroll.debug.xcconfig"; path = "Target Support Files/Pods-Brandroll/Pods-Brandroll.debug.xcconfig"; sourceTree = "<group>"; };
-		D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Brandroll.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,13 +165,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				45A43D9D26E40E45004A993E /* FirebaseDatabase in Frameworks */,
-				96751E175C3434835CE160ED /* Pods_Brandroll.framework in Frameworks */,
 				45A43DA526E40E45004A993E /* FirebaseMessaging in Frameworks */,
 				45A43D9F26E40E45004A993E /* FirebaseAnalytics in Frameworks */,
+				45AB23D126E411FC00338D70 /* Kingfisher in Frameworks */,
 				45A43DA326E40E45004A993E /* FirebaseCrashlytics in Frameworks */,
+				45AB23CE26E411BB00338D70 /* SVProgressHUD in Frameworks */,
+				45AB23D726E4126100338D70 /* DKImagePickerController in Frameworks */,
 				45A43DA126E40E45004A993E /* FirebaseStorage in Frameworks */,
 				45A43D9B26E40E45004A993E /* FirebaseFirestore in Frameworks */,
 				45A43DA726E40E45004A993E /* FirebaseAuth in Frameworks */,
+				45AB23D426E4121B00338D70 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,8 +206,6 @@
 			children = (
 				045C64AB250844DC002E8E1C /* Brandroll */,
 				045C64AA250844DC002E8E1C /* Products */,
-				9E61F1BE2E3ED4335CD61D1D /* Pods */,
-				E6A552F702FDBC1D69DD499C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -489,23 +490,6 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		9E61F1BE2E3ED4335CD61D1D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */,
-				66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		E6A552F702FDBC1D69DD499C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D5B8E7BF32AAE4D774060B36 /* Pods_Brandroll.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -513,12 +497,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045C64BD250844EF002E8E1C /* Build configuration list for PBXNativeTarget "Brandroll" */;
 			buildPhases = (
-				0CB81F900F4CFC5D5B0F4CED /* [CP] Check Pods Manifest.lock */,
 				045C64A5250844DC002E8E1C /* Sources */,
 				045C64A6250844DC002E8E1C /* Frameworks */,
 				045C64A7250844DC002E8E1C /* Resources */,
 				4578A2C4269C967300227946 /* Firebase */,
-				A975B9EAECDE0759A86B79F2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -533,6 +515,10 @@
 				45A43DA226E40E45004A993E /* FirebaseCrashlytics */,
 				45A43DA426E40E45004A993E /* FirebaseMessaging */,
 				45A43DA626E40E45004A993E /* FirebaseAuth */,
+				45AB23CD26E411BB00338D70 /* SVProgressHUD */,
+				45AB23D026E411FC00338D70 /* Kingfisher */,
+				45AB23D326E4121B00338D70 /* SnapKit */,
+				45AB23D626E4126100338D70 /* DKImagePickerController */,
 			);
 			productName = LogInProgrammatic;
 			productReference = 045C64A9250844DC002E8E1C /* Brandroll.app */;
@@ -564,6 +550,10 @@
 			mainGroup = 045C64A0250844DC002E8E1C;
 			packageReferences = (
 				45A43D9926E40E45004A993E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				45AB23CC26E411BA00338D70 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+				45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				45AB23D526E4126100338D70 /* XCRemoteSwiftPackageReference "DKImagePickerController" */,
 			);
 			productRefGroup = 045C64AA250844DC002E8E1C /* Products */;
 			projectDirPath = "";
@@ -587,28 +577,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0CB81F900F4CFC5D5B0F4CED /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Brandroll-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4578A2C4269C967300227946 /* Firebase */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -626,23 +594,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/${TARGET_NAME}/Plists/GoogleService/Dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/${TARGET_NAME}/Plists/GoogleService/Prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\necho \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\necho \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the prod GoogleService-Info.plist for Release builds\nif [ \"${CONFIGURATION}\" == \"Release\" ]\nthen\necho \"Using ${GOOGLESERVICE_INFO_PROD}\"\ncp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nelse\necho \"Using ${GOOGLESERVICE_INFO_DEV}\"\ncp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nfi\n";
-		};
-		A975B9EAECDE0759A86B79F2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Brandroll/Pods-Brandroll-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -847,7 +798,6 @@
 		};
 		045C64BE250844EF002E8E1C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 811CB246DF5F759139218CAF /* Pods-Brandroll.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
@@ -874,7 +824,6 @@
 		};
 		045C64BF250844EF002E8E1C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66AC32C483F4237145FBA094 /* Pods-Brandroll.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Brandroll/Brandroll.entitlements;
@@ -932,6 +881,38 @@
 				minimumVersion = 8.6.1;
 			};
 		};
+		45AB23CC26E411BA00338D70 /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/glennposadas/SVProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.6;
+			};
+		};
+		45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.3.1;
+			};
+		};
+		45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		45AB23D526E4126100338D70 /* XCRemoteSwiftPackageReference "DKImagePickerController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/glennposadas/DKImagePickerController";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -969,6 +950,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45A43D9926E40E45004A993E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		45AB23CD26E411BB00338D70 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45AB23CC26E411BA00338D70 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		45AB23D026E411FC00338D70 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		45AB23D326E4121B00338D70 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		45AB23D626E4126100338D70 /* DKImagePickerController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45AB23D526E4126100338D70 /* XCRemoteSwiftPackageReference "DKImagePickerController" */;
+			productName = DKImagePickerController;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
