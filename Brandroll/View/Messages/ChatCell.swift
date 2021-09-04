@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
 import Firebase
+import FirebaseDatabase
+import UIKit
 
 class ChatCell: UICollectionViewCell {
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol StatusBarToggleable: class {
+protocol StatusBarToggleable: AnyObject {
     var statusBarShouldBeHidden: Bool { get set }
     var statusBarAnimationStyle: UIStatusBarAnimation { get set }
 }

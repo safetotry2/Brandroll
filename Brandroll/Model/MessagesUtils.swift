@@ -7,7 +7,8 @@
 //
 
 import Firebase
-import Foundation
+import FirebaseDatabase
+import UIKit
 
 class MessagesUtils: NSObject {
     

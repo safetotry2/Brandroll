@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import FirebaseDatabase
 import Kingfisher
 import SVProgressHUD
 import UIKit
