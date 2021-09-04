@@ -6,8 +6,8 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import Foundation
 import Firebase
+import UIKit
 
 class Post {
     

@@ -6,8 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import UIKit
+import Firebase
 import FirebaseDatabase
+import UIKit
 
 extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {

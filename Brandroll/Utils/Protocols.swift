@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol UserProfileHeaderDelegate: class {
+protocol UserProfileHeaderDelegate: AnyObject {
     
     func handleEditProfileTapped(for header: UserProfileHeader)
     func handleSettingsTapped(for header: UserProfileHeader)
@@ -19,11 +19,11 @@ protocol UserProfileHeaderDelegate: class {
     func handleFollowingTapped(for header: UserProfileHeader)
 }
 
-protocol FollowCellDelegate: class {
+protocol FollowCellDelegate: AnyObject {
     func handleFollowTapped(for cell: FollowLikeCell)
 }
 
-protocol FeedCellDelegate: class {
+protocol FeedCellDelegate: AnyObject {
     func handleFullnameTapped(for cell: FeedCell)
     func handleOptionsTapped(for cell: FeedCell)
     func handleLikeTapped(for cell: FeedCell)
@@ -32,17 +32,17 @@ protocol FeedCellDelegate: class {
     func handleShowLikes(for cell: FeedCell)
 }
 
-protocol CommentCellDelegate: class {
+protocol CommentCellDelegate: AnyObject {
     func handleProfileImageTapped(for cell: CommentCell)
     func handleFullnameTapped(for cell: CommentCell)
 }
 
-protocol NotitificationCellDelegate: class {
+protocol NotitificationCellDelegate: AnyObject {
     func handleFollowTapped(for cell: NotificationCell)
     func handlePostTapped(for cell: NotificationCell)
 }
 
-protocol SearchProfileCellDelegate: class {
+protocol SearchProfileCellDelegate: AnyObject {
     func handleFollowTapped(for cell: SearchProfileCell, indexPath: IndexPath?)
 }
 
@@ -50,10 +50,10 @@ protocol Printable {
     var description: String { get }
 }
 
-protocol CommentInputAccessoryViewDelegate: class {
+protocol CommentInputAccessoryViewDelegate: AnyObject {
     func didSubmit(forComment comment: String)
 }
 
-protocol ChatInputAccessoryViewDelegate: class {
+protocol ChatInputAccessoryViewDelegate: AnyObject {
     func didSubmit(forChat chat: String)
 }

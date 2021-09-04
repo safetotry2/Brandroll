@@ -6,8 +6,8 @@
 //  Copyright © 2021 Eric Park. All rights reserved.
 //
 
-import Foundation
 import SnapKit
+import UIKit
 
 /**
  Auth controllers conform to this protocol for toastability.
