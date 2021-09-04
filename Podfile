@@ -6,12 +6,6 @@ inhibit_all_warnings!
 
 target 'Brandroll' do
   pod 'DKImagePickerController'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Core'
-  pod 'Firebase/Database'
   pod 'Kingfisher'
   pod 'SVProgressHUD'
   pod 'SnapKit'

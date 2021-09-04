@@ -8,6 +8,7 @@
 
 import DKImagePickerController
 import Firebase
+import FirebaseAuth
 import UIKit
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
