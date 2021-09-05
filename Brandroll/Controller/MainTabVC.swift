@@ -154,11 +154,18 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             dot.layer.cornerRadius = 3
             dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
             
+            let hasNotch = UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
+                        
             tabBar.addSubview(dot)
             dot.snp.makeConstraints {
                 $0.width.height.equalTo(6)
-                $0.top.equalTo(notifTabBarItem.snp.bottom).offset(5)
                 $0.centerX.equalTo(notifTabBarItem)
+                
+                if hasNotch {
+                    $0.top.equalTo(notifTabBarItem.snp.bottom).offset(3)
+                } else {
+                    $0.bottom.equalTo(notifTabBarItem).offset(-3)
+                }
             }
         }
     }
