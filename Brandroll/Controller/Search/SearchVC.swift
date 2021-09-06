@@ -439,7 +439,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 .queryOrdered(byChild: "name")
                 .queryStarting(atValue: text, childKey: "name")
                 .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
-                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault)
+                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault - 1)
                 .observeSingleEvent(of: .value) { (snapshot) in
                     
                     guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
@@ -456,7 +456,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 .queryOrdered(byChild: "name")
                 .queryStarting(atValue: self.search_userCurrentKey, childKey: "name")
                 .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
-                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault)
+                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault - 1)
                 .observeSingleEvent(of: .value) { (snapshot) in
                     guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
                     guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
