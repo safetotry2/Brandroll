@@ -6,10 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
-import Firebase
-import FirebaseAuth
-import FirebaseDatabase
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 typealias UserAndFollowedTuple = (user: User?, followed: Bool)
 
@@ -33,9 +32,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     var search_userCurrentKey: String?
     var search_searchText: String?
     
-    private let numberOfSearchedItemsPerPageDefault: UInt = 5
-    private let numberOfItemsPerPageForFirstTimeFetchingUsers: UInt = 12
-    private let numberOfItemsPerPageForFetchingUsersDefault: UInt = 6
     private let reuseIdentifier = "SearchUserCell"
     
     // MARK: - Init
@@ -331,7 +327,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 USER_REF
                     .queryOrderedByKey()
                     .queryEnding(atValue: SearchUtils.getRandomFirebaseIndex())
-                    .queryLimited(toLast: numberOfItemsPerPageForFirstTimeFetchingUsers)
+                    .queryLimited(toLast: 12)
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
                         self.collectionView.refreshControl?.endRefreshing()
@@ -359,7 +355,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 USER_REF
                     .queryOrderedByKey()
                     .queryStarting(atValue: self.userCurrentKey)
-                    .queryLimited(toFirst: numberOfItemsPerPageForFetchingUsersDefault)
+                    .queryLimited(toFirst: 6)
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
                         guard let last = snapshot.children.allObjects.last as? DataSnapshot,
@@ -383,7 +379,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     USER_REF
                         .queryOrderedByKey()
                         .queryEnding(atValue: self.userCurrentKeyForBackwards)
-                        .queryLimited(toLast: numberOfItemsPerPageForFetchingUsersDefault)
+                        .queryLimited(toLast: 6)
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
                             guard let first = snapshot.children.allObjects.first as? DataSnapshot,
@@ -401,7 +397,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                     USER_REF
                         .queryOrderedByKey()
                         .queryEnding(atValue: self.firstUserKeyFetched)
-                        .queryLimited(toLast: numberOfItemsPerPageForFetchingUsersDefault)
+                        .queryLimited(toLast: 6)
                         .observeSingleEvent(of: .value) { (snapshot) in
                             
                             guard let first = snapshot.children.allObjects.first as? DataSnapshot,
@@ -439,7 +435,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 .queryOrdered(byChild: "name")
                 .queryStarting(atValue: text, childKey: "name")
                 .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
-                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault - 1)
+                .queryLimited(toFirst: 4)
                 .observeSingleEvent(of: .value) { (snapshot) in
                     
                     guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
@@ -456,7 +452,7 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
                 .queryOrdered(byChild: "name")
                 .queryStarting(atValue: self.search_userCurrentKey, childKey: "name")
                 .queryEnding(atValue: text+"\u{f8ff}", childKey: "name")
-                .queryLimited(toFirst: numberOfSearchedItemsPerPageDefault - 1)
+                .queryLimited(toFirst: 4)
                 .observeSingleEvent(of: .value) { (snapshot) in
                     guard let last = snapshot.children.allObjects.last as? DataSnapshot else { return }
                     guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
