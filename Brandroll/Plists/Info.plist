@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Brandoll will need access to your camera.</string>
+	<string>This allows you to use the camera on your phone.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Brandoll will need access to your location.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -31,7 +31,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Brandoll will need access to your location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Brandoll will need access to your photos.</string>
+	<string>This allows you to use images from your library.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

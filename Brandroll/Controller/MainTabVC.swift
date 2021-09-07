@@ -162,7 +162,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
                 $0.centerX.equalTo(notifTabBarItem)
                 
                 if hasNotch {
-                    $0.top.equalTo(notifTabBarItem.snp.bottom).offset(3)
+                    $0.top.equalTo(notifTabBarItem.snp.bottom).offset(-5)
                 } else {
                     $0.bottom.equalTo(notifTabBarItem).offset(-3)
                 }

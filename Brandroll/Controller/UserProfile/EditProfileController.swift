@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import Kingfisher
 import UIKit
+//import PhotosUI
 
 class EditProfileController: UIViewController {
     
@@ -119,6 +120,25 @@ class EditProfileController: UIViewController {
     // MARK: - Handlers
     
     @objc func handleChangeProfilePhoto() {
+
+// PHPickerViewController for future use with iOS 14 devices
+//        if #available(iOS 14, *) {
+//            // using PHPickerViewController
+//            var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
+//            config.selectionLimit = 1
+//            config.filter = .images
+//            config.preferredAssetRepresentationMode = .current
+//            let picker = PHPickerViewController(configuration: config)
+//            picker.delegate = self
+//            present(picker, animated: true, completion: nil)
+//        } else {
+//            let imagePickerController = UIImagePickerController()
+//            imagePickerController.delegate = self
+//            imagePickerController.allowsEditing = true
+//            imagePickerController.modalPresentationStyle = .fullScreen
+//            present(imagePickerController, animated: true, completion: nil)
+//        }
+        
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
@@ -308,6 +328,36 @@ class EditProfileController: UIViewController {
     }
         
 }
+
+// PHPickerViewController for future use with iOS 14 devices
+//extension EditProfileController: PHPickerViewControllerDelegate {
+//    @available(iOS 14, *)
+//
+//    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+//
+//        picker.dismiss(animated: true) {
+//            guard let result = results.first else {
+//                print("no results")
+//                return
+//            }
+//            let prov = result.itemProvider
+//            guard prov.canLoadObject(ofClass: UIImage.self) else {
+//                print("no image")
+//                return
+//            }
+//            prov.loadObject(ofClass: UIImage.self) { object, error in
+//                if let image = object as? UIImage {
+//                    DispatchQueue.main.async {
+//                        self.profileImageView.image = image
+//                        self.imageChanged = true
+//                    }
+//                } else {
+//                    print(error as Any)
+//                }
+//            }
+//        }
+//    }
+//}
 
 extension EditProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     

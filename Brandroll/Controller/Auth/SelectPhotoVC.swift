@@ -39,6 +39,7 @@ class SelectPhotoVC: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "circle").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
         return button
     }()
     
@@ -192,14 +193,10 @@ extension SelectPhotoVC: UIImagePickerControllerDelegate, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // selected image
         guard let profileImage = info[.editedImage] as? UIImage else { return }
-        
-        // upload profile image to Firebase at SignUp
-        imageChanged = true
-        selectPhotoButton.layer.cornerRadius = selectPhotoButton.frame.width / 2
-        selectPhotoButton.layer.masksToBounds = true
-        selectPhotoButton.layer.borderWidth = 0
         selectPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
-        
+        selectPhotoButton.imageView?.layer.cornerRadius = selectPhotoButton.layer.bounds.width / 2
+        selectPhotoButton.imageView?.clipsToBounds = true
+        imageChanged = true
         dismiss(animated: true, completion: nil)
     }
 }
