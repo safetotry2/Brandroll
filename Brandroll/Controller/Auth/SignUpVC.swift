@@ -231,6 +231,7 @@ class SignUpVC: UIViewController, AuthToastable {
     private func handleResult(_ result: AuthDataResult?) {
         guard let fullName = fullNameTextField.text else { return }
         guard let occupation = occupationTextField.text else { return }
+        guard let fcmToken = Messaging.messaging().fcmToken else { return }
         
         guard let uid = result?.user.uid else {
             self.showErrorToast("Error: user data not found", upperReferenceView: signUpLabel, shouldUseSuperViewLeadingTrailing: true, delegate: self)
@@ -241,7 +242,8 @@ class SignUpVC: UIViewController, AuthToastable {
         // Create user without uploading a profile image.
         let dictionaryValues = [
             "name": fullName.condensedWhitespace,
-            "occupation": occupation.condensedWhitespace
+            "occupation": occupation.condensedWhitespace,
+            "fcmToken": fcmToken
         ]
         let values = [uid: dictionaryValues]
         
