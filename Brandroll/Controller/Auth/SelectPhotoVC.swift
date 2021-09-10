@@ -39,7 +39,8 @@ class SelectPhotoVC: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "circle").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
-        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFit
+        button.imageView?.contentMode = UIView.ContentMode.scaleAspectFill
+        button.clipsToBounds = true
         return button
     }()
     
@@ -195,7 +196,6 @@ extension SelectPhotoVC: UIImagePickerControllerDelegate, UINavigationController
         guard let profileImage = info[.editedImage] as? UIImage else { return }
         selectPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
         selectPhotoButton.imageView?.layer.cornerRadius = selectPhotoButton.layer.bounds.width / 2
-        selectPhotoButton.imageView?.clipsToBounds = true
         imageChanged = true
         dismiss(animated: true, completion: nil)
     }
