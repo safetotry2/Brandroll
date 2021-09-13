@@ -75,7 +75,6 @@
 		45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19325E11CAB00D79385 /* RootVC.swift */; };
 		45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */; };
 		45AB23CE26E411BB00338D70 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23CD26E411BB00338D70 /* SVProgressHUD */; };
-		45AB23D126E411FC00338D70 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D026E411FC00338D70 /* Kingfisher */; };
 		45AB23D426E4121B00338D70 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D326E4121B00338D70 /* SnapKit */; };
 		45AB23D726E4126100338D70 /* DKImagePickerController in Frameworks */ = {isa = PBXBuildFile; productRef = 45AB23D626E4126100338D70 /* DKImagePickerController */; };
 		45CA02A926762B0D005CD83A /* Error+FIRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02A826762B0D005CD83A /* Error+FIRError.swift */; };
@@ -83,6 +82,7 @@
 		45CA02AD26771876005CD83A /* String+CondensedWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */; };
 		45CA02AF26772244005CD83A /* UIViewController+NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */; };
 		45CA02B126773773005CD83A /* UILabel+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02B026773773005CD83A /* UILabel+Size.swift */; };
+		E321A8B126EBAF24002959E7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E321A8B026EBAF24002959E7 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -167,12 +167,12 @@
 				45A43D9D26E40E45004A993E /* FirebaseDatabase in Frameworks */,
 				45A43DA526E40E45004A993E /* FirebaseMessaging in Frameworks */,
 				45A43D9F26E40E45004A993E /* FirebaseAnalytics in Frameworks */,
-				45AB23D126E411FC00338D70 /* Kingfisher in Frameworks */,
 				45A43DA326E40E45004A993E /* FirebaseCrashlytics in Frameworks */,
 				45AB23CE26E411BB00338D70 /* SVProgressHUD in Frameworks */,
 				45AB23D726E4126100338D70 /* DKImagePickerController in Frameworks */,
 				45A43DA126E40E45004A993E /* FirebaseStorage in Frameworks */,
 				45A43D9B26E40E45004A993E /* FirebaseFirestore in Frameworks */,
+				E321A8B126EBAF24002959E7 /* Kingfisher in Frameworks */,
 				45A43DA726E40E45004A993E /* FirebaseAuth in Frameworks */,
 				45AB23D426E4121B00338D70 /* SnapKit in Frameworks */,
 			);
@@ -516,9 +516,9 @@
 				45A43DA426E40E45004A993E /* FirebaseMessaging */,
 				45A43DA626E40E45004A993E /* FirebaseAuth */,
 				45AB23CD26E411BB00338D70 /* SVProgressHUD */,
-				45AB23D026E411FC00338D70 /* Kingfisher */,
 				45AB23D326E4121B00338D70 /* SnapKit */,
 				45AB23D626E4126100338D70 /* DKImagePickerController */,
+				E321A8B026EBAF24002959E7 /* Kingfisher */,
 			);
 			productName = LogInProgrammatic;
 			productReference = 045C64A9250844DC002E8E1C /* Brandroll.app */;
@@ -551,9 +551,9 @@
 			packageReferences = (
 				45A43D9926E40E45004A993E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				45AB23CC26E411BA00338D70 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
-				45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				45AB23D526E4126100338D70 /* XCRemoteSwiftPackageReference "DKImagePickerController" */,
+				E321A8AF26EBAF24002959E7 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 045C64AA250844DC002E8E1C /* Products */;
 			projectDirPath = "";
@@ -889,14 +889,6 @@
 				minimumVersion = 2.2.6;
 			};
 		};
-		45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.3.1;
-			};
-		};
 		45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -911,6 +903,14 @@
 			requirement = {
 				branch = develop;
 				kind = branch;
+			};
+		};
+		E321A8AF26EBAF24002959E7 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.3.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -956,11 +956,6 @@
 			package = 45AB23CC26E411BA00338D70 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
 			productName = SVProgressHUD;
 		};
-		45AB23D026E411FC00338D70 /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 45AB23CF26E411FC00338D70 /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
 		45AB23D326E4121B00338D70 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 45AB23D226E4121A00338D70 /* XCRemoteSwiftPackageReference "SnapKit" */;
@@ -970,6 +965,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45AB23D526E4126100338D70 /* XCRemoteSwiftPackageReference "DKImagePickerController" */;
 			productName = DKImagePickerController;
+		};
+		E321A8B026EBAF24002959E7 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E321A8AF26EBAF24002959E7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
