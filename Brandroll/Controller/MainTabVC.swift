@@ -295,7 +295,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     /// Checks if we are ought to proceed to hiding the dot navBar notif.
     private func setDotNotifToHiddenIfPossibleForChatController(userIdFromNotification: String, appNotif: AppNotif) {
         if appNotif.didCheck == false,
-           appNotif.notificationType == .Message {
+           appNotif.notificationType == .message {
             
             if UIViewController.current() is ChatController,
                let chatCon = UIViewController.current() as? ChatController,

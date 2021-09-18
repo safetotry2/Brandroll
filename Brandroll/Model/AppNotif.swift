@@ -12,27 +12,27 @@ class AppNotif {
     
     enum NotificationType: Int, Printable {
         
-        case Like
-        case Comment
-        case Follow
-        case Message
+        case like
+        case comment
+        case follow
+        case message
         
         var description: String {
             switch self {
-            case .Like: return " liked your post"
-            case .Comment: return " commented on your post"
-            case .Follow: return " started following you"
-            case .Message: return " sent you a message"
+            case .like: return " liked your post"
+            case .comment: return " commented on your post"
+            case .follow: return " started following you"
+            case .message: return " sent you a message"
             }
         }
         
         init(index: Int) {
             switch index {
-            case 0: self = .Like
-            case 1: self = .Comment
-            case 2: self = .Follow
-            case 3: self = .Message
-            default: self = .Like
+            case 0: self = .like
+            case 1: self = .comment
+            case 2: self = .follow
+            case 3: self = .message
+            default: self = .like
             }
         }
     }

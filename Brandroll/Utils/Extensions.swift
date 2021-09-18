@@ -328,36 +328,10 @@ extension UITabBarController {
 }
 
 extension UIViewController {
-    func setupClearNavBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.barTintColor = .black
-        //navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-    }
-    
     func setupStatusBarColor() {
-        
         if #available(iOS 13.0, *) {
          let app = UIApplication.shared
          let statusBarHeight: CGFloat = app.statusBarFrame.size.height
-         
-        //let height = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        
-        //let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        //let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.size.height ?? 0
-            
-//            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-//            let statusBarFrame = window?.windowScene?.statusBarManager?.statusBarFrame
-//
-//            let statusBarView = UIView(frame: statusBarFrame!)
-//            self.view.addSubview(statusBarView)
-//            statusBarView.backgroundColor = .white
-            
             
          let statusbarView = UIView()
          statusbarView.backgroundColor = UIColor.white

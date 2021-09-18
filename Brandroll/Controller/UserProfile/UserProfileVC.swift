@@ -30,7 +30,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(#imageLiteral(resourceName: "wheel"), for: .normal)
-        //button.contentMode = .topRight
         button.imageView?.contentMode = .scaleAspectFit
         button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 8,bottom: 0,right: -8)
         button.addTarget(self, action: #selector(handleShowSettings), for: .touchUpInside)
@@ -38,7 +37,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }()
     
     // MARK: - Init
-
+    
     deinit {
         print("UserProfileVC deallocated! 🐶")
     }
@@ -52,7 +51,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
         
@@ -101,7 +100,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             .child(uid)
             .removeObserver(withHandle: followingRefHandle)
     }
-
+    
     // MARK: - UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -111,7 +110,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width
@@ -150,7 +149,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     // MARK: - UICollectionView
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -161,18 +160,18 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
+        
         // declare header
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
-
+        
         // set delegate
         header.delegate = self
-
+        
         // set the user in header
         header.user = user
         
         navigationItem.title = user?.name
-
+        
         // return header
         return header
     }
@@ -183,7 +182,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         cell.post = posts[indexPath.item]
         return cell
     }
-
+    
     //MARK: - UserProfileHeader Protocol
     
     func handleFollowersTapped(for header: UserProfileHeader) {
@@ -213,13 +212,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func handleEditProfileTapped(for header: UserProfileHeader) {
-
+        
         let editProfileController = EditProfileController()
         editProfileController.user = user
         editProfileController.userProfileController = self
-        let navigationController = UINavigationController(rootViewController: editProfileController)
+        let navigationController = BaseNavCon(rootViewController: editProfileController)
         navigationController.modalPresentationStyle = .automatic
-
+        
         present(navigationController, animated: true, completion: nil)
     }
     
@@ -230,9 +229,19 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         present(navigationController, animated: true, completion: nil)
     }
     
+    func handleOnPushNotif() -> (() -> Void) {
+        return { [weak self] in
+            guard let self = self else { return }
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                let pushNotifVC = PushNotificationsVC()
+                self.navigationController?.pushViewController(pushNotifVC, animated: true)
+            })
+        }
+    }
+    
     func handleFollowButtonTapped(for header: UserProfileHeader) {
         guard let user = header.user else { return }
-
+        
         if header.followButton.titleLabel?.text == "Follow" {
             header.followButton.setTitle("Following", for: .normal)
             user.follow()
@@ -416,6 +425,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     @objc func handleShowSettings() {
         let settingsViewController = SettingsVC()
+        settingsViewController.onPushNotif = handleOnPushNotif()
         let navigationController = UINavigationController(rootViewController: settingsViewController)
         navigationController.modalPresentationStyle = .automatic
         present(navigationController, animated: true, completion: nil)
@@ -520,12 +530,12 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             self.collectionView.reloadData()
         }
     }
-
+    
     func fetchCurrentUserData() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         DB_REF.child("users").child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
-        
+            
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let uid = snapshot.key
             let user = User(uid: uid, dictionary: dictionary)
@@ -534,7 +544,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             self.collectionView.reloadData()
         }
         
-   
+        
     }
-
+    
 }

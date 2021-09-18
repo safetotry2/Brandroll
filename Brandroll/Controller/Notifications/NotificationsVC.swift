@@ -327,7 +327,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
     private func addNewNotification(_ notification: AppNotif) {
         if !notifications.contains(where: { $0.key == notification.key }) {
             // BRD1.3
-            if notification.notificationType == .Message {
+            if notification.notificationType == .message {
                 checkSeenMessages()
                 
                 // BRD1.2 - prevent notification if current is chat controller.

@@ -134,17 +134,17 @@ class NotificationCell: UITableViewCell {
         guard let notification = self.notification,
               let user = notification.user else { return }
     
-        if notification.notificationType == .Like {
+        if notification.notificationType == .like {
             // notification type is like
             followButton.isHidden = true
             postImageView.isHidden = false
             
-        } else if notification.notificationType == .Comment {
+        } else if notification.notificationType == .comment {
             // notification type is comment
             followButton.isHidden = true
             postImageView.isHidden = false
             
-        } else if notification.notificationType == .Follow {
+        } else if notification.notificationType == .follow {
             // notification type is follow
             self.followButton.setTitle("", for: .normal)
             followButton.isHidden = false
