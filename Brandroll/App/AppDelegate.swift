@@ -41,7 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: options) { authorized, error in
             if authorized {
-                print("SUCCESSFULLY REGISTERED FOR NOTIFICATIONS")
+                PushHelper.shared.setAllNotificationsToOnOnce()
+                PushHelper.shared.setAllowAllNotifications(true)
+            } else {
+                PushHelper.shared.setAllowAllNotifications(false)
             }
         }
         
@@ -58,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler(.alert)
+        completionHandler(UNNotificationPresentationOptions(rawValue: 0))
     }
 
     // MARK: UISceneSession Lifecycle

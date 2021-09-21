@@ -64,6 +64,9 @@
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		4577B95F26716847008E261C /* DTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B95E26716847008E261C /* DTTextField.swift */; };
+		4587821426F6510F00A46805 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4587821326F6510F00A46805 /* SettingsCell.swift */; };
+		4587821826F662CC00A46805 /* PushNotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4587821726F662CC00A46805 /* PushNotificationsVC.swift */; };
+		4587821D26F7092F00A46805 /* PushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4587821C26F7092F00A46805 /* PushHelper.swift */; };
 		45A43D9B26E40E45004A993E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 45A43D9A26E40E45004A993E /* FirebaseFirestore */; };
 		45A43D9D26E40E45004A993E /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 45A43D9C26E40E45004A993E /* FirebaseDatabase */; };
 		45A43D9F26E40E45004A993E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 45A43D9E26E40E45004A993E /* FirebaseAnalytics */; };
@@ -80,7 +83,6 @@
 		45CA02A926762B0D005CD83A /* Error+FIRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02A826762B0D005CD83A /* Error+FIRError.swift */; };
 		45CA02AB26764F32005CD83A /* AuthToastable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AA26764F32005CD83A /* AuthToastable.swift */; };
 		45CA02AD26771876005CD83A /* String+CondensedWhitespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */; };
-		45CA02AF26772244005CD83A /* UIViewController+NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */; };
 		45CA02B126773773005CD83A /* UILabel+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA02B026773773005CD83A /* UILabel+Size.swift */; };
 		E321A8B126EBAF24002959E7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E321A8B026EBAF24002959E7 /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -149,13 +151,19 @@
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		4577B95E26716847008E261C /* DTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTTextField.swift; sourceTree = "<group>"; };
 		4578A2C8269C96B700227946 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4587821326F6510F00A46805 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		4587821726F662CC00A46805 /* PushNotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsVC.swift; sourceTree = "<group>"; };
+		4587821C26F7092F00A46805 /* PushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushHelper.swift; sourceTree = "<group>"; };
+		4587821F26F7D48800A46805 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		4587822026F7D48800A46805 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		4587822126F7D48800A46805 /* package-lock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "package-lock.json"; sourceTree = "<group>"; };
+		4587822226F7D48800A46805 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		45A6E18B25E11BC600D79385 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		45A6E19325E11CAB00D79385 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
 		45A6E19725E12A5700D79385 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		45CA02A826762B0D005CD83A /* Error+FIRError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+FIRError.swift"; sourceTree = "<group>"; };
 		45CA02AA26764F32005CD83A /* AuthToastable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthToastable.swift; sourceTree = "<group>"; };
 		45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CondensedWhitespace.swift"; sourceTree = "<group>"; };
-		45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NavigationBar.swift"; sourceTree = "<group>"; };
 		45CA02B026773773005CD83A /* UILabel+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Size.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -221,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				048984322699D7510059966F /* Brandroll.entitlements */,
+				4587821E26F7D48800A46805 /* functions */,
 				459B2F8B25BE005F00402599 /* App */,
 				045C64C525085795002E8E1C /* Utils */,
 				045C64C025084CBB002E8E1C /* Model */,
@@ -286,8 +295,8 @@
 				4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */,
 				45CA02A826762B0D005CD83A /* Error+FIRError.swift */,
 				45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */,
-				45CA02AE26772244005CD83A /* UIViewController+NavigationBar.swift */,
 				45CA02B026773773005CD83A /* UILabel+Size.swift */,
+				4587821C26F7092F00A46805 /* PushHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -331,10 +340,11 @@
 		045C64DC2514313F002E8E1C /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				4587821626F6613F00A46805 /* PushNotifications */,
+				4587821526F6512B00A46805 /* Settings */,
 				045C64D6250FCF60002E8E1C /* UserProfileVC.swift */,
 				04333280253B499900C26BB6 /* FollowLikeVC.swift */,
 				043D3666259802290094CE4F /* EditProfileController.swift */,
-				0420B0312653133900938944 /* SettingsVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -425,6 +435,34 @@
 			);
 			path = Prod;
 			sourceTree = "<group>";
+		};
+		4587821526F6512B00A46805 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0420B0312653133900938944 /* SettingsVC.swift */,
+				4587821326F6510F00A46805 /* SettingsCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		4587821626F6613F00A46805 /* PushNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				4587821726F662CC00A46805 /* PushNotificationsVC.swift */,
+			);
+			path = PushNotifications;
+			sourceTree = "<group>";
+		};
+		4587821E26F7D48800A46805 /* functions */ = {
+			isa = PBXGroup;
+			children = (
+				4587821F26F7D48800A46805 /* index.js */,
+				4587822026F7D48800A46805 /* .gitignore */,
+				4587822126F7D48800A46805 /* package-lock.json */,
+				4587822226F7D48800A46805 /* package.json */,
+			);
+			path = functions;
+			sourceTree = SOURCE_ROOT;
 		};
 		459B2F8B25BE005F00402599 /* App */ = {
 			isa = PBXGroup;
@@ -605,6 +643,7 @@
 				045C64E02518FD92002E8E1C /* UserProfileHeader.swift in Sources */,
 				04FA75712583BB5100814F9E /* ChatController.swift in Sources */,
 				04FA75732583BC4500814F9E /* ChatCell.swift in Sources */,
+				4587821D26F7092F00A46805 /* PushHelper.swift in Sources */,
 				45CA02AB26764F32005CD83A /* AuthToastable.swift in Sources */,
 				0433328B254488E100C26BB6 /* Post.swift in Sources */,
 				040446952579872C0029F738 /* Comment.swift in Sources */,
@@ -647,11 +686,11 @@
 				045C64C7250857AD002E8E1C /* Extensions.swift in Sources */,
 				45CA02A926762B0D005CD83A /* Error+FIRError.swift in Sources */,
 				45A6E19425E11CAB00D79385 /* RootVC.swift in Sources */,
-				45CA02AF26772244005CD83A /* UIViewController+NavigationBar.swift in Sources */,
 				454596722605AE9B0088D3A7 /* StatusBarToggleable.swift in Sources */,
 				045C64DE25150AED002E8E1C /* Constants.swift in Sources */,
 				453EA7E525EE579300051ADC /* CreateTitleVC.swift in Sources */,
 				04333291254727DB00C26BB6 /* FeedCell.swift in Sources */,
+				4587821826F662CC00A46805 /* PushNotificationsVC.swift in Sources */,
 				04044699257DA1B20029F738 /* AppNotif.swift in Sources */,
 				04FA756B2581600200814F9E /* NewMessageController.swift in Sources */,
 				453EA7E225EE570E00051ADC /* CustomUIDelegate.swift in Sources */,
@@ -664,6 +703,7 @@
 				0420B02E2651A02A00938944 /* WelcomeVC.swift in Sources */,
 				043332872540FDC100C26BB6 /* SelectPhotoCell.swift in Sources */,
 				0433327F25378C6D00C26BB6 /* Protocols.swift in Sources */,
+				4587821426F6510F00A46805 /* SettingsCell.swift in Sources */,
 				0420B0302652C11C00938944 /* SelectPhotoVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
