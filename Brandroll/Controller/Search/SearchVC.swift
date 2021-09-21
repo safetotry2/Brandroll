@@ -6,9 +6,9 @@
 //  Copyright © 2020 Eric Park. All rights reserved.
 //
 
+import UIKit
 import Firebase
 import FirebaseDatabase
-import UIKit
 
 typealias UserAndFollowedTuple = (user: User?, followed: Bool)
 
@@ -322,10 +322,12 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout,
         func continueFetchingUsers(_ lastUserKey: String) {
             if self.userCurrentKey == nil {
                 // Once, first-time fetching.
+                // For first-time fetching, the number of items was increased to 12
+                // to resolve the background to foreground re-fetching bug.
                 USER_REF
                     .queryOrderedByKey()
                     .queryEnding(atValue: SearchUtils.getRandomFirebaseIndex())
-                    .queryLimited(toLast: 5)
+                    .queryLimited(toLast: 12)
                     .observeSingleEvent(of: .value) { (snapshot) in
                         
                         self.collectionView.refreshControl?.endRefreshing()

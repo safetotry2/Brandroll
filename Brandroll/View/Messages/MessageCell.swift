@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import FirebaseAuth
 import Kingfisher
 import UIKit
 

@@ -8,6 +8,7 @@
 
 import DKImagePickerController
 import Firebase
+import FirebaseAuth
 import UIKit
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
@@ -148,35 +149,24 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     }
     
     func configureNotificationDot() {
-        
-        if UIDevice().userInterfaceIdiom == .phone {
-            
-            let tabBarHeight = tabBar.frame.height
-            
-            // This is the actual height of the iPhone 10 screen
-            if UIScreen.main.nativeBounds.height == 2436 {
-                // configure dot for iPhone X, iPhone XS, iPhone 11 Pro
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
-            } else if UIScreen.main.nativeBounds.height == 1792 {
-                // configure dot for iPhone XR and iPhone 11
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
-            } else if UIScreen.main.nativeBounds.height == 2688 {
-                // configure dot for iPhone XS Max and iPhone 11 Pro Max
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight + 6, width: 6, height: 6)
-            } else {
-                // configure dot for other phone models
-                dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16  + 6, width: 6, height: 6)
-            }
-            
-            // create dot
-            let frame1 = (view.frame.width / 5) * 3
-            let frame2 = (view.frame.width / 5) / 2
-            let frame1And2 = frame1 + frame2
-            dot.center.x = frame1And2
-            dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
-            dot.layer.cornerRadius = dot.frame.width / 2
-            view.addSubview(dot)
+        if let notifTabBarItem = self.tabBar.items![3].value(forKey: "view") as? UIView {
             dot.isHidden = true
+            dot.layer.cornerRadius = 3
+            dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
+            
+            let hasNotch = UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
+                        
+            tabBar.addSubview(dot)
+            dot.snp.makeConstraints {
+                $0.width.height.equalTo(6)
+                $0.centerX.equalTo(notifTabBarItem)
+                
+                if hasNotch {
+                    $0.top.equalTo(notifTabBarItem.snp.bottom).offset(-5)
+                } else {
+                    $0.bottom.equalTo(notifTabBarItem).offset(-3)
+                }
+            }
         }
     }
     
@@ -305,7 +295,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     /// Checks if we are ought to proceed to hiding the dot navBar notif.
     private func setDotNotifToHiddenIfPossibleForChatController(userIdFromNotification: String, appNotif: AppNotif) {
         if appNotif.didCheck == false,
-           appNotif.notificationType == .Message {
+           appNotif.notificationType == .message {
             
             if UIViewController.current() is ChatController,
                let chatCon = UIViewController.current() as? ChatController,

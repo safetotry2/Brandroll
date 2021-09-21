@@ -17,6 +17,13 @@ let STORAGE_PROFILE_IMAGES_REF = STORAGE_REF.child("profile_images")
 
 // MARK: - Database References
 
+let USER_NOTIF_PREF_REF = DB_REF.child("user-push-notif-pref")
+let PREF_LIKES_REF = "likes"
+let PREF_COMMENTS_REF = "comments"
+let PREF_NEWFOLLOWERS_REF = "new-followers"
+let PREF_DIRECTMESSAGES_REF = "direct-messages"
+let PREF_ALLOWALL_REF = "allow-all"
+
 let USER_REF = DB_REF.child("users")
 let USER_FOLLOWER_REF = DB_REF.child("user-followers")
 let USER_FOLLOWING_REF = DB_REF.child("user-following")
