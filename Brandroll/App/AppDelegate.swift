@@ -61,7 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+      if UIApplication.shared.applicationState == .active {
         completionHandler(UNNotificationPresentationOptions(rawValue: 0))
+      } else {
+        completionHandler([.alert, .sound, .badge])
+      }
     }
 
     // MARK: UISceneSession Lifecycle

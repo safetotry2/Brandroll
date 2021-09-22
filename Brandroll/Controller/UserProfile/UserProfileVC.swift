@@ -232,9 +232,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func handleOnPushNotif() -> (() -> Void) {
         return { [weak self] in
             guard let self = self else { return }
-            self.presentedViewController?.dismiss(animated: true, completion: {
+            self.presentedViewController?.dismiss(animated: true, completion: { [weak self] in
+                self?.navigationItem.title = ""
                 let pushNotifVC = PushNotificationsVC()
-                self.navigationController?.pushViewController(pushNotifVC, animated: true)
+                self?.navigationController?.pushViewController(pushNotifVC, animated: true)
+                self?.navigationItem.backBarButtonItem = UIBarButtonItem(
+                    title: "",
+                    style: .plain,
+                    target: self,
+                    action: #selector(self?.popToPrevious))
             })
         }
     }

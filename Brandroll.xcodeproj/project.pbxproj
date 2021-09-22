@@ -61,6 +61,7 @@
 		4545967B260618C90088D3A7 /* UIViewController+StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */; };
 		454596D52606681C0088D3A7 /* SearchUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454596D42606681C0088D3A7 /* SearchUtils.swift */; };
 		454B8338267545B000E60532 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454B8337267545B000E60532 /* Toast.swift */; };
+		454BCF3E26FBABDF000300DF /* UIButton+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454BCF3D26FBABDF000300DF /* UIButton+Setup.swift */; };
 		456BB6A125C4835E0053F034 /* UIViewController+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB6A025C4835E0053F034 /* UIViewController+Current.swift */; };
 		456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456BB7EE25C865F60053F034 /* MessagesUtils.swift */; };
 		4577B95F26716847008E261C /* DTTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577B95E26716847008E261C /* DTTextField.swift */; };
@@ -147,6 +148,7 @@
 		4545967A260618C90088D3A7 /* UIViewController+StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+StatusBar.swift"; sourceTree = "<group>"; };
 		454596D42606681C0088D3A7 /* SearchUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtils.swift; sourceTree = "<group>"; };
 		454B8337267545B000E60532 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		454BCF3D26FBABDF000300DF /* UIButton+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Setup.swift"; sourceTree = "<group>"; };
 		456BB6A025C4835E0053F034 /* UIViewController+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Current.swift"; sourceTree = "<group>"; };
 		456BB7EE25C865F60053F034 /* MessagesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesUtils.swift; sourceTree = "<group>"; };
 		4577B95E26716847008E261C /* DTTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTTextField.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				45CA02AC26771876005CD83A /* String+CondensedWhitespace.swift */,
 				45CA02B026773773005CD83A /* UILabel+Size.swift */,
 				4587821C26F7092F00A46805 /* PushHelper.swift */,
+				454BCF3D26FBABDF000300DF /* UIButton+Setup.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -661,6 +664,7 @@
 				45A6E19825E12A5700D79385 /* UIViewController+Alert.swift in Sources */,
 				456BB7EF25C865F60053F034 /* MessagesUtils.swift in Sources */,
 				045C64AD250844DC002E8E1C /* AppDelegate.swift in Sources */,
+				454BCF3E26FBABDF000300DF /* UIButton+Setup.swift in Sources */,
 				045C64E2251C2D99002E8E1C /* User.swift in Sources */,
 				045C64CF250FCED4002E8E1C /* FeedVC.swift in Sources */,
 				045C64CD250E9C6F002E8E1C /* MainTabVC.swift in Sources */,

@@ -26,7 +26,8 @@ exports.observeMessages = functions.database.ref('/messages/{messageId}').onCrea
           if (isOn) {
             var payload = {
               notification: {
-                body: messageSender.name + ' sent you a message.'
+                body: messageSender.name + ' sent you a message.',
+                sound: "default"
               }
             };
 
@@ -67,7 +68,8 @@ exports.observeComments = functions.database.ref('/comments/{postId}/{commentId}
             if (isOn) {
               var payload = {
                 notification: {
-                  body: commentingUser.name + ' commented on your post.'
+                  body: commentingUser.name + ' commented on your post.',
+                  sound: "default"
                 }
               };
 
@@ -110,7 +112,8 @@ exports.observeLikes = functions.database.ref('/user-likes/{uid}/{postId}').onCr
             if (isOn) {
               var payload = {
                 notification: {
-                  body: userThatLikedPost.name + ' liked your post.'
+                  body: userThatLikedPost.name + ' liked your post.',
+                  sound: "default"
                 }
               };
 
@@ -147,7 +150,8 @@ exports.observeFollow = functions.database.ref('/user-following/{uid}/{followedU
           var payload = {
             notification: {
               //title: 'You have a new follower!',
-              body: userThatFollowed.name + ' started following you.'
+              body: userThatFollowed.name + ' started following you.',
+              sound: "default"
             }
           };
 

@@ -11,6 +11,8 @@ import Firebase
 import FirebaseAuth
 import UIKit
 
+let hasNotch = UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
+
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: - Properties
@@ -153,8 +155,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             dot.isHidden = true
             dot.layer.cornerRadius = 3
             dot.backgroundColor = UIColor(red: 233/255, green: 30/255, blue: 99/255, alpha: 1)
-            
-            let hasNotch = UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
                         
             tabBar.addSubview(dot)
             dot.snp.makeConstraints {

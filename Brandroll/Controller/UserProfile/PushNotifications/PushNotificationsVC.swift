@@ -80,7 +80,7 @@ class PushNotificationsVC: BaseVC {
     private func newSwitch(tag: Int) -> UISwitch {
         let s = UISwitch()
         s.isOn = true
-        s.onTintColor = .blue
+        s.onTintColor = .black
         s.tag = tag
         s.addTarget(self, action: #selector(prefSwitchChanged(_:)), for: .valueChanged)
         s.isEnabled = false
@@ -88,13 +88,16 @@ class PushNotificationsVC: BaseVC {
     }
     
     private lazy var gotoSettingsButton: UIButton = {
-        let button = UIButton(type: .system)
-        let attributedTitle = NSMutableAttributedString(string: "Go to Settings",
-                                                        attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor.white])
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        button.backgroundColor = UIColor.colorWithRGBHex(0x0B1325)
+        let button = UIButton()
+        button.setup("Go to Settings",
+                     normalFont: UIFont.boldSystemFont(ofSize: 18),
+                     normalTextColor: .white,
+                     highlightedTextColor: .lightGray,
+                     backgroundColor: UIColor.colorWithRGBHex(0x0B1325)
+        )
         button.addTarget(self, action: #selector(handleGoToSettings), for: .touchUpInside)
         button.layer.cornerRadius = 5
+        button.isEnabled = true
         return button
     }()
     
@@ -109,8 +112,8 @@ class PushNotificationsVC: BaseVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         
         NotificationCenter.default.addObserver(
             self,
@@ -217,8 +220,9 @@ class PushNotificationsVC: BaseVC {
     private func setupDisabledPushNotifViews() {
         view.addSubview(containerInstructions)
         containerInstructions.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(350)
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(hasNotch ? 90 : 70)
+            $0.height.equalTo(400)
         }
         
         containerInstructions.addSubview(instructionHeaderLabel)
@@ -285,7 +289,8 @@ class PushNotificationsVC: BaseVC {
     private func setupEnabledPushNotifViews() {
         view.addSubview(containerSwitches)
         containerSwitches.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(hasNotch ? 90 : 70)
+          $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(300)
         }
         
