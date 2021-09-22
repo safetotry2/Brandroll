@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UITabBar.appearance().clipsToBounds = true
         UITabBar.appearance().shadowImage = nil
         
+        application.applicationIconBadgeNumber = 0
+        
         return true
     }
     

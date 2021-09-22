@@ -27,7 +27,8 @@ exports.observeMessages = functions.database.ref('/messages/{messageId}').onCrea
             var payload = {
               notification: {
                 body: messageSender.name + ' sent you a message.',
-                sound: "default"
+                sound: "default",
+                badge: '1'
               }
             };
 
@@ -69,7 +70,8 @@ exports.observeComments = functions.database.ref('/comments/{postId}/{commentId}
               var payload = {
                 notification: {
                   body: commentingUser.name + ' commented on your post.',
-                  sound: "default"
+                  sound: "default",
+                  badge: '1'
                 }
               };
 
@@ -113,7 +115,8 @@ exports.observeLikes = functions.database.ref('/user-likes/{uid}/{postId}').onCr
               var payload = {
                 notification: {
                   body: userThatLikedPost.name + ' liked your post.',
-                  sound: "default"
+                  sound: "default",
+                  badge: '1'
                 }
               };
 
@@ -151,7 +154,8 @@ exports.observeFollow = functions.database.ref('/user-following/{uid}/{followedU
             notification: {
               //title: 'You have a new follower!',
               body: userThatFollowed.name + ' started following you.',
-              sound: "default"
+              sound: "default",
+              badge: '1'
             }
           };
 
