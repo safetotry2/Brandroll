@@ -68,10 +68,14 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView.refreshControl = refreshControl
 
-        setUserFCMToken()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.attemptToRegisterForNotifications(application: UIApplication.shared)
+            appDelegate.setUserFCMToken()
+        }
         
         fetchPosts()
         addObserver()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -322,16 +326,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     // MARK: - API
-    
-    func setUserFCMToken() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        guard let fcmToken = Messaging.messaging().fcmToken else { return }
-        
-        let values = ["fcmToken": fcmToken]
-        
-        USER_REF.child(currentUid).updateChildValues(values)
-    }
-    
+
     /// The function below updates the Home Feed of the current user with posts from all users, to create a 'Global Feed.'
     func fetchPosts() {
         if currentKey == nil {

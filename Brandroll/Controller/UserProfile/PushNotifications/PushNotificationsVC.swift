@@ -57,7 +57,7 @@ class PushNotificationsVC: BaseVC {
     private func newIcon(_ iconName: String) -> UIImageView {
         let i = UIImage(named: iconName)
         let iv = UIImageView(image: i)
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         return iv
     }
     
@@ -235,8 +235,8 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(settingsIcon)
         settingsIcon.snp.makeConstraints {
-            $0.width.height.equalTo(50)
-            $0.leading.equalTo(instructionHeaderLabel)
+            $0.width.height.equalTo(40)
+            $0.leading.equalTo(instructionHeaderLabel).offset(-10)
             $0.top.equalTo(instructionHeaderLabel.snp.bottom).offset(30)
         }
         
@@ -265,8 +265,7 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(toggleIcon)
         toggleIcon.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-            $0.centerX.equalTo(settingsIcon)
+            $0.width.height.leading.equalTo(settingsIcon)
             $0.top.equalTo(notificationsIcon.snp.bottom).offset(20)
         }
         

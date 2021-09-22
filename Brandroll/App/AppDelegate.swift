@@ -26,8 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UITabBar.appearance().clipsToBounds = true
         UITabBar.appearance().shadowImage = nil
-
-        attemptToRegisterForNotifications(application: application)
         
         return true
     }
@@ -51,6 +49,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         application.registerForRemoteNotifications()
         
     }
+    
+    func setUserFCMToken() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let fcmToken = Messaging.messaging().fcmToken else { return }
+        
+        let values = ["fcmToken": fcmToken]
+        
+        USER_REF.child(currentUid).updateChildValues(values)
+    }
+
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("DEBUG: Registered for notifications with device token: ", deviceToken)
