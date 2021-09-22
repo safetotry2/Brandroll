@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if authorized {
                 PushHelper.shared.setAllNotificationsToOnOnce()
                 PushHelper.shared.setAllowAllNotifications(true)
+                setUserFCMToken()
             } else {
                 PushHelper.shared.setAllowAllNotifications(false)
             }
