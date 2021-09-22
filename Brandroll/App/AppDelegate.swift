@@ -37,11 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         
         let options: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: options) { authorized, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { [weak self] authorized, error in
             if authorized {
                 PushHelper.shared.setAllNotificationsToOnOnce()
                 PushHelper.shared.setAllowAllNotifications(true)
-                setUserFCMToken()
+                self?.setUserFCMToken()
             } else {
                 PushHelper.shared.setAllowAllNotifications(false)
             }
