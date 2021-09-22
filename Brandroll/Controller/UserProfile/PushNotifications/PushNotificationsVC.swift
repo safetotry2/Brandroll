@@ -265,7 +265,8 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(toggleIcon)
         toggleIcon.snp.makeConstraints {
-            $0.width.height.leading.equalTo(settingsIcon)
+            $0.width.height.equalTo(settingsIcon)
+            $0.leading.equalTo(settingsIcon).offset(2)
             $0.top.equalTo(notificationsIcon.snp.bottom).offset(20)
         }
         
