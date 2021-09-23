@@ -77,6 +77,7 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         super.viewWillDisappear(animated)
         
         setAllNotifToViewed()
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     private func checkSeenMessages() {
