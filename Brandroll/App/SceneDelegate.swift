@@ -34,5 +34,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.overrideUserInterfaceStyle = .light
         
     }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 }
 
