@@ -34,5 +34,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.overrideUserInterfaceStyle = .light
         
     }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        if UIViewController.current() is NotificationsVC {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
+    }
 }
 
