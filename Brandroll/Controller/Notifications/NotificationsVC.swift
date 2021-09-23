@@ -69,6 +69,8 @@ class NotificationsVC: UITableViewController, NotitificationCellDelegate {
         self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
         self.navigationController?.navigationBar.prefersLargeTitles = false
         checkSeenMessages()
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
