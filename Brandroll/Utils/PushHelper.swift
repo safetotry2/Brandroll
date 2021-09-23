@@ -60,7 +60,13 @@ class PushHelper {
             .child(currentUid)
             .child(notifType.firRef)
             .observeSingleEvent(of: .value) { snapshot in
-                block(snapshot.value as! Bool)
+                if let val = snapshot.value as? Bool {
+                    block(val)
+                } else {
+                    // set it to true (default), means we have a corrupted/non-existing flag on firebase.
+                    self.setPref(true, notifType: notifType)
+                    block(true)
+                }
             }
     }
 }
