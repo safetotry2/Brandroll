@@ -22,6 +22,7 @@ class SettingsVC: UIViewController {
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
+        tableView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 0, right: 0)
         return tableView
     }()
     
@@ -115,13 +116,13 @@ extension SettingsVC: UITableViewDelegate {
         
         let label = UILabel()
         label.text = title
-        label.font = .boldSystemFont(ofSize: 18)
+        label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .black
         
         header.addSubview(label)
         label.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         return header

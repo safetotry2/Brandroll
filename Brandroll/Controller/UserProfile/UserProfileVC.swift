@@ -409,7 +409,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         followLikeVC.postID = postID
         navigationController?.pushViewController(followLikeVC, animated: true)
         navigationItem.backBarButtonItem = UIBarButtonItem(
-            title: "Close",
+            title: "",
             style: .plain,
             target: self,
             action: #selector(popToPrevious)

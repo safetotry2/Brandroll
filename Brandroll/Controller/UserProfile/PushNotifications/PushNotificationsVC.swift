@@ -63,7 +63,7 @@ class PushNotificationsVC: BaseVC {
     
     private func newLabel(text: String) -> UILabel {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 17)
         label.textColor = .black
         label.text = text
         label.numberOfLines = 0
@@ -227,7 +227,7 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(instructionHeaderLabel)
         instructionHeaderLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(16)
+            $0.top.equalToSuperview().inset(24)
             $0.leading.trailing.equalToSuperview().inset(50)
         }
         
@@ -235,9 +235,9 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(settingsIcon)
         settingsIcon.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-            $0.leading.equalTo(instructionHeaderLabel).offset(-10)
-            $0.top.equalTo(instructionHeaderLabel.snp.bottom).offset(30)
+            $0.width.height.equalTo(60)
+            $0.leading.equalTo(instructionHeaderLabel).offset(-14)
+            $0.top.equalTo(instructionHeaderLabel.snp.bottom).offset(20)
         }
         
         containerInstructions.addSubview(settingsLabel)
@@ -251,7 +251,12 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(notificationsIcon)
         notificationsIcon.snp.makeConstraints {
-            $0.width.height.leading.equalTo(settingsIcon)
+            
+            //$0.leading.equalTo(settingsIcon).offset(-10)
+            $0.width.equalTo(settingsIcon).offset(8)
+            $0.centerX.equalTo(settingsIcon)
+
+            //$0.width.height.leading.equalTo(settingsIcon)
             $0.top.equalTo(settingsIcon.snp.bottom).offset(20)
         }
         
@@ -265,8 +270,12 @@ class PushNotificationsVC: BaseVC {
         
         containerInstructions.addSubview(toggleIcon)
         toggleIcon.snp.makeConstraints {
-            $0.width.height.equalTo(settingsIcon)
-            $0.leading.equalTo(settingsIcon).offset(2)
+            $0.width.equalTo(settingsIcon).offset(-8)
+            $0.centerX.equalTo(settingsIcon)
+            //$0.width.leading.equalTo(settingsIcon)
+
+            //$0.width.height.equalTo(settingsIcon)
+            //$0.leading.equalTo(settingsIcon).offset(2)
             $0.top.equalTo(notificationsIcon.snp.bottom).offset(20)
         }
         
@@ -281,8 +290,8 @@ class PushNotificationsVC: BaseVC {
         containerInstructions.addSubview(gotoSettingsButton)
         gotoSettingsButton.snp.makeConstraints {
             $0.height.equalTo(50)
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(toggleIcon.snp.bottom).offset(30)
+            $0.leading.trailing.equalToSuperview().inset(40)
+            $0.top.equalTo(toggleIcon.snp.bottom).offset(36)
         }
     }
     
@@ -321,58 +330,58 @@ class PushNotificationsVC: BaseVC {
         
         // Separators
         
-        let offset: CGFloat = 8
-        
-        containerSwitches.addSubview(separator1)
-        separator1.snp.makeConstraints {
-            $0.top.equalTo(labelLikes.snp.bottom).offset(offset)
-            $0.leading.equalToSuperview().inset(30)
-            $0.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(1)
-        }
-
-        containerSwitches.addSubview(separator2)
-        separator2.snp.makeConstraints {
-            $0.top.equalTo(labelComments.snp.bottom).offset(offset)
-            $0.leading.trailing.height.equalTo(separator1)
-        }
-
-        containerSwitches.addSubview(separator3)
-        separator3.snp.makeConstraints {
-            $0.top.equalTo(labelNewFollowers.snp.bottom).offset(offset)
-            $0.leading.trailing.height.equalTo(separator1)
-        }
-
-        containerSwitches.addSubview(separator4)
-        separator4.snp.makeConstraints {
-            $0.top.equalTo(labelDirectMessages.snp.bottom).offset(offset)
-            $0.leading.trailing.height.equalTo(separator1)
-        }
+//        let offset: CGFloat = 8
+//
+//        containerSwitches.addSubview(separator1)
+//        separator1.snp.makeConstraints {
+//            $0.top.equalTo(labelLikes.snp.bottom).offset(offset)
+//            $0.leading.equalToSuperview().inset(30)
+//            $0.trailing.equalToSuperview().inset(10)
+//            $0.height.equalTo(1)
+//        }
+//
+//        containerSwitches.addSubview(separator2)
+//        separator2.snp.makeConstraints {
+//            $0.top.equalTo(labelComments.snp.bottom).offset(offset)
+//            $0.leading.trailing.height.equalTo(separator1)
+//        }
+//
+//        containerSwitches.addSubview(separator3)
+//        separator3.snp.makeConstraints {
+//            $0.top.equalTo(labelNewFollowers.snp.bottom).offset(offset)
+//            $0.leading.trailing.height.equalTo(separator1)
+//        }
+//
+//        containerSwitches.addSubview(separator4)
+//        separator4.snp.makeConstraints {
+//            $0.top.equalTo(labelDirectMessages.snp.bottom).offset(offset)
+//            $0.leading.trailing.height.equalTo(separator1)
+//        }
         
         // Switches
         
         containerSwitches.addSubview(switchLikes)
         switchLikes.snp.makeConstraints {
             $0.centerY.equalTo(labelLikes)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(24)
         }
         
         containerSwitches.addSubview(switchComments)
         switchComments.snp.makeConstraints {
             $0.centerY.equalTo(labelComments)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(24)
         }
         
         containerSwitches.addSubview(switchNewFollowers)
         switchNewFollowers.snp.makeConstraints {
             $0.centerY.equalTo(labelNewFollowers)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(24)
         }
         
         containerSwitches.addSubview(switchDirectMessages)
         switchDirectMessages.snp.makeConstraints {
             $0.centerY.equalTo(labelDirectMessages)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(24)
         }
     }
     

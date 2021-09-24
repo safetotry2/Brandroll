@@ -15,14 +15,15 @@ class SettingsCell: UITableViewCell {
     
     lazy var label: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 17)
         label.textColor = .black
         return label
     }()
     
     lazy var separator: UIView = {
         let separator = UIView()
-        separator.backgroundColor = .lightGray
+        //separator.backgroundColor = .lightGray
+        separator.backgroundColor = .none
         separator.alpha = 0.8
         return separator
     }()
@@ -71,12 +72,12 @@ class SettingsCell: UITableViewCell {
         label.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.height.equalTo(50)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         contentView.addSubview(chevron)
         chevron.snp.makeConstraints {
-            $0.width.height.equalTo(16)
+            $0.width.height.equalTo(12)
             $0.trailing.equalToSuperview().inset(16)
             $0.centerY.equalTo(label)
         }

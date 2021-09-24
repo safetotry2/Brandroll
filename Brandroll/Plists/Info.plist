@@ -31,7 +31,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Brandoll will need access to your location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This allows you to use images from your library.</string>
+	<string>This allows you to use images from your Photo Library.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
