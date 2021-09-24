@@ -367,6 +367,26 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
     
+    func handleDoubleTapToLike(for cell: FeedCell) {
+        guard let post = cell.post else { return }
+        
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        
+        guard !post.didLike else {
+            return
+        }
+        
+        cell.likeButton.isEnabled = false
+        post.adjustLikes(addLike: true) { (likes) in
+            if likes == 1 {
+                cell.likeLabel.text = "\(likes) like"
+            } else {
+                cell.likeLabel.text = "\(likes) likes"
+            }
+            cell.likeButton.isEnabled = true
+        }
+    }
+    
     func handleCommentTapped(for cell: FeedCell) {
         guard let post = cell.post else { return }
         let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())

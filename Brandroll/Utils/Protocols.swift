@@ -27,6 +27,7 @@ protocol FeedCellDelegate: AnyObject {
     func handleFullnameTapped(for cell: FeedCell)
     func handleOptionsTapped(for cell: FeedCell)
     func handleLikeTapped(for cell: FeedCell)
+    func handleDoubleTapToLike(for cell: FeedCell)
     func handleCommentTapped(for cell: FeedCell)
     func handleConfigureLikeButton(for cell: FeedCell)
     func handleShowLikes(for cell: FeedCell)

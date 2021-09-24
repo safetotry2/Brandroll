@@ -58,7 +58,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         observeNotifications()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.tappedPostCellImage(_:)), name: tappedPostCellImageNotificationKey, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.tappedPostCellImageTwice(_:)), name: tappedPostCellImageTwiceNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.newPostSuccess(_:)), name: newPostSuccessNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.deletePost(_:)), name: deletePostNotificationKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: tabBarNotificationKey, object: nil)        
@@ -69,12 +68,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     @objc func tappedPostCellImage(_ notification: Notification) {
         guard let postImages = notification.object as? Array<Post.PostImage> else { return }
         showPreview(postImages)
-    }
-    
-    @objc func tappedPostCellImageTwice(_ notification: Notification) {
-        print("handle post tapped twice")
-        guard let post = notification.object else { return }
-        
     }
     
     @objc func newPostSuccess(_ notification: Notification) {

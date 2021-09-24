@@ -8,6 +8,7 @@
 
 import Firebase
 import Kingfisher
+import SnapKit
 import UIKit
 
 class FeedCell: UICollectionViewCell {
@@ -17,6 +18,15 @@ class FeedCell: UICollectionViewCell {
     weak var delegate: FeedCellDelegate?
     
     private var maskedView: UIView!
+    
+    private lazy var centerHeart: UIImageView = {
+        let i = UIImageView(image: UIImage(named: "heart_unfilled_large"))
+        i.alpha = 0
+        i.isHidden = true
+        i.isUserInteractionEnabled = false
+        i.applyDropShadow(withOffset: .zero, opacity: 0.5, radius: 0.5, color: .black)
+        return i
+    }()
     
     var post: Post? {
         didSet {            
@@ -223,29 +233,23 @@ class FeedCell: UICollectionViewCell {
             width: 0,
             height: 0
         )
+        
+        addSubview(centerHeart)
+        centerHeart.snp.makeConstraints { make in
+            make.size.equalTo(100)
+            make.center.equalToSuperview()
+        }
     }
     
     //MARK: - Handlers
     
     @objc func handlePostTapped() {
-        guard let postImages = post?.images else { return }
-        
-        NotificationCenter.default.post(
-            name: tappedPostCellImageNotificationKey,
-            object: postImages,
-            userInfo: nil
-        )
+        delegate?.handleLikeTapped(for: self)
     }
     
     @objc func handlePostTappedTwice() {
-        //guard let postLikes = post?.likes else { return }
-        guard let post = post else { return }
-        
-        NotificationCenter.default.post(
-            name: tappedPostCellImageTwiceNotificationKey,
-            object: post,
-            userInfo: nil
-        )
+        delegate?.handleDoubleTapToLike(for: self)
+        animateCenterHeart()
     }
     
     @objc func handleFullnameTapped() {
@@ -281,6 +285,24 @@ class FeedCell: UICollectionViewCell {
         } else {
             likeLabel.text = "\(likes) likes"
         }
+    }
+    
+    private func animateCenterHeart() {
+        let likedScale: CGFloat = 1.5
+        UIView.animate(withDuration: 0.1, animations: {
+            self.centerHeart.alpha = 1
+            self.centerHeart.isHidden = false
+            self.centerHeart.transform = self.centerHeart.transform.scaledBy(x: likedScale, y: likedScale)
+        }, completion: { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.centerHeart.transform = CGAffineTransform.identity
+                }, completion: { _ in
+                    self.centerHeart.alpha = 0
+                    self.centerHeart.isHidden = true
+                })
+            }
+        })
     }
     
     func configureCaption(user: User?) {
@@ -332,5 +354,34 @@ class FeedCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension UIView {
+    func applyDropShadow(withOffset offset: CGSize, opacity: Float, radius: CGFloat, color: UIColor) {
+        layer.applyDropShadow(withOffset: offset, opacity: opacity, radius: radius, color: color)
+    }
+    
+    func removeDropShadow() {
+        layer.removeDropShadow()
+    }
+}
+
+extension CALayer {
+    func applyDropShadow(withOffset offset: CGSize, opacity: Float, radius: CGFloat, color: UIColor) {
+        shadowOffset = offset
+        shadowOpacity = opacity
+        shadowRadius = radius
+        shadowColor = color.cgColor
+        shouldRasterize = true
+        rasterizationScale = UIScreen.main.scale
+    }
+    
+    func removeDropShadow() {
+        shadowOffset = .zero
+        shadowOpacity = 0
+        shadowRadius = 0
+        shadowColor = UIColor.clear.cgColor
+        shouldRasterize = false
     }
 }

@@ -16,7 +16,6 @@ public let tabBarNotificationKey = NSNotification.Name(rawValue: "tabBarNotifica
 public let newPostSuccessNotificationKey = NSNotification.Name(rawValue: "newPostSuccessNotificationKey")
 public let deletePostNotificationKey = NSNotification.Name(rawValue: "deletePostNotificationKey")
 public let tappedPostCellImageNotificationKey = NSNotification.Name(rawValue: "tappedPostCellImageNotificationKey")
-public let tappedPostCellImageTwiceNotificationKey = NSNotification.Name(rawValue: "tappedPostCellImageTwiceNotificationKey")
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
     
@@ -214,7 +213,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func handleLikeTapped(for cell: FeedCell) {
         guard let post = cell.post else { return }
-        
+                
         if post.didLike {
             // handle unlike post
             cell.likeButton.isEnabled = false
@@ -239,6 +238,26 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 //cell.likeButton.setImage(#imageLiteral(resourceName: "heart_filled"), for: .normal)
                 cell.likeButton.isEnabled = true
             }
+        }
+    }
+    
+    func handleDoubleTapToLike(for cell: FeedCell) {
+        guard let post = cell.post else { return }
+        
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        
+        guard !post.didLike else {
+            return
+        }
+        
+        cell.likeButton.isEnabled = false
+        post.adjustLikes(addLike: true) { (likes) in
+            if likes == 1 {
+                cell.likeLabel.text = "\(likes) like"
+            } else {
+                cell.likeLabel.text = "\(likes) likes"
+            }
+            cell.likeButton.isEnabled = true
         }
     }
     
