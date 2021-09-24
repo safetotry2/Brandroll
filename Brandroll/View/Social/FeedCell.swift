@@ -20,7 +20,7 @@ class FeedCell: UICollectionViewCell {
     private var maskedView: UIView!
     
     private lazy var centerHeart: UIImageView = {
-        let i = UIImageView(image: UIImage(named: "heart_unfilled_large"))
+        let i = UIImageView(image: UIImage(named: "heart_unfilled_white"))
         i.alpha = 0
         i.isHidden = true
         i.isUserInteractionEnabled = false
@@ -244,7 +244,13 @@ class FeedCell: UICollectionViewCell {
     //MARK: - Handlers
     
     @objc func handlePostTapped() {
-        delegate?.handleLikeTapped(for: self)
+        guard let postImages = post?.images else { return }
+
+        NotificationCenter.default.post(
+            name: tappedPostCellImageNotificationKey,
+            object: postImages,
+            userInfo: nil
+        )
     }
     
     @objc func handlePostTappedTwice() {
