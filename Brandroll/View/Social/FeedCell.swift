@@ -60,13 +60,24 @@ class FeedCell: UICollectionViewCell {
         iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(postTap)
+        iv.addGestureRecognizer(postTapTwice)
         return iv
     }()
     
     lazy var postTap: UITapGestureRecognizer = {
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
-        gesture.numberOfTapsRequired = 1
-        return gesture
+        // Single Tap
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
+        singleTap.numberOfTapsRequired = 1
+        return singleTap
+        
+    }()
+    
+    lazy var postTapTwice: UITapGestureRecognizer = {
+        // Double Tap
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTappedTwice))
+        doubleTap.numberOfTapsRequired = 2
+        postTap.require(toFail: doubleTap)
+        return doubleTap
     }()
     
     lazy var profileImageView: UIImageView = {
@@ -222,6 +233,17 @@ class FeedCell: UICollectionViewCell {
         NotificationCenter.default.post(
             name: tappedPostCellImageNotificationKey,
             object: postImages,
+            userInfo: nil
+        )
+    }
+    
+    @objc func handlePostTappedTwice() {
+        //guard let postLikes = post?.likes else { return }
+        guard let post = post else { return }
+        
+        NotificationCenter.default.post(
+            name: tappedPostCellImageTwiceNotificationKey,
+            object: post,
             userInfo: nil
         )
     }

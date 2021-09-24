@@ -16,6 +16,7 @@ public let tabBarNotificationKey = NSNotification.Name(rawValue: "tabBarNotifica
 public let newPostSuccessNotificationKey = NSNotification.Name(rawValue: "newPostSuccessNotificationKey")
 public let deletePostNotificationKey = NSNotification.Name(rawValue: "deletePostNotificationKey")
 public let tappedPostCellImageNotificationKey = NSNotification.Name(rawValue: "tappedPostCellImageNotificationKey")
+public let tappedPostCellImageTwiceNotificationKey = NSNotification.Name(rawValue: "tappedPostCellImageTwiceNotificationKey")
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
     
