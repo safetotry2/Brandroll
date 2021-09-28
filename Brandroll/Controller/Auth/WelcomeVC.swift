@@ -14,6 +14,13 @@ class WelcomeVC: UIViewController {
     
     static var shouldShowLoginVC = false
     
+    let brandrollLogoBlack: UIImageView = {
+        let image = UIImage(named: "Brandroll_logo_black")
+        let iv = UIImageView(image: image)
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
     let getStartedButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Get started", for: .normal)
@@ -93,6 +100,9 @@ class WelcomeVC: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
+        
+        view.addSubview(brandrollLogoBlack)
+        brandrollLogoBlack.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 80, paddingLeft: 120, paddingBottom: 0, paddingRight: 120, width: 0, height: 10)
         
         view.addSubview(getStartedButton)
         getStartedButton.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
