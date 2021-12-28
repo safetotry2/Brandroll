@@ -28,10 +28,14 @@ class PreviewUploadVC: BaseVC {
     
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "arrow"), for: .normal)
+        let image = UIImage(named: "down_arrow-1")
+        //let image = UIImage(named: "arrow")
+        button.setImage(image, for: .normal)
+        //button.setImage(#imageLiteral(resourceName: "arrow"), for: .normal)
         button.contentMode = .topLeft
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 8,left: 0,bottom: 0,right: 8)
+        //button.imageEdgeInsets = UIEdgeInsets(top: 8,left: 0,bottom: 0,right: 8)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8,left: -76,bottom: 0,right: 0)
         button.addTarget(self, action: #selector(handleBackTapped), for: .touchUpInside)
         return button
     }()
